@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
+import 'package:provider/provider.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -36,7 +38,9 @@ class Body extends StatelessWidget {
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
             press: () {
-              Navigator.pushNamed(context, SignInScreen.routeName);
+              context.read<AuthenticationService>().signOut().then((res) => {
+                Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false),
+              });
             },
           ),
         ],

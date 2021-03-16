@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/screens/home/home_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/screens/complete_profile/complete_profile_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -51,8 +54,14 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                context.read<AuthenticationService>().signUp(
+                  email: email.trim(),
+                  password: password.trim()
+                ).then((value) => {
+                  if(value == "Signed up"){
+                    Navigator.pushNamed(context, HomeScreen.routeName),
+                  }
+                });                
               }
             },
           ),

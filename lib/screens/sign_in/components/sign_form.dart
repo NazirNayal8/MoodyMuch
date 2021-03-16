@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/form_error.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/helper/keyboard.dart';
 import 'package:moodymuch/screens/forgot_password/forgot_password_screen.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
@@ -81,9 +83,18 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, HomeScreen.routeName);
+                context.read<AuthenticationService>().signIn(
+                    email: email.trim(),
+                    password: password.trim(),
+                  ).then((value) => {
+                    if(value != "Signed in"){
+                      addError(error: "Wrong email or password"),
+                    }
+                    else {
+                      KeyboardUtil.hideKeyboard(context),
+                      Navigator.pushNamed(context, HomeScreen.routeName),
+                    }
+                  });
               }
             },
           ),
@@ -97,6 +108,7 @@ class _SignFormState extends State<SignForm> {
       obscureText: obscure,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
+        removeError(error: kWrongEmailorPass);
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
@@ -133,6 +145,7 @@ class _SignFormState extends State<SignForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
+        removeError(error: kWrongEmailorPass);
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
         } else if (emailValidatorRegExp.hasMatch(value)) {
