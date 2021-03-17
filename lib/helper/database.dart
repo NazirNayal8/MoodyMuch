@@ -22,6 +22,23 @@ class DatabaseService {
     }
   }
 
+  Future<UserModel> getUserData() async {
+    try {
+      DocumentSnapshot ds = await userCollection.doc(uid).get();
+      dynamic data = ds.data();
+      return UserModel(
+        firstname: data['firstname'] ?? '',
+        lastname: data['lastname'] ?? '',
+        phone: data['phone'] ?? '',
+        address: data['address'] ?? '',
+        url: data['url'] ?? ''
+      );
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final userdata = snapshot.data();
     return UserModel(

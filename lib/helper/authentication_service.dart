@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moodymuch/helper/database.dart';
+import 'package:moodymuch/model/UserModel.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -15,6 +16,17 @@ class AuthenticationService {
     }
 
     return "Not found";
+  }
+
+  Future<UserModel> getCurrentUser() async {
+
+    String uid = await getUser();
+    try {
+      return await DatabaseService(uid: uid).getUserData();
+    } catch(e) {
+      print(e.message);
+      return null;
+    }
   }
 
   Future<String> signOut() async {

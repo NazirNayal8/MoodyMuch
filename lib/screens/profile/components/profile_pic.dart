@@ -20,6 +20,8 @@ class ProfilePicState extends State<ProfilePic> {
   final picker = ImagePicker();
 
   String uid;
+  UserModel user;
+  DatabaseService db;
 
   Future pickImage(BuildContext context) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -38,19 +40,24 @@ class ProfilePicState extends State<ProfilePic> {
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     taskSnapshot.ref.getDownloadURL().then(
-      (value) => null,
+      (value) => {
+        print("Done")
+      },
     );
   }
 
-  void getUID(BuildContext context){
+  void initUserInfo(BuildContext context) {
     setState(() {
       context.read<AuthenticationService>().getUser().then((value) => uid = value);
+      context.read<AuthenticationService>().getCurrentUser().then((value) => user = value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     
+    initUserInfo(context);
+
     return SizedBox(
       height: 120,
       width: 120,
@@ -58,7 +65,7 @@ class ProfilePicState extends State<ProfilePic> {
         fit: StackFit.expand,
         children: [
           CircleAvatar(
-            backgroundImage: _imageFile != null ? FileImage(_imageFile) : AssetImage("assets/images/user.png"),
+            backgroundImage: _imageFile != null ? FileImage(_imageFile): AssetImage("assets/images/user.png"),
             backgroundColor: Colors.white,
           ),
           Positioned(
@@ -73,7 +80,7 @@ class ProfilePicState extends State<ProfilePic> {
                   side: BorderSide(color: Colors.white),
                 ),
                 color: Color(0xFFF5F6F9),
-                onPressed: (){
+                onPressed: () {
                   pickImage(context);
                 },
                 child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
