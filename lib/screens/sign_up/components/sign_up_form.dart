@@ -46,7 +46,7 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildConformPassFormField(),
+          buildConfirmPassFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
@@ -59,7 +59,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   password: password.trim()
                 ).then((value) => {
                   if(value == "Signed up"){
-                    Navigator.pushNamed(context, HomeScreen.routeName),
+                    Navigator.pushNamed(context, CompleteProfileScreen.routeName),
                   }
                 });                
               }
@@ -70,7 +70,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildConformPassFormField() {
+  TextFormField buildConfirmPassFormField() {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => confirmPassword = newValue,

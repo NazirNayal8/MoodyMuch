@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
+import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/screens/signup_success/signup_success.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -16,8 +19,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final List<String> errors = [];
   String firstName;
   String lastName;
-  String phoneNumber;
+  String phone;
   String address;
+  String uid;
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -33,8 +37,18 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       });
   }
 
+  void getUID(){
+    setState(() {
+      context.read<AuthenticationService>().getUser().then((value) => uid = value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    getUID();
+    DatabaseService db = DatabaseService(uid: uid);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -49,10 +63,17 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
-            text: "continue",
+            text: "Complete Registration",
             press: () {
               if (_formKey.currentState.validate()) {
-                Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
+                _formKey.currentState.save();
+                db.updateUserData(firstName, lastName, phone, address, "").then((value) => {
+                  if(value == "saved"){
+                    Navigator.pushNamed(context, SignUpSuccessScreen.routeName)
+                  } else {
+                    print(value)
+                  }
+                });
               }
             },
           ),
@@ -92,7 +113,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      onSaved: (newValue) => phoneNumber = newValue,
+      onSaved: (newValue) => phone = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);

@@ -1,13 +1,56 @@
+import 'dart:io';
+import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/helper/database.dart';
+import 'package:moodymuch/model/UserModel.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfilePic extends StatelessWidget {
-  const ProfilePic({
-    Key key,
-  }) : super(key: key);
+class ProfilePic extends StatefulWidget {
+  @override
+  ProfilePicState createState() => ProfilePicState();
+}
+
+class ProfilePicState extends State<ProfilePic> {
+
+  File _imageFile;
+  final picker = ImagePicker();
+
+  String uid;
+
+  Future pickImage(BuildContext context) async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+
+    uploadImageToFirebase(context);
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename( _imageFile.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    taskSnapshot.ref.getDownloadURL().then(
+      (value) => null,
+    );
+  }
+
+  void getUID(BuildContext context){
+    setState(() {
+      context.read<AuthenticationService>().getUser().then((value) => uid = value);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return SizedBox(
       height: 120,
       width: 120,
@@ -15,7 +58,7 @@ class ProfilePic extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user.png"),
+            backgroundImage: _imageFile != null ? FileImage(_imageFile) : AssetImage("assets/images/user.png"),
             backgroundColor: Colors.white,
           ),
           Positioned(
@@ -30,7 +73,9 @@ class ProfilePic extends StatelessWidget {
                   side: BorderSide(color: Colors.white),
                 ),
                 color: Color(0xFFF5F6F9),
-                onPressed: () {},
+                onPressed: (){
+                  pickImage(context);
+                },
                 child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
               ),
             ),
