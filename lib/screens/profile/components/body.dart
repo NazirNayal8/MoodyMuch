@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
-import 'package:provider/provider.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
+
+  final AuthenticationService auth = AuthenticationService();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -17,7 +19,8 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/user.svg",
-            press: () => {},
+            press: () => {
+            },
           ),
           ProfileMenu(
             text: "Mood Track History",
@@ -27,7 +30,8 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Settings",
             icon: "assets/icons/Settings.svg",
-            press: () {},
+            press: () => {
+            },
           ),
           ProfileMenu(
             text: "Help Center",
@@ -37,9 +41,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {
-              context.read<AuthenticationService>().signOut().then((res) => {
-                Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false),
+            press: () async {
+              await auth.signOut().then((value) => {
+                Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false)
               });
             },
           ),

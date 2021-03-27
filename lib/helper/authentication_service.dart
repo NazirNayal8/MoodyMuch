@@ -3,58 +3,45 @@ import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/UserModel.dart';
 
 class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  AuthenticationService(this._firebaseAuth);
-
-  Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
-
-  Future<String> getUser() async {
-    final user = _firebaseAuth.currentUser;
-    if(user != null){
-      return user.uid;
-    }
-
-    return "Not found";
+  AppUser _userFromFirebaseUser(User user) {
+    return user != null ? AppUser(uid: user.uid) : null;
   }
 
-  Future<UserModel> getCurrentUser() async {
+  Stream<AppUser> get user {
+    return this._auth.userChanges().map(_userFromFirebaseUser);
+  }
 
-    String uid = await getUser();
+  Future signOut() async {
     try {
-      return await DatabaseService(uid: uid).getUserData();
-    } catch(e) {
+      return await _auth.signOut();
+    } on FirebaseAuthException catch(e) { 
+      print(e.message);
+      return null;
+    } 
+  }
+
+  Future signIn({String email, String password}) async {
+    try {
+      UserCredential res = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User user = res.user;
+      return user;
+    } catch (e) {
       print(e.message);
       return null;
     }
   }
 
-  Future<String> signOut() async {
+  Future signUp({String email, String password}) async {
     try {
-      await _firebaseAuth.signOut();
-      return "Signed out";
-    } on FirebaseAuthException catch(e) { 
-      return e.message;
-    } 
-  }
-
-  Future<String> signIn({String email, String password}) async {
-    try {
-      UserCredential res = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      String uid = res.user.uid;
-      DatabaseService(uid: uid).updateUserData("", "", "", "", "");
-      return "Signed in";
+      UserCredential res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User user = res.user;
+      DatabaseService(uid: user.uid).updateUserData("John", "Doe", "", "", "");
+      return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
-      return e.message;
-    }
-  }
-
-  Future<String> signUp({String email, String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up";
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+      print(e.message);
+      return null;
     }
   }
 }

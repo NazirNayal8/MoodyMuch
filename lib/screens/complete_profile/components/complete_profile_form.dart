@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/model/UserModel.dart';
 import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
@@ -21,7 +21,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String lastName;
   String phone;
   String address;
-  String uid;
+  AppUser user;
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -37,17 +37,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       });
   }
 
-  void getUID(){
-    setState(() {
-      context.read<AuthenticationService>().getUser().then((value) => uid = value);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
 
-    getUID();
-    DatabaseService db = DatabaseService(uid: uid);
+    user = Provider.of<AppUser>(context);
 
     return Form(
       key: _formKey,
@@ -64,11 +57,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "Complete Registration",
-            press: () {
+            press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                db.updateUserData(firstName, lastName, phone, address, "").then((value) => {
-                  if(value == "saved"){
+                await DatabaseService(uid: user.uid).updateUserData(firstName, lastName, phone, address, "").then((value) => {
+                  if(value == "Done"){
                     Navigator.pushNamed(context, SignUpSuccessScreen.routeName)
                   } else {
                     print(value)
@@ -101,8 +94,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       decoration: InputDecoration(
         labelText: "Address",
         hintText: "Enter your phone address",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon:
             CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),

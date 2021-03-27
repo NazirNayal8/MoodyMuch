@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'package:moodymuch/helper/authentication_service.dart';
-import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/UserModel.dart';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePic extends StatefulWidget {
   @override
@@ -19,9 +17,7 @@ class ProfilePicState extends State<ProfilePic> {
   File _imageFile;
   final picker = ImagePicker();
 
-  String uid;
-  UserModel user;
-  DatabaseService db;
+  AppUser user;
 
   Future pickImage(BuildContext context) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -46,18 +42,11 @@ class ProfilePicState extends State<ProfilePic> {
     );
   }
 
-  void initUserInfo(BuildContext context) {
-    setState(() {
-      context.read<AuthenticationService>().getUser().then((value) => uid = value);
-      context.read<AuthenticationService>().getCurrentUser().then((value) => user = value);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    
-    initUserInfo(context);
 
+    user = Provider.of<AppUser>(context);
+    
     return SizedBox(
       height: 120,
       width: 120,
@@ -80,8 +69,8 @@ class ProfilePicState extends State<ProfilePic> {
                   side: BorderSide(color: Colors.white),
                 ),
                 color: Color(0xFFF5F6F9),
-                onPressed: () {
-                  pickImage(context);
+                onPressed: () async {
+                  await pickImage(context);
                 },
                 child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
               ),

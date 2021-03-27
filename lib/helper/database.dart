@@ -16,26 +16,9 @@ class DatabaseService {
         'address': address,
         'url': url
       });
-      return "saved";
+      return "Done";
     } catch (e) {
-      return "Error while saving user data ${e.message}";
-    }
-  }
-
-  Future<UserModel> getUserData() async {
-    try {
-      DocumentSnapshot ds = await userCollection.doc(uid).get();
-      dynamic data = ds.data();
-      return UserModel(
-        firstname: data['firstname'] ?? '',
-        lastname: data['lastname'] ?? '',
-        phone: data['phone'] ?? '',
-        address: data['address'] ?? '',
-        url: data['url'] ?? ''
-      );
-    } catch (e) {
-      print(e.toString());
-      return null;
+      return e.toString();
     }
   }
 
