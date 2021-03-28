@@ -63,8 +63,8 @@ class ProfilePicState extends State<ProfilePic> {
       builder: (context, snapshot) {
         if(snapshot.hasData && !loading){
           return SizedBox(
-            height: 200,
-            width: 200,
+            height: 160,
+            width: 160,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -116,8 +116,8 @@ class ProfilePicState extends State<ProfilePic> {
           );
         } else {
           return SizedBox(
-            width: 200,
-            height: 200,
+            width: 160,
+            height: 160,
             child: Stack(
               fit: StackFit.expand,
               children: [

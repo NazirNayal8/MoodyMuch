@@ -3,6 +3,8 @@ import 'package:moodymuch/screens/complete_profile/complete_profile_screen.dart'
 import 'package:moodymuch/screens/forgot_password/forgot_password_screen.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/screens/profile/profile_screen.dart';
+import 'package:moodymuch/screens/settings/components/language.dart';
+import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
 import 'package:moodymuch/screens/signup_success/signup_success.dart';
 import 'screens/sign_up/sign_up_screen.dart';
@@ -17,4 +19,6 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   SignUpSuccessScreen.routeName: (context) => SignUpSuccessScreen(),
+  LanguagesScreen.routeName: (context) => LanguagesScreen(),
+  SettingsScreen.routeName: (context) => SettingsScreen()
 };

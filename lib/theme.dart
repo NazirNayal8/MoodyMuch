@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
-
 import 'constants.dart';
 
 ThemeData theme() {
   return ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Colors.white,
+    fontFamily: "Muli",
+    appBarTheme: appBarTheme(),
+    textTheme: textTheme(),
+    inputDecorationTheme: inputDecorationTheme(),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  );
+}
+
+ThemeData darktheme() {
+  return ThemeData(
+    brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     fontFamily: "Muli",
     appBarTheme: appBarTheme(),

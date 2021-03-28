@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
@@ -31,6 +32,7 @@ class Body extends StatelessWidget {
             text: "Settings",
             icon: "assets/icons/Settings.svg",
             press: () => {
+              Navigator.pushNamed(context, SettingsScreen.routeName)
             },
           ),
           ProfileMenu(
