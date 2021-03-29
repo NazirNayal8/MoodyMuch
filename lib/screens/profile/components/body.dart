@@ -16,13 +16,31 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           ProfilePic(),
-          SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/icons/user.svg",
-            press: () => {
-            },
+          SizedBox(height: 10),
+          Text(
+            'Harun Sasmaz',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
           ),
+          SizedBox(height: 5),
+          Text(
+            'harunsasmaz@gmail.com',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w100,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Istanbul, Turkey',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w100,
+            ),
+          ),
+          SizedBox(height: 15),
           ProfileMenu(
             text: "Mood Track History",
             icon: "assets/icons/analytics.svg",
@@ -33,6 +51,12 @@ class Body extends StatelessWidget {
             icon: "assets/icons/Settings.svg",
             press: () => {
               Navigator.pushNamed(context, SettingsScreen.routeName)
+            },
+          ),
+          ProfileMenu(
+            text: "Invite a Friend",
+            icon: "assets/icons/user.svg",
+            press: () => {
             },
           ),
           ProfileMenu(

@@ -22,7 +22,7 @@ class ProfilePicState extends State<ProfilePic> {
 
   AppUser user;
   String downloadUrl;
-  bool loading = false;
+  bool loading = true;
 
   Future pickImage() async {
     final pickedFile = await picker.getImage(
@@ -37,21 +37,6 @@ class ProfilePicState extends State<ProfilePic> {
     });
   }
 
-  // Future uploadImageToFirebase(BuildContext context) async {
-  //   String fileName = basename( _imageFile.path);
-  //   Reference firebaseStorageRef =
-  //       FirebaseStorage.instance.ref().child('uploads/$fileName');
-  //   UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
-  //   TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
-  //   taskSnapshot.ref.getDownloadURL().then(
-  //     (value) => {
-  //       setState(() {
-  //         downloadUrl = value;
-  //       })
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
 
@@ -63,8 +48,8 @@ class ProfilePicState extends State<ProfilePic> {
       builder: (context, snapshot) {
         if(snapshot.hasData && !loading){
           return SizedBox(
-            height: 160,
-            width: 160,
+            height: 140,
+            width: 140,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -116,13 +101,13 @@ class ProfilePicState extends State<ProfilePic> {
           );
         } else {
           return SizedBox(
-            width: 160,
-            height: 160,
+            width: 140,
+            height: 140,
             child: Stack(
               fit: StackFit.expand,
               children: [
                 Center(
-                  child: SpinKitChasingDots(
+                  child: SpinKitCircle(
                     color: kPrimaryColor,
                     size: 100,
                   ),

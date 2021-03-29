@@ -38,18 +38,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.pushNamed(context, LanguagesScreen.routeName);
               },
             ),
-            SettingsTile(
-              title: 'Environment',
-              subtitle: 'Production',
-              leading: Icon(Icons.cloud_queue),
-            ),
           ],
         ),
         SettingsSection(
           title: 'Account',
           tiles: [
-            SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
             SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+            SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
+            SettingsTile(title: 'Location', leading: Icon(Icons.location_city_sharp)),
             SettingsTile(title: 'Change Password', leading: Icon(Icons.exit_to_app)),
           ],
         ),
@@ -107,10 +103,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: 'Misc',
           tiles: [
             SettingsTile(
-                title: 'Terms of Service', leading: Icon(Icons.description)),
+              title: 'Terms of Service',
+              leading: Icon(Icons.description)
+            ),
             SettingsTile(
-                title: 'Open source licenses',
-                leading: Icon(Icons.collections_bookmark)),
+              title: 'Privacy Policy',
+              leading: Icon(Icons.privacy_tip_outlined)
+            ),
           ],
         ),
         CustomSection(
@@ -120,8 +119,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.only(top: 22, bottom: 8),
                 child: SvgPicture.asset(
                   'assets/icons/Settings.svg',
-                  height: 50,
-                  width: 50,
+                  height: 40,
+                  width: 40,
                   color: kPrimaryColor,
                 ),
               ),
