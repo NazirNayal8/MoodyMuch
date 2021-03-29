@@ -20,7 +20,6 @@ class _SignUpFormState extends State<SignUpForm> {
   String email;
   String password;
   String confirmPassword;
-  bool remember = false;
   final List<String> errors = [];
 
   void addError({String error}) {

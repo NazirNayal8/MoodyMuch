@@ -6,7 +6,7 @@ class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AppUser _userFromFirebaseUser(User user) {
-    return user != null ? AppUser(uid: user.uid) : null;
+    return user != null ? AppUser(uid: user.uid, email: user.email) : null;
   }
 
   Stream<AppUser> get user {
@@ -42,6 +42,31 @@ class AuthenticationService {
     } on FirebaseAuthException catch (e) {
       print(e.message);
       return null;
+    }
+  }
+
+   Future<bool> validatePassword(String password) async {
+    var firebaseUser = await _auth.currentUser;
+
+    var authCredentials = EmailAuthProvider.credential(
+        email: firebaseUser.email, password: password);
+    try {
+      var authResult = await firebaseUser
+          .reauthenticateWithCredential(authCredentials);
+      return authResult.user != null;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> updatePassword(String password) async {
+    try {
+      await _auth.currentUser.updatePassword(password);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

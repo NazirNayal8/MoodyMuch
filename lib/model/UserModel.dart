@@ -1,6 +1,7 @@
 class AppUser {
   final String uid;
-  AppUser({this.uid});
+  final String email;
+  AppUser({this.uid, this.email});
 }
 
 class UserModel {
@@ -12,5 +13,5 @@ class UserModel {
   final String address;
   final String url;
 
-  UserModel({ this.uid, this.firstname, this.lastname, this.phone, this.address, this.url });
+  UserModel({this.uid, this.firstname, this.lastname, this.phone, this.address, this.url });
 }

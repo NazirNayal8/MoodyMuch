@@ -16,30 +16,6 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           ProfilePic(),
-          SizedBox(height: 10),
-          Text(
-            'Harun Sasmaz',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'harunsasmaz@gmail.com',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w100,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'Istanbul, Turkey',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w100,
-            ),
-          ),
           SizedBox(height: 15),
           ProfileMenu(
             text: "Mood Track History",
@@ -50,7 +26,7 @@ class Body extends StatelessWidget {
             text: "Settings",
             icon: "assets/icons/Settings.svg",
             press: () => {
-              Navigator.pushNamed(context, SettingsScreen.routeName)
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(language: 0)))
             },
           ),
           ProfileMenu(

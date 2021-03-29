@@ -22,7 +22,7 @@ class ProfilePicState extends State<ProfilePic> {
 
   AppUser user;
   String downloadUrl;
-  bool loading = true;
+  bool loading = false;
 
   Future pickImage() async {
     final pickedFile = await picker.getImage(
@@ -47,62 +47,90 @@ class ProfilePicState extends State<ProfilePic> {
       stream: db.userData,
       builder: (context, snapshot) {
         if(snapshot.hasData && !loading){
-          return SizedBox(
-            height: 140,
-            width: 140,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                CircleAvatar(
-                  backgroundImage: snapshot.data.url != null && snapshot.data.url != "" ? NetworkImage(snapshot.data.url): AssetImage("assets/images/user.png"),
-                  backgroundColor: Colors.white,
-                ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    height: 45,
-                    width: 45,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(color: Colors.white),
-                      ),
-                      color: Color(0xFFF5F6F9),
-                      onPressed: () async {
-                        await pickImage();
-                        String fileName = basename( _imageFile.path);
-                        Reference firebaseStorageRef =
-                            FirebaseStorage.instance.ref().child('uploads/$fileName');
-                        UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
-                        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
-                        taskSnapshot.ref.getDownloadURL().then(
-                          (value) => {
-                            db.updateUserData(snapshot.data.firstname, snapshot.data.lastname, 
-                              snapshot.data.phone, snapshot.data.address, value).then((value) => {
-                                if(value != "Done"){
-                                  print(value)
-                                }
-                              }
-                            ),
-
-                            setState(() {
-                              loading = false;
-                            })
-                          },
-                        );
-                      },
-                      child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
+          return Column(
+            children: [
+               SizedBox(
+                height: 140,
+                width: 140,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: snapshot.data.url != null && snapshot.data.url != "" ? NetworkImage(snapshot.data.url): AssetImage("assets/images/user.png"),
+                      backgroundColor: Colors.white,
                     ),
-                  ),
-                )
-              ],
-            ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: SizedBox(
+                        height: 45,
+                        width: 45,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: BorderSide(color: Colors.white),
+                          ),
+                          color: Color(0xFFF5F6F9),
+                          onPressed: () async {
+                            await pickImage();
+                            String fileName = basename( _imageFile.path);
+                            Reference firebaseStorageRef =
+                                FirebaseStorage.instance.ref().child('uploads/$fileName');
+                            UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+                            TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+                            taskSnapshot.ref.getDownloadURL().then(
+                              (value) => {
+                                db.updateUserData(snapshot.data.firstname, snapshot.data.lastname, 
+                                  snapshot.data.phone, snapshot.data.address, value).then((value) => {
+                                    if(value != "Done"){
+                                      print(value)
+                                    }
+                                  }
+                                ),
+
+                                setState(() {
+                                  loading = false;
+                                })
+                              },
+                            );
+                          },
+                          child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                snapshot.data.firstname + " " + snapshot.data.lastname,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                user?.email ?? '',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                snapshot.data.address,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+            ],
           );
         } else {
           return SizedBox(
-            width: 140,
-            height: 140,
+            width: 200,
+            height: 200,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -119,4 +147,5 @@ class ProfilePicState extends State<ProfilePic> {
       }
     );
   }
+
 }
