@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/screens/profile/profile_screen.dart';
+import 'package:moodymuch/screens/youtube/youtube_video_list_screen.dart';
 
 import '../constants.dart';
 import '../enums.dart';
@@ -53,11 +54,12 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/video.svg"),
-                onPressed: () {},
+                onPressed: () {}
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/exercise.svg"),
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushNamed(context, YoutubeVideoListScreen.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset(

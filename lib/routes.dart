@@ -5,6 +5,7 @@ import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/screens/profile/profile_screen.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
 import 'package:moodymuch/screens/signup_success/signup_success.dart';
+import 'package:moodymuch/screens/youtube/youtube_video_list_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 
 // We use name route
@@ -16,5 +17,6 @@ final Map<String, WidgetBuilder> routes = {
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
-  SignUpSuccessScreen.routeName: (context) => SignUpSuccessScreen()
+  SignUpSuccessScreen.routeName: (context) => SignUpSuccessScreen(),
+  YoutubeVideoListScreen.routeName: (context) => YoutubeVideoListScreen(),
 };
