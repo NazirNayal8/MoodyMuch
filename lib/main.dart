@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MoodyMuch App',
         theme: theme(),
-        darkTheme: darktheme(),
         home: AuthenticationWrapper(),
         routes: routes,
       ),

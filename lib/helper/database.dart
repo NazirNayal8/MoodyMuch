@@ -22,6 +22,17 @@ class DatabaseService {
     }
   }
 
+  Future<String> updateLocation(String location) async {
+    try {
+      await userCollection.doc(uid).update(
+        {'address': location},
+      );
+      return "Done";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final userdata = snapshot.data();
     return UserModel(

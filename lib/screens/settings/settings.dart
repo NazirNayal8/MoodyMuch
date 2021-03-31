@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moodymuch/constants.dart';
+import 'package:moodymuch/screens/settings/components/update_location.dart';
 import 'package:moodymuch/screens/settings/components/update_password.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:moodymuch/screens/settings/components/language.dart';
@@ -30,7 +31,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void awaitLanguagePick(BuildContext context) async {
     final res = await Navigator.push(context, MaterialPageRoute(builder: (context) => LanguagesScreen(languageIndex: language)));
-    print(res);
     setState(() {
       language = res;
     });
@@ -65,13 +65,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           tiles: [
             SettingsTile(title: 'Email', leading: Icon(Icons.email)),
             SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
-            SettingsTile(title: 'Location', leading: Icon(Icons.location_city_sharp)),
+            SettingsTile(
+              title: 'Location', 
+              leading: Icon(Icons.location_city_sharp),
+              onPressed: (context) => {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LocationUpdate()))
+              },
+            ),
             SettingsTile(
               title: 'Change Password', 
               leading: Icon(Icons.exit_to_app),
               onPressed: (context) => {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordScreen()))
-              },),
+              },
+            ),
           ],
         ),
         SettingsSection(
