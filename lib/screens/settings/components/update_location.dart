@@ -94,11 +94,9 @@ class LocationUpdateState extends State<LocationUpdate> {
                         loading = true;
                       }),
 
-                      DatabaseService(uid: user.uid).updateLocation(address).then((value) => {
-                        if(value == "Done"){
-                          print("Done")
-                        } else {
-                          print("Failed")
+                      DatabaseService(uid: user.uid).updateField("address", address).then((value) => {
+                        if(value != "Done"){
+                          print(value)
                         }
                       }),
 
@@ -122,7 +120,7 @@ class LocationUpdateState extends State<LocationUpdate> {
     if(loading) {
       return SpinKitCircle(color: kPrimaryColor, size: 100);
     } else {
-      return Text(address);
+      return SizedBox(height: 0);
     }
   }
 }

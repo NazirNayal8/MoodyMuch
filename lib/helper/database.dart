@@ -22,10 +22,10 @@ class DatabaseService {
     }
   }
 
-  Future<String> updateLocation(String location) async {
+  Future<String> updateField(String field, String data) async {
     try {
       await userCollection.doc(uid).update(
-        {'address': location},
+        {field: data},
       );
       return "Done";
     } catch (e) {

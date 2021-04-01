@@ -80,13 +80,12 @@ class ProfilePicState extends State<ProfilePic> {
                             TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
                             taskSnapshot.ref.getDownloadURL().then(
                               (value) => {
-                                db.updateUserData(snapshot.data.firstname, snapshot.data.lastname, 
-                                  snapshot.data.phone, snapshot.data.address, value).then((value) => {
-                                    if(value != "Done"){
-                                      print(value)
-                                    }
+
+                                db.updateField("url", value).then((value) => {
+                                  if(value != "Done"){
+                                    print(value)
                                   }
-                                ),
+                                }),
 
                                 setState(() {
                                   loading = false;
