@@ -10,6 +10,16 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+const kTextLightColor = Color(0xFF9A9BB2);
+const kFillStarColor = Color(0xFFFCC419);
+
+const kDefaultPadding = 20.0;
+
+const kDefaultShadow = BoxShadow(
+  offset: Offset(0, 4),
+  blurRadius: 4,
+  color: Colors.black26,
+);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -55,4 +65,21 @@ bool validatePassword(String pass){
   String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
   RegExp regExp = new RegExp(pattern);
   return regExp.hasMatch(pass);
+}
+
+String percentage(double popularity) {
+  int multiplied = (popularity * 100).toInt();
+  return multiplied.toString() + " %";
+}
+
+Color colorByPercentage(double percentage) {
+  if(percentage <= 30){
+    return Colors.red;
+  } else if(percentage > 30 && percentage <= 50) {
+    return Colors.orange;
+  } else if(percentage > 50 && percentage <= 70) {
+    return Colors.yellow;
+  } else {
+    return Colors.green;
+  }
 }
