@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moodymuch/components/rating_dialog.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
 import '../../../constants.dart';
 
-class BackdropAndRating extends StatelessWidget {
+class BackdropAndRating extends StatefulWidget {
+  final Size size;
+  final MovieDetail movie;
+
   const BackdropAndRating({
     Key key,
     @required this.size,
     @required this.movie,
   }) : super(key: key);
 
+  BackdropAndRatingState createState() => BackdropAndRatingState(size, movie);
+}
+
+
+class BackdropAndRatingState extends State<BackdropAndRating> {
+
   final Size size;
   final MovieDetail movie;
+
+  BackdropAndRatingState(this.size, this.movie);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +130,10 @@ class BackdropAndRating extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset("assets/icons/star.svg"),
+                        IconButton(
+                          icon: SvgPicture.asset("assets/icons/star.svg"), 
+                          onPressed: _showRatingDialog
+                        ),
                         SizedBox(height: kDefaultPadding / 4),
                         Text("Rate This",
                             style: Theme.of(context).textTheme.bodyText2),
@@ -134,6 +148,27 @@ class BackdropAndRating extends StatelessWidget {
           SafeArea(child: BackButton()),
         ],
       ),
+    );
+  }
+
+  void _showRatingDialog() {
+    final _dialog = RatingDialog(
+      title: 'Rate Movie',
+      // encourage your user to leave a high rating?
+      message:
+          'Tap a star to set your rating',
+      // your app's logo?
+      image: const FlutterLogo(size: 100),
+      submitButton: 'Submit',
+      onSubmitted: (response) {
+        print('rating: ${response.rating}');
+      },
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => _dialog,
     );
   }
 }

@@ -27,7 +27,7 @@ class BodyState extends State<Body> {
   @override
   void dispose() {
     super.dispose();
-    movieDetailBloc..dispose();
+    movieDetailBloc..drainStream();
   }
 
   @override

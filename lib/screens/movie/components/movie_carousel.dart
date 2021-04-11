@@ -22,7 +22,7 @@ class _MovieCarouselState extends State<MovieCarousel> {
   _MovieCarouselState(this.genreIDs, this.bannedIDs);
 
   PageController _pageController;
-  int initialPage = 1;
+  int initialPage = 0;
 
   @override
   void initState() {
