@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/movie.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import '../../../constants.dart';
 
@@ -34,12 +33,12 @@ class TitleDurationAndFabBtn extends StatelessWidget {
                     ),
                     SizedBox(width: kDefaultPadding),
                     Text(
-                      '${movie.language}',
+                      movie.language.toUpperCase(),
                       style: TextStyle(color: kTextLightColor),
                     ),
                     SizedBox(width: kDefaultPadding),
                     Text(
-                      '${movie.runtime}',
+                      movie.runtime.toString() + " min",
                       style: TextStyle(color: kTextLightColor),
                     ),
                   ],

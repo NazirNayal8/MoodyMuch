@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'movie_detail.dart';
 
 class MovieDetailResponse {

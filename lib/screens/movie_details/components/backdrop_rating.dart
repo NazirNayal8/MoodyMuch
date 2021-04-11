@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:moodymuch/model/movie.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -30,7 +29,7 @@ class BackdropAndRating extends StatelessWidget {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage("https://image.tmdb.org/t/p/w300/" + movie.backPoster),
+                image: NetworkImage("https://image.tmdb.org/t/p/original" + movie.backPoster),
               ),
             ),
           ),
@@ -39,7 +38,6 @@ class BackdropAndRating extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: Container(
-              // it will cover 90% of our total width
               width: size.width * 0.85,
               height: 100,
               decoration: BoxDecoration(
@@ -80,6 +78,7 @@ class BackdropAndRating extends StatelessWidget {
                               TextSpan(
                                 text: '${movie.voteCount}',
                                 style: TextStyle(color: kTextLightColor),
+                                
                               ),
                             ],
                           ),
@@ -92,7 +91,7 @@ class BackdropAndRating extends StatelessWidget {
                         CircularPercentIndicator(
                           radius: 60.0,
                           lineWidth: 8.0,
-                          percent: movie.popularity,
+                          percent: 0.75,
                           center: Text(
                             percentage(movie.popularity),
                             style: TextStyle(
@@ -105,7 +104,7 @@ class BackdropAndRating extends StatelessWidget {
                           circularStrokeCap: CircularStrokeCap.round,
                           backgroundColor: Colors.blueGrey.shade100,                         
                           maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-                          progressColor: colorByPercentage(movie.popularity * 100),
+                          progressColor: colorByPercentage(0.75 * 100),
                           
                         ),
                         SizedBox(height: kDefaultPadding / 4),

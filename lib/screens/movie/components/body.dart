@@ -5,6 +5,10 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'movie_carousel.dart';
 
 class Body extends StatelessWidget {
+  final List<int> genreIDs;
+  final List<int> bannedIDs;
+  Body({Key key, @required this.genreIDs, @required this.bannedIDs}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     // it enable scroll on small device
@@ -50,9 +54,10 @@ class Body extends StatelessWidget {
             "Enjoy with our picks for you",
             textAlign: TextAlign.center,
           ),
-          MovieCarousel(),
+          MovieCarousel(genreIDs: genreIDs, bannedIDs: bannedIDs),
           Spacer()
         ],
     );
   }
+
 }

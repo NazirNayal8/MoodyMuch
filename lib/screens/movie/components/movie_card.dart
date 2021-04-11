@@ -1,12 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:moodymuch/model/movie_detail.dart';
+import 'package:moodymuch/model/movie.dart';
 import 'package:moodymuch/screens/movie_details/details_screen.dart';
 import '../../../constants.dart';
 
 class MovieCard extends StatelessWidget {
-  final MovieDetail movie;
+  final Movie movie;
 
   const MovieCard({Key key, this.movie}) : super(key: key);
   @override
@@ -17,7 +17,7 @@ class MovieCard extends StatelessWidget {
         closedElevation: 0,
         openElevation: 0,
         closedBuilder: (context, action) => buildMovieCard(context),
-        openBuilder: (context, action) => DetailsScreen(movie: movie),
+        openBuilder: (context, action) => DetailsScreen(id: movie.id),
       ),
     );
   }
@@ -32,7 +32,7 @@ class MovieCard extends StatelessWidget {
               boxShadow: [kDefaultShadow],
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(movie.poster),
+                image: NetworkImage("https://image.tmdb.org/t/p/original" + movie.poster),
               ),
             ),
           ),
@@ -43,8 +43,9 @@ class MovieCard extends StatelessWidget {
             movie.title,
             style: Theme.of(context)
                 .textTheme
-                .headline5
+                .headline6
                 .copyWith(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
           ),
         ),
         Row(

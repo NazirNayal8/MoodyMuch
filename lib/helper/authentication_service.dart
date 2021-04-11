@@ -46,7 +46,7 @@ class AuthenticationService {
   }
 
    Future<bool> validatePassword(String password) async {
-    var firebaseUser = await _auth.currentUser;
+    var firebaseUser = _auth.currentUser;
 
     var authCredentials = EmailAuthProvider.credential(
         email: firebaseUser.email, password: password);

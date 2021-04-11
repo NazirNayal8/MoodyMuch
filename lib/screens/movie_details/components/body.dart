@@ -1,18 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/bloc/get_movie_detail.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/model/movie_detail.dart';
+import 'package:moodymuch/model/movie_detail_response.dart';
 import 'backdrop_rating.dart';
 import 'cast_and_crew.dart';
 import 'genres.dart';
 import 'title_duration_and_fav_btn.dart';
 
-class Body extends StatelessWidget {
-  final MovieDetail movie;
+class Body extends StatefulWidget {
+  final int id;
+  Body({Key key, @required this.id}) : super(key: key);
+  @override
+  BodyState createState() => BodyState(id);
+}
 
-  const Body({Key key, this.movie}) : super(key: key);
+class BodyState extends State<Body> {
+  final int id;
+  BodyState(this.id);
+  @override
+  void initState() {
+    super.initState();
+    movieDetailBloc..getMovieDetail(id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    movieDetailBloc..dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // it will provide us total height and width
+    return StreamBuilder<MovieDetailResponse>(
+      stream: movieDetailBloc.subject.stream,
+      builder: (context, AsyncSnapshot<MovieDetailResponse> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+            return _buildErrorWidget(snapshot.data.error);
+          }
+          return buildBody(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(snapshot.error);
+        } else {
+          return _buildLoadingWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 25.0,
+            width: 25.0,
+            child: CircularProgressIndicator(
+              valueColor:
+                new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+              strokeWidth: 4.0,
+            ),
+          )
+        ],
+      )
+    );
+  }
+
+  Widget _buildErrorWidget(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Error occured: $error"),
+        ],
+      )
+    );
+  }
+
+  Widget buildBody(MovieDetailResponse response) {
+    MovieDetail movie = response.movieDetail;
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
@@ -41,7 +109,7 @@ class Body extends StatelessWidget {
               ),
             ),
           ),
-          CastAndCrew(casts: movie.cast),
+          Casts(id: movie.id),
         ],
       ),
     );

@@ -7,11 +7,12 @@ class MovieScreen extends StatelessWidget {
   static String routeName = '/movies';
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Movies"), 
       ),
-      body: Body(),
+      body: Body(genreIDs: [14,18], bannedIDs: [16, 35]),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.movie),
     );
   }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/screens/movie_details/components/body.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final MovieDetail movie;
+  final int id;
 
-  const DetailsScreen({Key key, this.movie}) : super(key: key);
+  const DetailsScreen({Key key, this.id}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(movie: movie),
+      body: Body(id: id),
     );
   }
 }

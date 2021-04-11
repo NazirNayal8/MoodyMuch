@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/model/cast.dart';
 import 'package:moodymuch/size_config.dart';
-
-import '../../../constants.dart';
+import 'package:moodymuch/constants.dart';
 
 class CastCard extends StatelessWidget {
   final Cast cast;
@@ -20,9 +19,9 @@ class CastCard extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: NetworkImage(
-                  cast.img,
-                ),
+                image: cast.img != null ? NetworkImage(
+                  "https://image.tmdb.org/t/p/original" + cast.img,
+                ) : AssetImage("assets/images/user.png"),
               ),
             ),
           ),
@@ -33,7 +32,6 @@ class CastCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
             maxLines: 2,
           ),
-          //SizedBox(height: getProportionateScreenHeight(5)),
           Text(
             cast.character,
             maxLines: 1,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/model/genre.dart';
-import 'package:moodymuch/model/movie.dart';
 import 'package:moodymuch/model/movie_detail.dart';
-import '../../../constants.dart';
+import 'package:moodymuch/constants.dart';
 
 class Genres extends StatelessWidget {
   const Genres({

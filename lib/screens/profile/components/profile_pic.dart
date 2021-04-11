@@ -65,6 +65,7 @@ class ProfilePicState extends State<ProfilePic> {
                       child: SizedBox(
                         height: 45,
                         width: 45,
+                        // ignore: deprecated_member_use
                         child: FlatButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -119,6 +120,14 @@ class ProfilePicState extends State<ProfilePic> {
               SizedBox(height: 5),
               Text(
                 snapshot.data.address,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                snapshot.data.phone,
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w100,

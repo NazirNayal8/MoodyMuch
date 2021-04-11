@@ -8,8 +8,8 @@ class MoviesListByGenreBloc {
   final BehaviorSubject<MovieResponse> _subject =
       BehaviorSubject<MovieResponse>();
 
-  getMoviesByGenre(int id) async {
-    MovieResponse response = await _repository.getMovieByGenre(id);
+  getMoviesByGenre(List<int> genreIDs, List<int> bannedIDs) async {
+    MovieResponse response = await _repository.getMovieByGenre(genreIDs, bannedIDs);
     _subject.sink.add(response);
   }
 

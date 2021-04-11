@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/bloc/get_movie_by_genre.dart';
+import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_response.dart';
+import 'package:moodymuch/size_config.dart';
 import 'dart:math' as math;
 import '../../../constants.dart';
 import 'movie_card.dart';
 
 class MovieCarousel extends StatefulWidget {
+  final List<int> genreIDs;
+  final List<int> bannedIDs;
+  MovieCarousel({Key key, @required this.genreIDs, @required this.bannedIDs}) : super(key: key);
   @override
-  _MovieCarouselState createState() => _MovieCarouselState();
+  _MovieCarouselState createState() => _MovieCarouselState(genreIDs, bannedIDs);
 }
 
 class _MovieCarouselState extends State<MovieCarousel> {
+
+  final List<int> genreIDs;
+  final List<int> bannedIDs;
+  _MovieCarouselState(this.genreIDs, this.bannedIDs);
+
   PageController _pageController;
   int initialPage = 1;
 
@@ -16,21 +28,40 @@ class _MovieCarouselState extends State<MovieCarousel> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      // so that we can have small portion shown on left and right side
       viewportFraction: 0.8,
-      // by default our movie poster
       initialPage: initialPage,
     );
+    moviesByGenreBloc..getMoviesByGenre(genreIDs, bannedIDs);
   }
 
   @override
   void dispose() {
     super.dispose();
     _pageController.dispose();
+    moviesByGenreBloc..drainStream();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+    return StreamBuilder<MovieResponse>(
+      stream: moviesByGenreBloc.subject.stream,
+      builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+            return _buildErrorWidget(snapshot.data.error);
+          }
+          return buildBody(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(snapshot.error);
+        } else {
+          return _buildLoadingWidget();
+        }
+      },
+    );
+  }
+  
+  Widget buildBody(MovieResponse response) {
+    List<Movie> movies = response.movies;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
       child: AspectRatio(
@@ -43,31 +74,60 @@ class _MovieCarouselState extends State<MovieCarousel> {
           },
           controller: _pageController,
           physics: ClampingScrollPhysics(),
-          itemCount: movies.length, // we have 3 demo movies
-          itemBuilder: (context, index) => buildMovieSlider(index),
+          itemCount: movies.length,
+          itemBuilder: (context, index) => buildMovieSlider(index, movies[index]),
         ),
       ),
     );
   }
 
-  Widget buildMovieSlider(int index) => AnimatedBuilder(
-        animation: _pageController,
-        builder: (context, child) {
-          double value = 0;
-          if (_pageController.position.haveDimensions) {
-            value = index - _pageController.page;
-            // We use 0.038 because 180*0.038 = 7 almost and we need to rotate our poster 7 degree
-            // we use clamp so that our value vary from -1 to 1
-            value = (value * 0.038).clamp(-1, 1);
-          }
-          return AnimatedOpacity(
-            duration: Duration(milliseconds: 350),
-            opacity: initialPage == index ? 1 : 0.4,
-            child: Transform.rotate(
-              angle: math.pi * value,
-              child: MovieCard(movie: movies[index]),
-            ),
-          );
-        },
+  Widget buildMovieSlider(int index, Movie movie) => AnimatedBuilder(
+    animation: _pageController,
+    builder: (context, child) {
+      double value = 0;
+      if (_pageController.position.haveDimensions) {
+        value = index - _pageController.page;
+        value = (value * 0.038).clamp(-1, 1);
+      }
+      return AnimatedOpacity(
+        duration: Duration(milliseconds: 350),
+        opacity: initialPage == index ? 1 : 0.4,
+        child: Transform.rotate(
+          angle: math.pi * value,
+          child: MovieCard(movie: movie),
+        ),
       );
+    },
+  );
+
+  Widget _buildLoadingWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: getProportionateScreenHeight(20)),
+          SizedBox(
+            height: getProportionateScreenHeight(100),
+            width: getProportionateScreenWidth(100),
+            child: CircularProgressIndicator(
+              valueColor:
+                new AlwaysStoppedAnimation<Color>(kPrimaryColor),
+              strokeWidth: 10.0,
+            ),
+          )
+        ],
+      )
+    );
+  }
+
+  Widget _buildErrorWidget(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Error occured: $error"),
+        ],
+      )
+    );
+  }
 }
