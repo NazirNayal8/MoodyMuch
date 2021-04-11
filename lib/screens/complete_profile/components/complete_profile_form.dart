@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';

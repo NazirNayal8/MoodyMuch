@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 import 'package:moodymuch/routes.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/model/genre.dart';
 import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_detail.dart';
 import '../../../constants.dart';
 
 class Genres extends StatelessWidget {
@@ -8,7 +10,7 @@ class Genres extends StatelessWidget {
     @required this.movie,
   }) : super(key: key);
 
-  final Movie movie;
+  final MovieDetail movie;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +20,9 @@ class Genres extends StatelessWidget {
         height: 36,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: movie.genra.length,
+          itemCount: movie.genres.length,
           itemBuilder: (context, index) => GenreCard(
-            genre: movie.genra[index],
+            genre: movie.genres[index],
           ),
         ),
       ),
@@ -29,7 +31,7 @@ class Genres extends StatelessWidget {
 }
 
 class GenreCard extends StatelessWidget {
-  final String genre;
+  final Genre genre;
 
   const GenreCard({Key key, this.genre}) : super(key: key);
   @override
@@ -46,7 +48,7 @@ class GenreCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        genre,
+        genre.name,
         style: TextStyle(color: kTextColor.withOpacity(0.8), fontSize: 16),
       ),
     );

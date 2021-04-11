@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/screens/movie_details/details_screen.dart';
 import '../../../constants.dart';
 
 class MovieCard extends StatelessWidget {
-  final Movie movie;
+  final MovieDetail movie;
 
   const MovieCard({Key key, this.movie}) : super(key: key);
   @override

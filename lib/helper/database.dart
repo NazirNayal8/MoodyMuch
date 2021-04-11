@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 
 class DatabaseService {
   final String uid;

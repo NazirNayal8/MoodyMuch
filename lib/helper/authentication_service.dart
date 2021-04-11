@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moodymuch/helper/database.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

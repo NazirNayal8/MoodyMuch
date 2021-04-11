@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
-import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_detail.dart';
 import 'backdrop_rating.dart';
 import 'cast_and_crew.dart';
 import 'genres.dart';
 import 'title_duration_and_fav_btn.dart';
 
 class Body extends StatelessWidget {
-  final Movie movie;
+  final MovieDetail movie;
 
   const Body({Key key, this.movie}) : super(key: key);
   @override
@@ -35,7 +35,7 @@ class Body extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Text(
-              movie.plot,
+              movie.overview,
               style: TextStyle(
                 color: Color(0xFF737599),
               ),

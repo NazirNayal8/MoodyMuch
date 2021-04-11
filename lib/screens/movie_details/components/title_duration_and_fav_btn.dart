@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_detail.dart';
 import '../../../constants.dart';
 
 class TitleDurationAndFabBtn extends StatelessWidget {
@@ -8,7 +9,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
     @required this.movie,
   }) : super(key: key);
 
-  final Movie movie;
+  final MovieDetail movie;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +34,12 @@ class TitleDurationAndFabBtn extends StatelessWidget {
                     ),
                     SizedBox(width: kDefaultPadding),
                     Text(
-                      "EN",
+                      '${movie.language}',
                       style: TextStyle(color: kTextLightColor),
                     ),
                     SizedBox(width: kDefaultPadding),
                     Text(
-                      "139 min",
+                      '${movie.runtime}',
                       style: TextStyle(color: kTextLightColor),
                     ),
                   ],

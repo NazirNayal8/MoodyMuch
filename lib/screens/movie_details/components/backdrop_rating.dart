@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moodymuch/model/movie.dart';
+import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -14,7 +15,7 @@ class BackdropAndRating extends StatelessWidget {
   }) : super(key: key);
 
   final Size size;
-  final Movie movie;
+  final MovieDetail movie;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class BackdropAndRating extends StatelessWidget {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(movie.backdrop),
+                image: NetworkImage("https://image.tmdb.org/t/p/w300/" + movie.backPoster),
               ),
             ),
           ),
@@ -77,7 +78,7 @@ class BackdropAndRating extends StatelessWidget {
                               ),
                               TextSpan(text: "10\n"),
                               TextSpan(
-                                text: "150,212",
+                                text: '${movie.voteCount}',
                                 style: TextStyle(color: kTextLightColor),
                               ),
                             ],

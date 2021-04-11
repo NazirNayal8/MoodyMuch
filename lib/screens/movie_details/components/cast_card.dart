@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/model/cast.dart';
 import 'package:moodymuch/size_config.dart';
 
 import '../../../constants.dart';
 
 class CastCard extends StatelessWidget {
-  final Map cast;
+  final Cast cast;
 
   const CastCard({Key key, this.cast}) : super(key: key);
   @override
@@ -19,22 +20,22 @@ class CastCard extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage(
-                  cast['image'],
+                image: NetworkImage(
+                  cast.img,
                 ),
               ),
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           Text(
-            cast['orginalName'],
+            cast.name,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText2,
             maxLines: 2,
           ),
           //SizedBox(height: getProportionateScreenHeight(5)),
           Text(
-            cast['movieName'],
+            cast.character,
             maxLines: 1,
             textAlign: TextAlign.center,
             style: TextStyle(color: kTextLightColor),

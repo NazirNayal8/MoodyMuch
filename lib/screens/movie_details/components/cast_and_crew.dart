@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/model/cast.dart';
 import 'package:moodymuch/size_config.dart';
 
 import '../../../constants.dart';
 import 'cast_card.dart';
 
 class CastAndCrew extends StatelessWidget {
-  final List casts;
+  final List<Cast> casts;
 
   const CastAndCrew({Key key, this.casts}) : super(key: key);
 
@@ -17,7 +18,7 @@ class CastAndCrew extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Cast & Crew",
+            "Casts",
             style: Theme.of(context).textTheme.headline5,
           ),
           SizedBox(height: getProportionateScreenHeight(5)),

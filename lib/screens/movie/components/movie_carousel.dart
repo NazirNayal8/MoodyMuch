@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/movie.dart';
 import 'dart:math' as math;
 import '../../../constants.dart';
 import 'movie_card.dart';

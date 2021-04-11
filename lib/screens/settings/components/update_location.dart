@@ -4,7 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:provider/provider.dart';
 
