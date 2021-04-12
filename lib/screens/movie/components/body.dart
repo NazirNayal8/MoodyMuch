@@ -16,20 +16,20 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Text("Mood", style: headingStyle),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularPercentIndicator(
-                radius: 80.0,
-                lineWidth: 10.0,
+                radius: 60.0,
+                lineWidth: 8.0,
                 percent: 0.75,
                 center: Text(
                     percentage(0.75),
                     style: TextStyle(
-                      fontSize: getProportionateScreenWidth(16),
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: colorByPercentage(75),
-                      height: 1.5,
                     ),
                   ),
                 circularStrokeCap: CircularStrokeCap.square,
@@ -37,18 +37,17 @@ class Body extends StatelessWidget {
                 maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
                 progressColor: colorByPercentage(0.75 * 100)
               ),
-              SizedBox(width: getProportionateScreenWidth(15)),
+              SizedBox(width: getProportionateScreenWidth(10)),
               Text("Very Positive!", 
                 style: TextStyle(
-                  fontSize: getProportionateScreenWidth(28),
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: colorByPercentage(75),
-                  height: 1.5,
                 ),
               ),
             ],
           ),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height: getProportionateScreenHeight(5)),
           Text("Movies", style: headingStyle),
           Text(
             "Enjoy with our picks for you",

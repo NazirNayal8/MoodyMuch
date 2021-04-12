@@ -22,6 +22,7 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
   String newPass;
   String confirmPass;
   bool loading = false;
+  bool success = false;
 
   List<String> errors = [];
 
@@ -101,7 +102,7 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
                     if(value) {
                       Navigator.pop(context)
                     } else {
-                      addError(error: "Internal Server Error")
+                      addError(error: kServerError)
                     }
                   });
                 } else {
@@ -135,7 +136,7 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
       onSaved: (newValue) => oldPass = newValue,
       onChanged: (value) {
         removeError(error: "Old password is not correct");
-        removeError(error: "Internal Server Error");
+        removeError(error: kServerError);
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
@@ -171,7 +172,7 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
       obscureText: true,
       onSaved: (newValue) => newPass = newValue,
       onChanged: (value) {
-        removeError(error: "Internal Server Error");
+        removeError(error: kServerError);
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
@@ -212,7 +213,7 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
       obscureText: true,
       onSaved: (newValue) => confirmPass = newValue,
       onChanged: (value) {
-        removeError(error: "Internal Server Error");
+        removeError(error: kServerError);
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.isNotEmpty && newPass == confirmPass) {

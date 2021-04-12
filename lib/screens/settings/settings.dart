@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/screens/settings/components/update_location.dart';
+import 'package:moodymuch/screens/settings/components/update_name.dart';
 import 'package:moodymuch/screens/settings/components/update_password.dart';
 import 'package:moodymuch/screens/settings/components/update_phone.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -64,7 +65,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         SettingsSection(
           title: 'Account',
           tiles: [
-            SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+            SettingsTile(
+              title: 'Name', 
+              leading: Icon(Icons.person),
+              onPressed: (context) => {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateNameScreen()))
+              },
+            ),
             SettingsTile(
               title: 'Phone number', 
               leading: Icon(Icons.phone),

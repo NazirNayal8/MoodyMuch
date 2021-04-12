@@ -27,7 +27,8 @@ class MovieAPI {
   Future<MovieResponse> getMovieByGenre(List<int> genreIDs, List<int> bannedIDs) async {
     var params = {
       "api_key": apiKey, 
-      "language": "en-US", 
+      "language": "en-US",
+      "page": 2,
       "with_genres": genreList(genreIDs),
       "without_genres": genreList(bannedIDs),
       "vote_average.gte": 7

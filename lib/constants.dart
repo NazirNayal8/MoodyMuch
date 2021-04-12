@@ -42,9 +42,11 @@ const String kShortPassError = "Password is too short";
 const String kWeakPassError = "Password is too weak";
 const String kMatchPassError = "Passwords don't match";
 const String kNamelNullError = "Please Enter your name";
+const String kLastNamelNullError = "Please Enter your last name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 const String kWrongEmailorPass = "Wrong email or password";
+const String kServerError = "Internal Server Error";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:
@@ -67,9 +69,9 @@ bool validatePassword(String pass){
   return regExp.hasMatch(pass);
 }
 
-String percentage(double popularity) {
-  int multiplied = (popularity * 100).toInt();
-  return multiplied.toString() + " %";
+String percentage(double percent) {
+  int multiplied = (percent * 100).toInt();
+  return multiplied.toString() + "%";
 }
 
 Color colorByPercentage(double percentage) {

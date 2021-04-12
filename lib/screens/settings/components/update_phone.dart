@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/helper/database.dart';
@@ -16,6 +17,7 @@ class UpdatePhoneScreen extends StatefulWidget {
 class UpdatePhoneState extends State<UpdatePhoneScreen> {
 
   bool loading = false;
+  bool success = false;
   String phone;
   AppUser user;
 
@@ -55,11 +57,13 @@ class UpdatePhoneState extends State<UpdatePhoneScreen> {
                     onChanged: (value) {
                       setState(() {
                         phone = value.completeNumber;
+                        success = false;
                       });
                     },
                     onCountryChanged: (value) {
                       setState(() {
                         phone = value.completeNumber;
+                        success = false;
                       });
                     },
                   ),
@@ -75,6 +79,10 @@ class UpdatePhoneState extends State<UpdatePhoneScreen> {
                       DatabaseService(uid: user.uid).updateField("phone", phone).then((value) => {
                         if(value != "Done"){
                           print(value)
+                        } else {
+                          setState(() {
+                            success = true;
+                          })
                         }
                       }),
 
@@ -83,6 +91,9 @@ class UpdatePhoneState extends State<UpdatePhoneScreen> {
                       })
                     },
                   ),
+                  SizedBox(height: getProportionateScreenHeight(10)),
+                  waitUpdate(),
+                  showSuccess()
                 ]
               )
             )
@@ -90,5 +101,38 @@ class UpdatePhoneState extends State<UpdatePhoneScreen> {
         )
       )
     );
+  }
+
+  Widget waitUpdate() {
+    if(loading) {
+      return SpinKitCircle(color: kPrimaryColor, size: 100);
+    } else {
+      return SizedBox(height: 0);
+    }
+  }
+
+  Widget showSuccess() {
+    if(success) {
+      return Column(
+        children: [
+          Image.asset(
+            "assets/images/success.png",
+            height: SizeConfig.screenHeight * 0.1, 
+          ),
+          SizedBox(height: SizeConfig.screenHeight * 0.01),
+          Text(
+            "Updated Successfully",
+            style: TextStyle(
+              fontSize: getProportionateScreenWidth(12),
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      );
+      
+    } else {
+      return SizedBox(height: 0);
+    }
   }
 }

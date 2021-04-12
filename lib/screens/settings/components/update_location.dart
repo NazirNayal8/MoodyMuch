@@ -22,6 +22,7 @@ class LocationUpdateState extends State<LocationUpdate> {
   String address = "";
 
   bool loading = false;
+  bool success = false;
 
   AppUser user;
 
@@ -58,6 +59,7 @@ class LocationUpdateState extends State<LocationUpdate> {
                     onCountryChanged: (value) {
                       setState(() {
                         ///store value in country variable
+                        success = false;
                         countryValue = value ?? "";
                       });
                     },
@@ -67,6 +69,7 @@ class LocationUpdateState extends State<LocationUpdate> {
                       setState(() {
                         ///store value in state variable
                         stateValue = value ?? "";
+                        success = false;
                       });
                     },
 
@@ -75,6 +78,7 @@ class LocationUpdateState extends State<LocationUpdate> {
                       setState(() {
                         ///store value in city variable
                         cityValue = value ?? "";
+                        success = false;
                       });
                     },
                   ),
@@ -97,6 +101,10 @@ class LocationUpdateState extends State<LocationUpdate> {
                       DatabaseService(uid: user.uid).updateField("address", address).then((value) => {
                         if(value != "Done"){
                           print(value)
+                        } else {
+                          setState(() {
+                            success = true;
+                          })
                         }
                       }),
 
@@ -105,8 +113,9 @@ class LocationUpdateState extends State<LocationUpdate> {
                       })
                     },
                   ),
-                  SizedBox(height: SizeConfig.screenHeight * 0.08),
-                  waitUpdate()
+                  SizedBox(height: getProportionateScreenHeight(10)),
+                  waitUpdate(),
+                  showSuccess()
                 ]
               )
             )
@@ -119,6 +128,31 @@ class LocationUpdateState extends State<LocationUpdate> {
   Widget waitUpdate() {
     if(loading) {
       return SpinKitCircle(color: kPrimaryColor, size: 100);
+    } else {
+      return SizedBox(height: 0);
+    }
+  }
+
+  Widget showSuccess() {
+    if(success) {
+      return Column(
+        children: [
+          Image.asset(
+            "assets/images/success.png",
+            height: SizeConfig.screenHeight * 0.1, 
+          ),
+          SizedBox(height: SizeConfig.screenHeight * 0.01),
+          Text(
+            "Updated Successfully",
+            style: TextStyle(
+              fontSize: getProportionateScreenWidth(12),
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      );
+      
     } else {
       return SizedBox(height: 0);
     }

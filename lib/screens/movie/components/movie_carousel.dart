@@ -3,9 +3,10 @@ import 'package:moodymuch/bloc/get_movie_by_genre.dart';
 import 'package:moodymuch/model/movie.dart';
 import 'package:moodymuch/model/movie_response.dart';
 import 'package:moodymuch/size_config.dart';
-import 'dart:math' as math;
-import '../../../constants.dart';
+import 'package:moodymuch/constants.dart';
 import 'movie_card.dart';
+import 'dart:math' as math;
+
 
 class MovieCarousel extends StatefulWidget {
   final List<int> genreIDs;
@@ -60,17 +61,17 @@ class _MovieCarouselState extends State<MovieCarousel> {
     );
   }
   
-  Widget buildBody(MovieResponse response) {
-    List<Movie> movies = response.movies;
+  Widget buildBody(MovieResponse data) {
+    List<Movie> movies = data.movies;
+    movies.shuffle();
+    movies = movies.sublist(0,6);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
+      padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
       child: AspectRatio(
         aspectRatio: 0.85,
         child: PageView.builder(
           onPageChanged: (value) {
-            setState(() {
-              initialPage = value;
-            });
+            initialPage = value;
           },
           controller: _pageController,
           physics: ClampingScrollPhysics(),
