@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
@@ -90,7 +91,6 @@ class UpdateNameState extends State<UpdateNameScreen> {
       key: _formKey,
       child: Column(
         children: [
-          //SizedBox(height: getProportionateScreenHeight(20)),
           buildNameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildLastNameFormField(),
@@ -111,10 +111,13 @@ class UpdateNameState extends State<UpdateNameScreen> {
                 if(firstname != "") {
                   await db.updateField("firstname", firstname).then((value) => {
                     if(value != "Done"){
-                      addError(error: kServerError)
+                      addError(error: kServerError),
+                      setState(() {
+                        success = false;
+                      })
                     } else {
                       setState(() {
-                      success = true;
+                        success = true;
                       })
                     }
                   });
@@ -123,7 +126,10 @@ class UpdateNameState extends State<UpdateNameScreen> {
                 if(lastname != "") {
                   await db.updateField("lastname", lastname).then((value) => {
                     if(value != "Done"){
-                      addError(error: kServerError)
+                      addError(error: kServerError),
+                      setState(() {
+                        success = false;
+                      })
                     } else {
                       setState(() {
                         success = true;
@@ -131,16 +137,27 @@ class UpdateNameState extends State<UpdateNameScreen> {
                     }
                   });
                 }
-              }
 
-              setState(() {
-                loading = false;
-              });
+                if(success){
+                  setState(() {
+                    loading = false;
+                  });
+                  Fluttertoast.showToast(
+                    msg: "Updated Successfully!",
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: kPrimaryColor,
+                    textColor: Colors.white,
+                    gravity: ToastGravity.BOTTOM,
+                    toastLength: Toast.LENGTH_SHORT,
+                    fontSize: 16,
+                  );
+                  Navigator.pop(context);
+                }
+              }
             }
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
           waitUpdate(),
-          showSuccess()
         ],
       ),
     );
@@ -149,31 +166,6 @@ class UpdateNameState extends State<UpdateNameScreen> {
   Widget waitUpdate() {
     if(loading) {
       return SpinKitCircle(color: kPrimaryColor, size: 100);
-    } else {
-      return SizedBox(height: 0);
-    }
-  }
-
-  Widget showSuccess() {
-    if(success) {
-      return Column(
-        children: [
-          Image.asset(
-            "assets/images/success.png",
-            height: SizeConfig.screenHeight * 0.1, 
-          ),
-          SizedBox(height: SizeConfig.screenHeight * 0.01),
-          Text(
-            "Updated Successfully",
-            style: TextStyle(
-              fontSize: getProportionateScreenWidth(12),
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      );
-      
     } else {
       return SizedBox(height: 0);
     }

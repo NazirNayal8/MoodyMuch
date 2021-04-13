@@ -1,6 +1,7 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
@@ -22,7 +23,6 @@ class LocationUpdateState extends State<LocationUpdate> {
   String address = "";
 
   bool loading = false;
-  bool success = false;
 
   AppUser user;
 
@@ -59,7 +59,6 @@ class LocationUpdateState extends State<LocationUpdate> {
                     onCountryChanged: (value) {
                       setState(() {
                         ///store value in country variable
-                        success = false;
                         countryValue = value ?? "";
                       });
                     },
@@ -69,7 +68,6 @@ class LocationUpdateState extends State<LocationUpdate> {
                       setState(() {
                         ///store value in state variable
                         stateValue = value ?? "";
-                        success = false;
                       });
                     },
 
@@ -78,7 +76,6 @@ class LocationUpdateState extends State<LocationUpdate> {
                       setState(() {
                         ///store value in city variable
                         cityValue = value ?? "";
-                        success = false;
                       });
                     },
                   ),
@@ -103,19 +100,24 @@ class LocationUpdateState extends State<LocationUpdate> {
                           print(value)
                         } else {
                           setState(() {
-                            success = true;
-                          })
+                            loading = false;
+                          }),
+                          Fluttertoast.showToast(
+                            msg: "Updated Successfully",
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: kPrimaryColor,
+                            textColor: Colors.white,
+                            gravity: ToastGravity.BOTTOM,
+                            toastLength: Toast.LENGTH_SHORT,
+                            fontSize: 16,
+                          ),
+                          Navigator.pop(context)
                         }
                       }),
-
-                      setState(() {
-                        loading = false;
-                      })
                     },
                   ),
                   SizedBox(height: getProportionateScreenHeight(10)),
                   waitUpdate(),
-                  showSuccess()
                 ]
               )
             )
@@ -128,31 +130,6 @@ class LocationUpdateState extends State<LocationUpdate> {
   Widget waitUpdate() {
     if(loading) {
       return SpinKitCircle(color: kPrimaryColor, size: 100);
-    } else {
-      return SizedBox(height: 0);
-    }
-  }
-
-  Widget showSuccess() {
-    if(success) {
-      return Column(
-        children: [
-          Image.asset(
-            "assets/images/success.png",
-            height: SizeConfig.screenHeight * 0.1, 
-          ),
-          SizedBox(height: SizeConfig.screenHeight * 0.01),
-          Text(
-            "Updated Successfully",
-            style: TextStyle(
-              fontSize: getProportionateScreenWidth(12),
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      );
-      
     } else {
       return SizedBox(height: 0);
     }

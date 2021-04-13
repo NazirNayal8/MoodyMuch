@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
 import 'package:moodymuch/components/no_account_text.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/size_config.dart';
-
-import '../../../constants.dart';
+import 'package:moodymuch/constants.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -50,6 +51,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String email;
+
+  bool success = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -70,7 +74,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                   errors.remove(kInvalidEmailError);
                 });
               }
-              return null;
+              setState(() {
+                email = value.trim();
+              });
             },
             validator: (value) {
               if (value.isEmpty && !errors.contains(kEmailNullError)) {
@@ -100,8 +106,26 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           DefaultButton(
             text: "Continue",
             press: () {
+              _formKey.currentState.save();
               if (_formKey.currentState.validate()) {
-                // Do what you want to do
+                AuthenticationService().sendPasswordResetEmail(email)
+                .then((value) => {
+                  Fluttertoast.showToast(
+                    msg: "Reset password link has sent your mail!",
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: kPrimaryColor,
+                    textColor: Colors.white,
+                    gravity: ToastGravity.BOTTOM,
+                    toastLength: Toast.LENGTH_SHORT,
+                    fontSize: 16,
+                  ),
+                  Navigator.pop(context)
+                })
+                .onError((error, stackTrace) => {
+                  setState(() {
+                    errors.add(kServerError);
+                  })
+                });
               }
             },
           ),

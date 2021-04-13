@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
@@ -100,6 +101,18 @@ class UpdatePasswordState extends State<UpdatePasswordScreen> {
                 if(check) {
                   auth.updatePassword(newPass).then((value) => {
                     if(value) {
+                      setState(() {
+                        loading = false;
+                      }),
+                      Fluttertoast.showToast(
+                        msg: "Updated successfully!",
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: kPrimaryColor,
+                        textColor: Colors.white,
+                        gravity: ToastGravity.BOTTOM,
+                        toastLength: Toast.LENGTH_SHORT,
+                        fontSize: 16,
+                      ),
                       Navigator.pop(context)
                     } else {
                       addError(error: kServerError)
