@@ -10,14 +10,17 @@ import 'title_duration_and_fav_btn.dart';
 
 class Body extends StatefulWidget {
   final int id;
-  Body({Key key, @required this.id}) : super(key: key);
+  final String backdrop;
+  Body({Key key, @required this.id, @required this.backdrop}) : super(key: key);
   @override
-  BodyState createState() => BodyState(id);
+  BodyState createState() => BodyState(id, backdrop);
 }
 
 class BodyState extends State<Body> {
   final int id;
-  BodyState(this.id);
+  final String backdrop;
+  BodyState(this.id, this.backdrop);
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +89,7 @@ class BodyState extends State<Body> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BackdropAndRating(size: size, movie: movie),
+          BackdropAndRating(size: size, movie: movie, backdrop: backdrop),
           SizedBox(height: kDefaultPadding / 2),
           TitleDurationAndFabBtn(movie: movie),
           Genres(movie: movie),
@@ -109,7 +112,7 @@ class BodyState extends State<Body> {
               ),
             ),
           ),
-          Casts(id: movie.id),
+          Casts(id: id),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:moodymuch/model/cast_response.dart';
 import 'package:moodymuch/model/movie_detail_response.dart';
@@ -6,11 +5,13 @@ import 'package:moodymuch/model/movie_response.dart';
 
 class MovieAPI {
   final String apiKey = "2b98c67795fa14ddf2d52fd0dd05cecb";
+  final String omdbKey = "ebf687a6";
   static String mainUrl = "https://api.themoviedb.org/3";
   final Dio _dio = Dio();
 
   var movieUrl = "$mainUrl/movie";
   var discoverUrl = '$mainUrl/discover/movie';
+  var omdbUrl = "https://www.omdbapi.com/";
 
   String genreList(List<int> genres){
     String list = "";
@@ -28,10 +29,11 @@ class MovieAPI {
     var params = {
       "api_key": apiKey, 
       "language": "en-US",
-      "page": 2,
+      "page": 3,
       "with_genres": genreList(genreIDs),
       "without_genres": genreList(bannedIDs),
-      "vote_average.gte": 7
+      "with_original_language": "en",
+      "vote_average.gte": 7.2
     };
 
     try {
@@ -51,7 +53,12 @@ class MovieAPI {
 
     try {
       Response response = await _dio.get(movieUrl + "/$id", queryParameters: params);
-      return MovieDetailResponse.fromJson(response.data);
+      Response details = await _dio.get(omdbUrl, queryParameters: {"i": response.data["imdb_id"], "apikey": omdbKey});
+      print(details.data["Ratings"]);
+      print(details.data["Ratings"].toList());
+      print(details.data["Ratings"].length);
+      
+      return MovieDetailResponse.fromJson(details.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return MovieDetailResponse.withError("$error");

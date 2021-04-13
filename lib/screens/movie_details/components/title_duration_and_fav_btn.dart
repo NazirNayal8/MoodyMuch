@@ -28,7 +28,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      '${movie.year}',
+                      movie.year,
                       style: TextStyle(color: kTextLightColor),
                     ),
                     SizedBox(width: kDefaultPadding),
@@ -38,7 +38,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
                     ),
                     SizedBox(width: kDefaultPadding),
                     Text(
-                      movie.runtime.toString() + " min",
+                      movie.runtime.toString(),
                       style: TextStyle(color: kTextLightColor),
                     ),
                   ],

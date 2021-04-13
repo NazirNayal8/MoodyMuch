@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/model/genre.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import 'package:moodymuch/constants.dart';
 
@@ -30,7 +29,7 @@ class Genres extends StatelessWidget {
 }
 
 class GenreCard extends StatelessWidget {
-  final Genre genre;
+  final String genre;
 
   const GenreCard({Key key, this.genre}) : super(key: key);
   @override
@@ -47,7 +46,7 @@ class GenreCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        genre.name,
+        genre,
         style: TextStyle(color: kTextColor.withOpacity(0.8), fontSize: 16),
       ),
     );

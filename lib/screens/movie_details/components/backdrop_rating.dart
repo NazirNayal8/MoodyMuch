@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:moodymuch/components/rating_dialog.dart';
 import 'package:moodymuch/model/movie_detail.dart';
-import 'package:moodymuch/size_config.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../../../constants.dart';
+import 'package:moodymuch/constants.dart';
 
 class BackdropAndRating extends StatefulWidget {
   final Size size;
   final MovieDetail movie;
+  final String backdrop;
 
   const BackdropAndRating({
     Key key,
     @required this.size,
     @required this.movie,
+    @required this.backdrop
   }) : super(key: key);
 
-  BackdropAndRatingState createState() => BackdropAndRatingState(size, movie);
+  BackdropAndRatingState createState() => BackdropAndRatingState(size, movie, backdrop);
 }
 
 
@@ -24,8 +23,9 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
 
   final Size size;
   final MovieDetail movie;
+  final String backdrop;
 
-  BackdropAndRatingState(this.size, this.movie);
+  BackdropAndRatingState(this.size, this.movie, this.backdrop);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage("https://image.tmdb.org/t/p/original" + movie.backPoster),
+                image: NetworkImage("https://image.tmdb.org/t/p/original" + backdrop),
               ),
             ),
           ),
@@ -81,13 +81,18 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
                             style: TextStyle(color: Colors.black),
                             children: [
                               TextSpan(
-                                text: "${movie.rating}/",
+                                text: movie.rating,
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
-                              TextSpan(text: "10\n"),
                               TextSpan(
-                                text: '${movie.voteCount}',
+                                text: "/10\n",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600
+                                  ),
+                              ),
+                              TextSpan(
+                                text: movie.voteCount,
                                 style: TextStyle(color: kTextLightColor),
                                 
                               ),
@@ -99,30 +104,26 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        CircularPercentIndicator(
-                          radius: 60.0,
-                          lineWidth: 8.0,
-                          percent: 0.75,
-                          center: Text(
-                            percentage(movie.popularity),
+                        Container(
+                          padding: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF51CF66),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          child: Text(
+                            movie.metascore + "/100",
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12),
-                              fontWeight: FontWeight.bold,
-                              color: colorByPercentage(75),
-                              height: 1.5,
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          circularStrokeCap: CircularStrokeCap.round,
-                          backgroundColor: Colors.blueGrey.shade100,                         
-                          maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-                          progressColor: colorByPercentage(0.75 * 100),
-                          
                         ),
                         SizedBox(height: kDefaultPadding / 4),
                         Text(
-                          "Popularity",
+                          "Metascore",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -130,13 +131,27 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        IconButton(
-                          icon: SvgPicture.asset("assets/icons/star.svg"), 
-                          onPressed: _showRatingDialog
+                        Container(
+                          padding: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF51CF66),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          child: Text(
+                            movie.rotten,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                         SizedBox(height: kDefaultPadding / 4),
-                        Text("Rate This",
-                            style: Theme.of(context).textTheme.bodyText2),
+                        Text(
+                          "Rotten Tomatoes",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                   ],
@@ -151,24 +166,24 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
     );
   }
 
-  void _showRatingDialog() {
-    final _dialog = RatingDialog(
-      title: 'Rate Movie',
-      // encourage your user to leave a high rating?
-      message:
-          'Tap a star to set your rating',
-      // your app's logo?
-      image: const FlutterLogo(size: 100),
-      submitButton: 'Submit',
-      onSubmitted: (response) {
-        print('rating: ${response.rating}');
-      },
-    );
+  // void _showRatingDialog() {
+  //   final _dialog = RatingDialog(
+  //     title: 'Rate Movie',
+  //     // encourage your user to leave a high rating?
+  //     message:
+  //         'Tap a star to set your rating',
+  //     // your app's logo?
+  //     image: const FlutterLogo(size: 100),
+  //     submitButton: 'Submit',
+  //     onSubmitted: (response) {
+  //       print('rating: ${response.rating}');
+  //     },
+  //   );
 
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => _dialog,
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (context) => _dialog,
+  //   );
+  // }
 }

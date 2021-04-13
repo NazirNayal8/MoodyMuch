@@ -17,7 +17,7 @@ class MovieCard extends StatelessWidget {
         closedElevation: 0,
         openElevation: 0,
         closedBuilder: (context, action) => buildMovieCard(context),
-        openBuilder: (context, action) => DetailsScreen(id: movie.id),
+        openBuilder: (context, action) => DetailsScreen(id: movie.id, backdrop: movie.backdrop),
       ),
     );
   }
