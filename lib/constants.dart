@@ -69,19 +69,28 @@ bool validatePassword(String pass){
   return regExp.hasMatch(pass);
 }
 
-String percentage(double percent) {
-  int multiplied = (percent * 100).toInt();
-  return multiplied.toString() + "%";
-}
-
 Color colorByPercentage(double percentage) {
-  if(percentage <= 30){
+  if(percentage <= 25){
     return Colors.red;
-  } else if(percentage > 30 && percentage <= 50) {
-    return Colors.orange;
-  } else if(percentage > 50 && percentage <= 70) {
+  } else if(percentage > 25 && percentage <= 50) {
+    return Colors.orange[600];
+  } else if(percentage > 50 && percentage <= 75) {
     return Colors.yellow;
   } else {
     return Colors.green;
   }
 }
+
+String moodText(double mood)
+{
+  if(mood >= 75.0) {
+    return "Very Positive!";
+  } else if(mood < 75 && mood >= 50){
+    return "Quite Positive!";
+  } else if(mood < 50 && mood >= 25) {
+    return "Quite Negative!";
+  } else {
+    return "Very Negative";
+  }
+}
+

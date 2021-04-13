@@ -81,18 +81,21 @@ class _CastsState extends State<Casts> {
   Widget buildBody(CastResponse data) {
     List<Cast> casts = data.casts;
     if(casts.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-
+      return Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Text(
+              "Casts",
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            SizedBox(height: getProportionateScreenHeight(10)),
             Column(
               children: <Widget>[
                 Text(
                   "No cast provided",
-                  style: TextStyle(color: Colors.black45),
+                  style: TextStyle(color: Colors.black),
                 )
               ],
             )

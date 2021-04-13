@@ -54,10 +54,6 @@ class MovieAPI {
     try {
       Response response = await _dio.get(movieUrl + "/$id", queryParameters: params);
       Response details = await _dio.get(omdbUrl, queryParameters: {"i": response.data["imdb_id"], "apikey": omdbKey});
-      print(details.data["Ratings"]);
-      print(details.data["Ratings"].toList());
-      print(details.data["Ratings"].length);
-      
       return MovieDetailResponse.fromJson(details.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");

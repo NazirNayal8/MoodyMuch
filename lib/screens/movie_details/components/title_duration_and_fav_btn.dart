@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import '../../../constants.dart';
 
@@ -52,11 +53,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
             child: IconButton(
               tooltip: "Visit IMDb",
               onPressed: () {},
-              icon: Icon(
-                Icons.share_outlined,
-                size: 50,
-                color: Colors.orangeAccent,
-              ),
+              icon: SvgPicture.asset("assets/icons/imdb.svg")
             ),
           ),
         ],

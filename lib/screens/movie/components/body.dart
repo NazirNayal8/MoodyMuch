@@ -11,7 +11,8 @@ class Body extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    // it enable scroll on small device
+
+    double mood = 50;
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,26 +24,27 @@ class Body extends StatelessWidget {
               CircularPercentIndicator(
                 radius: 60.0,
                 lineWidth: 8.0,
-                percent: 0.75,
+                percent: mood / 100,
                 center: Text(
-                    percentage(0.75),
+                    mood.toInt().toString() + "%",
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
-                      color: colorByPercentage(75),
+                      color: colorByPercentage(mood),
                     ),
                   ),
                 circularStrokeCap: CircularStrokeCap.square,
                 backgroundColor: Colors.black12,                         
                 maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-                progressColor: colorByPercentage(0.75 * 100)
+                progressColor: colorByPercentage(mood)
               ),
               SizedBox(width: getProportionateScreenWidth(10)),
-              Text("Very Positive!", 
+              Text(
+                moodText(mood), 
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: colorByPercentage(75),
+                  color: colorByPercentage(mood),
                 ),
               ),
             ],
@@ -58,5 +60,6 @@ class Body extends StatelessWidget {
         ],
     );
   }
+
 
 }

@@ -64,7 +64,7 @@ class _MovieCarouselState extends State<MovieCarousel> {
   Widget buildBody(MovieResponse data) {
     List<Movie> movies = data.movies;
     movies.shuffle();
-    movies = movies.sublist(0,6);
+    movies = movies.sublist(0,10);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
       child: AspectRatio(
