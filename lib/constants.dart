@@ -12,6 +12,7 @@ const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
 const kTextLightColor = Color(0xFF9A9BB2);
 const kFillStarColor = Color(0xFFFCC419);
+const kShadowColor = Color.fromRGBO(242, 200, 213, 1);
 
 const kDefaultPadding = 20.0;
 

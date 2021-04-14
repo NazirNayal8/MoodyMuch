@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moodymuch/components/coustom_bottom_nav_bar.dart';
 import 'package:moodymuch/enums.dart';
-import 'package:moodymuch/screens/music/body.dart';
+import 'package:moodymuch/screens/music/components/body.dart';
 
 class MusicScreen extends StatelessWidget {
   static String routeName = '/musics';
