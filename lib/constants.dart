@@ -10,6 +10,16 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+const kTextLightColor = Color(0xFF9A9BB2);
+const kFillStarColor = Color(0xFFFCC419);
+
+const kDefaultPadding = 20.0;
+
+const kDefaultShadow = BoxShadow(
+  offset: Offset(0, 4),
+  blurRadius: 4,
+  color: Colors.black26,
+);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -32,9 +42,11 @@ const String kShortPassError = "Password is too short";
 const String kWeakPassError = "Password is too weak";
 const String kMatchPassError = "Passwords don't match";
 const String kNamelNullError = "Please Enter your name";
+const String kLastNamelNullError = "Please Enter your last name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 const String kWrongEmailorPass = "Wrong email or password";
+const String kServerError = "Internal Server Error";
 
 final otpInputDecoration = InputDecoration(
   contentPadding:
@@ -56,3 +68,29 @@ bool validatePassword(String pass){
   RegExp regExp = new RegExp(pattern);
   return regExp.hasMatch(pass);
 }
+
+Color colorByPercentage(double percentage) {
+  if(percentage <= 25){
+    return Colors.red;
+  } else if(percentage > 25 && percentage <= 50) {
+    return Colors.orange[600];
+  } else if(percentage > 50 && percentage <= 75) {
+    return Colors.yellow;
+  } else {
+    return Colors.green;
+  }
+}
+
+String moodText(double mood)
+{
+  if(mood >= 75.0) {
+    return "Very Positive!";
+  } else if(mood < 75 && mood >= 50){
+    return "Quite Positive!";
+  } else if(mood < 50 && mood >= 25) {
+    return "Quite Negative!";
+  } else {
+    return "Very Negative";
+  }
+}
+

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/form_error.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
@@ -16,6 +15,9 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
+
+  final AuthenticationService auth = AuthenticationService();
+
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
@@ -81,20 +83,21 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Continue",
             press: () {
+              _formKey.currentState.save();
               if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                context.read<AuthenticationService>().signIn(
+                auth.signIn(
                     email: email.trim(),
                     password: password.trim(),
                   ).then((value) => {
-                    if(value != "Signed in"){
+                    if(value == null){
                       addError(error: "Wrong email or password"),
                     }
                     else {
                       KeyboardUtil.hideKeyboard(context),
                       Navigator.pushNamed(context, HomeScreen.routeName),
                     }
-                  });
+                  }
+                );
               }
             },
           ),

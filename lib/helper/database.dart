@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:moodymuch/model/UserModel.dart';
+import 'package:moodymuch/model/user.dart';
 
 class DatabaseService {
   final String uid;
@@ -16,26 +16,20 @@ class DatabaseService {
         'address': address,
         'url': url
       });
-      return "saved";
+      return "Done";
     } catch (e) {
-      return "Error while saving user data ${e.message}";
+      return e.toString();
     }
   }
 
-  Future<UserModel> getUserData() async {
+  Future<String> updateField(String field, String data) async {
     try {
-      DocumentSnapshot ds = await userCollection.doc(uid).get();
-      dynamic data = ds.data();
-      return UserModel(
-        firstname: data['firstname'] ?? '',
-        lastname: data['lastname'] ?? '',
-        phone: data['phone'] ?? '',
-        address: data['address'] ?? '',
-        url: data['url'] ?? ''
+      await userCollection.doc(uid).update(
+        {field: data},
       );
+      return "Done";
     } catch (e) {
-      print(e.toString());
-      return null;
+      return e.toString();
     }
   }
 

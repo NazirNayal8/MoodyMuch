@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
-import 'package:provider/provider.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
+
+  final AuthenticationService auth = AuthenticationService();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -13,12 +16,7 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           ProfilePic(),
-          SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/icons/user.svg",
-            press: () => {},
-          ),
+          SizedBox(height: 15),
           ProfileMenu(
             text: "Mood Track History",
             icon: "assets/icons/analytics.svg",
@@ -27,7 +25,15 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Settings",
             icon: "assets/icons/Settings.svg",
-            press: () {},
+            press: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(language: 0)))
+            },
+          ),
+          ProfileMenu(
+            text: "Invite a Friend",
+            icon: "assets/icons/user.svg",
+            press: () => {
+            },
           ),
           ProfileMenu(
             text: "Help Center",
@@ -37,9 +43,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {
-              context.read<AuthenticationService>().signOut().then((res) => {
-                Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false),
+            press: () async {
+              await auth.signOut().then((value) => {
+                Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (Route<dynamic> route) => false)
               });
             },
           ),

@@ -30,13 +30,25 @@ dependencies:
   # if you are using latest flutter please update your flutter_svg package to ^0.18.*
   flutter_svg: ^0.19.1 # help us to use SVG in our app
   provider: ^4.3.1 # for State management
+  flutter_spinkit: "^4.0.0"
 
   firebase_core: ^0.5.1
   firebase_auth: ^0.18.1
   cloud_firestore: ^0.14.1
   firebase_storage: ^5.2.0
 
-  image_picker: ^0.6.5
+  image_picker: ^0.6.3
+  settings_ui: ^0.6.0
+  csc_picker: ^0.1.0
+  percent_indicator: ^3.0.1
+  animations: ^2.0.0
+  dio: ^3.0.9
+  rxdart: ^0.23.1
+  bloc: ^3.0.0
+
+  intl_phone_field: ^2.0.0
+  flutter_rating_bar: ^4.0.0
+  fluttertoast: ^8.0.3
 
 dev_dependencies:
   flutter_test:
