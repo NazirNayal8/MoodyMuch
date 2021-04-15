@@ -13,8 +13,7 @@ class Body extends StatefulWidget {
 class BodyState extends State<Body> {
 
   double mood = 77;
-  int selectedSong = 0;
-  bool play = false;
+  Music selectedSong = songs[0];
 
   @override
   Widget build(BuildContext context) {
@@ -67,21 +66,20 @@ class BodyState extends State<Body> {
             scrollDirection: Axis.vertical,
             padding: const EdgeInsets.only(top: 20),
             itemCount: songs.length,
-            itemBuilder: (context, i) => musicCard(songs[i], i),
+            itemBuilder: (context, i) => musicCard(songs[i])
           ),
         ),
         SizedBox(height: getProportionateScreenHeight(20)),
-        MusicBar(music: songs[selectedSong])
-        //Spacer()
+        MusicBar(music: selectedSong)
       ],
     );
   }
 
-  Widget musicCard(Music item, int index) {
+  Widget musicCard(Music item) {
     return ListTile(
       onTap: () => {
         setState(() {
-          selectedSong = index;
+          selectedSong = item;
         })
       },
       leading: Container(
@@ -107,17 +105,17 @@ class BodyState extends State<Body> {
 }
 
 List<Music> songs = [
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", ""),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
+  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
 ];
   
   
