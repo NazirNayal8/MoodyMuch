@@ -4,10 +4,9 @@ import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/screens/movie/movie_screen.dart';
 import 'package:moodymuch/screens/music/music_screen.dart';
 import 'package:moodymuch/screens/profile/profile_screen.dart';
-import 'package:moodymuch/screens/youtube/youtube_video_list_screen.dart';
-
-import '../constants.dart';
-import '../enums.dart';
+import 'package:moodymuch/constants.dart';
+import 'package:moodymuch/enums.dart';
+import 'package:moodymuch/screens/youtube/exercise_screen.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({
@@ -71,9 +70,13 @@ class CustomBottomNavBar extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icons/exercise.svg"),
+                icon: SvgPicture.asset("assets/icons/exercise.svg",
+                color: MenuState.meditation == selectedMenu
+                      ? kPrimaryColor
+                      : Colors.black
+                ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, YoutubeVideoListScreen.routeName),
+                    Navigator.pushNamed(context,  MeditationScreen.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset(

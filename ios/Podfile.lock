@@ -335,10 +335,9 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - PromisesObjC (1.2.12)
+  - Toast (4.0.0)
   - webview_media (0.0.1):
     - Flutter
-  - Toast (4.0.0)
-
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
@@ -420,8 +419,8 @@ SPEC CHECKSUMS:
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
