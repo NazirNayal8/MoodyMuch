@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/components/coustom_bottom_nav_bar.dart';
-import 'package:moodymuch/enums.dart';
 import 'package:moodymuch/model/ChannelModel.dart';
 import 'package:moodymuch/model/VideoModel.dart';
 import 'package:moodymuch/screens/youtube/youtube_video_screen.dart';
@@ -8,7 +6,6 @@ import 'package:moodymuch/services/youtubeAPIService.dart';
 
 
 class YoutubeVideoListScreen extends StatefulWidget {
-  static String routeName = "/youtubeVideoList";
   @override
   _YoutubeVideoListScreenState createState() => _YoutubeVideoListScreenState();
 }
@@ -88,37 +85,31 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Meditation - Relaxing'),
-      ),
-      body: _channel != null
-          ? NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollDetails) {
-          if (!_isLoading &&
-              _channel.videos.length != int.parse(_channel.videoCount) &&
-              scrollDetails.metrics.pixels ==
-                  scrollDetails.metrics.maxScrollExtent) {
-            _loadMoreVideos();
-          }
-          return false;
+    return _channel != null
+        ? NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollDetails) {
+        if (!_isLoading &&
+            _channel.videos.length != int.parse(_channel.videoCount) &&
+            scrollDetails.metrics.pixels ==
+                scrollDetails.metrics.maxScrollExtent) {
+          _loadMoreVideos();
+        }
+        return false;
+      },
+      child: ListView.builder(
+        itemCount: _channel.videos.length,
+        itemBuilder: (BuildContext context, int index) {
+          Video video = _channel.videos[index];
+          return _buildVideo(video);
         },
-        child: ListView.builder(
-          itemCount: _channel.videos.length,
-          itemBuilder: (BuildContext context, int index) {
-            Video video = _channel.videos[index];
-            return _buildVideo(video);
-          },
-        ),
-      )
-          : Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-            Theme.of(context).primaryColor, // Red
-          ),
+      ),
+    )
+    : Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Theme.of(context).primaryColor, // Red
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.meditation),
     );
   }
 }
