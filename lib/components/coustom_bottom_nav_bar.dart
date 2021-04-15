@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
+import 'package:moodymuch/screens/movie/movie_screen.dart';
+import 'package:moodymuch/screens/music/music_screen.dart';
 import 'package:moodymuch/screens/profile/profile_screen.dart';
 import 'package:moodymuch/screens/youtube/youtube_video_list_screen.dart';
 
@@ -49,12 +51,24 @@ class CustomBottomNavBar extends StatelessWidget {
                     Navigator.pushNamed(context, HomeScreen.routeName),
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icons/spotify.svg"),
-                onPressed: () {},
+                icon: SvgPicture.asset("assets/icons/spotify.svg",
+                  color: MenuState.music == selectedMenu
+                      ? kPrimaryColor
+                      : Colors.black
+                ),
+                onPressed: () => {
+                  Navigator.pushNamed(context, MusicScreen.routeName),
+                },
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icons/video.svg"),
-                onPressed: () {}
+                icon: SvgPicture.asset("assets/icons/video.svg",
+                  color: MenuState.movie == selectedMenu
+                      ? kPrimaryColor
+                      : Colors.black,
+                ),
+                onPressed: () => {
+                  Navigator.pushNamed(context, MovieScreen.routeName),
+                },
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/exercise.svg"),

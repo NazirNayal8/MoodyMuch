@@ -30,6 +30,7 @@ class RoundedIconBtn extends StatelessWidget {
             ),
         ],
       ),
+      // ignore: deprecated_member_use
       child: FlatButton(
         padding: EdgeInsets.zero,
         color: Colors.white,

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/screens/home/home_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:moodymuch/components/custom_surfix_icon.dart';
 import 'package:moodymuch/components/default_button.dart';
 import 'package:moodymuch/components/form_error.dart';
@@ -15,11 +13,13 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+
+  final AuthenticationService auth = AuthenticationService();
+
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
   String confirmPassword;
-  bool remember = false;
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -52,13 +52,13 @@ class _SignUpFormState extends State<SignUpForm> {
           DefaultButton(
             text: "Continue",
             press: () {
+              _formKey.currentState.save();
               if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                context.read<AuthenticationService>().signUp(
+                auth.signUp(
                   email: email.trim(),
                   password: password.trim()
                 ).then((value) => {
-                  if(value == "Signed up"){
+                  if(value != null){
                     Navigator.pushNamed(context, CompleteProfileScreen.routeName),
                   }
                 });                
