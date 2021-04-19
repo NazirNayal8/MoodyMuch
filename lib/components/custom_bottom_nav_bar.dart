@@ -46,8 +46,11 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : Colors.black,
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, HomeScreen.routeName),
+                  onPressed: () =>{
+                    if (selectedMenu!=MenuState.home){
+                      Navigator.pushNamed(context, HomeScreen.routeName),
+                    }
+                  }
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/spotify.svg",
@@ -55,9 +58,11 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : Colors.black
                 ),
-                onPressed: () => {
-                  Navigator.pushNamed(context, MusicScreen.routeName),
-                },
+                  onPressed: () =>{
+                    if (selectedMenu!=MenuState.music){
+                      Navigator.pushNamed(context, MusicScreen.routeName),
+                    }
+                  }
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/video.svg",
@@ -65,9 +70,11 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : Colors.black,
                 ),
-                onPressed: () => {
-                  Navigator.pushNamed(context, MovieScreen.routeName),
-                },
+                  onPressed: () =>{
+                    if (selectedMenu!=MenuState.movie){
+                      Navigator.pushNamed(context, MovieScreen.routeName),
+                    }
+                  }
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/exercise.svg",
@@ -75,8 +82,11 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : Colors.black
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context,  MeditationScreen.routeName),
+                  onPressed: () =>{
+                    if (selectedMenu!=MenuState.meditation){
+                      Navigator.pushNamed(context, MeditationScreen.routeName),
+                    }
+                  }
               ),
               IconButton(
                 icon: SvgPicture.asset(
@@ -85,8 +95,11 @@ class CustomBottomNavBar extends StatelessWidget {
                       ? kPrimaryColor
                       : Colors.black,
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
+                  onPressed: () =>{
+                    if (selectedMenu!=MenuState.profile){
+                      Navigator.pushNamed(context, ProfileScreen.routeName),
+                    }
+                  }
               ),
             ],
           )),

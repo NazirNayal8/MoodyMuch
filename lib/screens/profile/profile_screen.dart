@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/components/coustom_bottom_nav_bar.dart';
+import 'package:moodymuch/components/custom_bottom_nav_bar.dart';
 import 'package:moodymuch/enums.dart';
 
 import 'components/body.dart';
