@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moodymuch/constants.dart';
+import 'package:moodymuch/screens/settings/components/policy_dialog.dart';
 import 'package:moodymuch/screens/settings/components/update_location.dart';
 import 'package:moodymuch/screens/settings/components/update_name.dart';
 import 'package:moodymuch/screens/settings/components/update_password.dart';
@@ -150,11 +151,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
           tiles: [
             SettingsTile(
               title: 'Terms of Service',
-              leading: Icon(Icons.description)
+              leading: Icon(Icons.description),
+              onPressed: (context)  => {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return PolicyDialog(
+                        mdFileName: 'terms_of_service.md',
+                      );
+                    },
+                  )
+              },
             ),
             SettingsTile(
               title: 'Privacy Policy',
-              leading: Icon(Icons.privacy_tip_outlined)
+              leading: Icon(Icons.privacy_tip_outlined),
+              onPressed: (context)  => {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return PolicyDialog(
+                        mdFileName: 'privacy_policy.md',
+                      );
+                    },
+                  )
+              },
             ),
           ],
         ),
