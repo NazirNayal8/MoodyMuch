@@ -47,8 +47,12 @@ class CustomBottomNavBar extends StatelessWidget {
                       : Colors.black,
                 ),
                   onPressed: () =>{
-                    if (selectedMenu!=MenuState.home){
-                      Navigator.pushNamed(context, HomeScreen.routeName),
+                    if (selectedMenu != MenuState.home){
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => HomeScreen(),
+                        transitionDuration: Duration(seconds: 0)),
+                      )
                     }
                   }
               ),
@@ -60,7 +64,11 @@ class CustomBottomNavBar extends StatelessWidget {
                 ),
                   onPressed: () =>{
                     if (selectedMenu!=MenuState.music){
-                      Navigator.pushNamed(context, MusicScreen.routeName),
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => MusicScreen(),
+                        transitionDuration: Duration(seconds: 0)),
+                      )
                     }
                   }
               ),
@@ -72,7 +80,11 @@ class CustomBottomNavBar extends StatelessWidget {
                 ),
                   onPressed: () =>{
                     if (selectedMenu!=MenuState.movie){
-                      Navigator.pushNamed(context, MovieScreen.routeName),
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => MovieScreen(),
+                        transitionDuration: Duration(seconds: 0)),
+                      ),
                     }
                   }
               ),
@@ -84,7 +96,11 @@ class CustomBottomNavBar extends StatelessWidget {
                 ),
                   onPressed: () =>{
                     if (selectedMenu!=MenuState.meditation){
-                      Navigator.pushNamed(context, MeditationScreen.routeName),
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => MeditationScreen(),
+                        transitionDuration: Duration(seconds: 0)),
+                      )
                     }
                   }
               ),
@@ -97,7 +113,11 @@ class CustomBottomNavBar extends StatelessWidget {
                 ),
                   onPressed: () =>{
                     if (selectedMenu!=MenuState.profile){
-                      Navigator.pushNamed(context, ProfileScreen.routeName),
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => ProfileScreen(),
+                        transitionDuration: Duration(seconds: 0)),
+                      )
                     }
                   }
               ),

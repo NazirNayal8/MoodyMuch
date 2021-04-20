@@ -45,9 +45,8 @@ class MusicBarState extends State<MusicBar> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     player.stop();
-    player.dispose();
     super.dispose();
   }
   
