@@ -43,6 +43,12 @@ class MusicBarState extends State<MusicBar> {
         });
     });
   }
+
+  @override
+  void dispose() {
+    player.stop();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context){
