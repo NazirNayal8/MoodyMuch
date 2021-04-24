@@ -15,7 +15,8 @@ class DatabaseService {
         'phone': phone,
         'address': address,
         'url': url,
-        'moods': moods
+        'moods': moods,
+        'language': 0,
       });
       return "Done";
     } catch (e) {
@@ -23,7 +24,7 @@ class DatabaseService {
     }
   }
 
-  Future<String> updateField(String field, String data) async {
+  Future<String> updateField(String field, dynamic data) async {
     try {
       await userCollection.doc(uid).update(
         {field: data},
@@ -53,7 +54,8 @@ class DatabaseService {
       phone: userdata['phone'] ?? '',
       address: userdata['address'] ?? '',
       url: userdata['url'] ?? '',
-      moods: List.castFrom(userdata['moods'] ?? [])
+      moods: List.castFrom(userdata['moods'] ?? []),
+      language: userdata['language'] ?? 0
     );
   }
 
