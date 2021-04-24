@@ -76,7 +76,7 @@ Color colorByPercentage(double percentage) {
   } else if(percentage > 25 && percentage <= 50) {
     return Colors.orange[600];
   } else if(percentage > 50 && percentage <= 75) {
-    return Colors.yellow;
+    return Colors.lightGreen;
   } else {
     return Colors.green;
   }

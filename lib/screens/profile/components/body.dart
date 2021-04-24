@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/screens/profile/components/mood_tracks.dart';
 import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
 import 'profile_menu.dart';
@@ -20,7 +21,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Mood Track History",
             icon: "assets/icons/analytics.svg",
-            press: () {},
+            press: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MoodTrackScreen()))
+            },
           ),
           ProfileMenu(
             text: "Settings",

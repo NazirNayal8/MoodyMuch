@@ -60,7 +60,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                await DatabaseService(uid: user.uid).updateUserData(firstName, lastName, phone, address, "").then((value) => {
+                await DatabaseService(uid: user.uid).updateUserData(firstName, lastName, phone, address, "", []).then((value) => {
                   if(value == "Done"){
                     Navigator.pushNamed(context, SignUpSuccessScreen.routeName)
                   } else {
