@@ -7,14 +7,15 @@ class DatabaseService {
   DatabaseService({this.uid});
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-  Future<String> updateUserData(String firstname, String lastname, String phone, String address, String url) async {
+  Future<String> updateUserData(String firstname, String lastname, String phone, String address, String url, List<double> moods) async {
     try {
       await userCollection.doc(uid).set({
         'firstname': firstname,
         'lastname': lastname,
         'phone': phone,
         'address': address,
-        'url': url
+        'url': url,
+        'moods': moods
       });
       return "Done";
     } catch (e) {
@@ -33,6 +34,16 @@ class DatabaseService {
     }
   }
 
+  Future<bool> recordMood(double mood) async {
+    try {
+      await userCollection.doc(uid).update({'moods': FieldValue.arrayUnion([mood])});
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final userdata = snapshot.data();
     return UserModel(
@@ -41,7 +52,8 @@ class DatabaseService {
       lastname: userdata['lastname'] ?? '',
       phone: userdata['phone'] ?? '',
       address: userdata['address'] ?? '',
-      url: userdata['url'] ?? ''
+      url: userdata['url'] ?? '',
+      moods: List.castFrom(userdata['moods'] ?? [])
     );
   }
 
