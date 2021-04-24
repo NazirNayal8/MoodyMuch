@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/model/ChannelModel.dart';
 import 'package:moodymuch/model/VideoModel.dart';
-import 'package:moodymuch/screens/youtube/youtube_video_screen.dart';
+import 'package:moodymuch/screens/youtube/components/youtube_video_screen.dart';
 import 'package:moodymuch/services/youtubeAPIService.dart';
 
 
 class YoutubeVideoListScreen extends StatefulWidget {
+
+  final String title;
+  YoutubeVideoListScreen({Key key, this.title}) : super(key: key);
   @override
   _YoutubeVideoListScreenState createState() => _YoutubeVideoListScreenState();
 }
@@ -44,16 +48,17 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0, 1),
-              blurRadius: 6.0,
+              color: Colors.black26,
+              offset: Offset(0, 3),
+              blurRadius: 10.0,
             ),
           ],
         ),
         child: Row(
           children: <Widget>[
             Image(
-              width: 150.0,
+              fit: BoxFit.fill,
+              width: 125.0,
               image: NetworkImage(video.thumbnailUrl),
             ),
             SizedBox(width: 10.0),
@@ -64,6 +69,7 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
                   color: Colors.black,
                   fontSize: 18.0,
                 ),
+                maxLines: 4,
               ),
             ),
           ],
@@ -85,31 +91,36 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _channel != null
-        ? NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollDetails) {
-        if (!_isLoading &&
-            _channel.videos.length != int.parse(_channel.videoCount) &&
-            scrollDetails.metrics.pixels ==
-                scrollDetails.metrics.maxScrollExtent) {
-          _loadMoreVideos();
-        }
-        return false;
-      },
-      child: ListView.builder(
-        itemCount: _channel.videos.length,
-        itemBuilder: (BuildContext context, int index) {
-          Video video = _channel.videos[index];
-          return _buildVideo(video);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: _channel != null
+          ? NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollDetails) {
+          if (!_isLoading &&
+              _channel.videos.length != int.parse(_channel.videoCount) &&
+              scrollDetails.metrics.pixels ==
+                  scrollDetails.metrics.maxScrollExtent) {
+            _loadMoreVideos();
+          }
+          return false;
         },
-      ),
-    )
-    : Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(
-          Theme.of(context).primaryColor, // Red
+        child: ListView.builder(
+          itemCount: _channel.videos.length,
+          itemBuilder: (BuildContext context, int index) {
+            Video video = _channel.videos[index];
+            return _buildVideo(video);
+          },
         ),
-      ),
+      )
+      : Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(
+            kPrimaryColor,
+          ),
+        ),
+      )
     );
   }
 }

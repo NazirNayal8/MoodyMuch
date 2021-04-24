@@ -29,18 +29,22 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 3,
-        child: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
-          onReady: () {
-            // print('Player is ready.');
-          },
-        ),
-      )
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Video Player"),
+      ),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 3,
+          child: YoutubePlayer(
+            controller: _controller,
+            showVideoProgressIndicator: true,
+            onReady: () {},
+          ),
+        )
+      ),
     );
   }
 }
