@@ -12,7 +12,7 @@ class MovieScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Movies"), 
       ),
-      body: Body(genreIDs: [18], bannedIDs: [35]),
+      body: Body(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.movie),
     );
   }

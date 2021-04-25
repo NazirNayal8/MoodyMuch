@@ -25,13 +25,12 @@ class MovieAPI {
     return list;
   }
 
-  Future<MovieResponse> getMovieByGenre(List<int> genreIDs, List<int> bannedIDs) async {
+  Future<MovieResponse> getMovieByGenre(List<int> genreIDs) async {
     var params = {
       "api_key": apiKey, 
       "language": "en-US",
       "page": 3,
       "with_genres": genreList(genreIDs),
-      "without_genres": genreList(bannedIDs),
       "with_original_language": "en",
       "vote_average.gte": 7.2
     };

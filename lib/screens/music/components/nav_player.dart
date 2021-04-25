@@ -92,7 +92,7 @@ class MusicBarState extends State<MusicBar> {
                   ]
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: getProportionateScreenWidth(50)),
+                  padding: EdgeInsets.only(right: getProportionateScreenWidth(30)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -108,7 +108,7 @@ class MusicBarState extends State<MusicBar> {
                           },
                         ),
                       ),
-                      SizedBox(width: 25),
+                      SizedBox(width: 15),
                       IconButton(icon: !playing 
                                   ? Icon(Icons.play_arrow_rounded) 
                                   : Icon(Icons.pause_circle_outline), 
@@ -116,7 +116,7 @@ class MusicBarState extends State<MusicBar> {
                         iconSize: 30,
                         color: kPrimaryColor,
                       ),
-                      SizedBox(width: 25),
+                      SizedBox(width: 15),
                       IconButton(icon: Icon(Icons.skip_next), 
                         iconSize: 30, 
                         color: Colors.black.withOpacity(0.1), 

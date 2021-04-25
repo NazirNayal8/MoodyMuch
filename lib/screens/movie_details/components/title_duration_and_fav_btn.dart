@@ -53,7 +53,7 @@ class TitleDurationAndFabBtn extends StatelessWidget {
             child: IconButton(
               tooltip: "Visit IMDb",
               onPressed: () {},
-              icon: SvgPicture.asset("assets/icons/imdb.svg")
+              icon: SvgPicture.asset("assets/icons/imdb.svg", cacheColorFilter: false)
             ),
           ),
         ],
