@@ -7,7 +7,7 @@ class DatabaseService {
   DatabaseService({this.uid});
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-  Future<String> updateUserData(String firstname, String lastname, String phone, String address, String url, List<double> moods) async {
+  Future<String> updateUserData(String firstname, String lastname, String phone, String address, String url) async {
     try {
       await userCollection.doc(uid).set({
         'firstname': firstname,
@@ -15,7 +15,8 @@ class DatabaseService {
         'phone': phone,
         'address': address,
         'url': url,
-        'moods': moods,
+        'moods': [],
+        'record_date': [],
         'language': 0,
       });
       return "Done";
@@ -37,7 +38,9 @@ class DatabaseService {
 
   Future<bool> recordMood(double mood) async {
     try {
-      await userCollection.doc(uid).update({'moods': FieldValue.arrayUnion([mood])});
+      String date = DateTime.now().toString();
+      date = date.substring(0, date.length - 7);
+      await userCollection.doc(uid).update({'moods': FieldValue.arrayUnion([mood]), "record_date": FieldValue.arrayUnion([date])});
       return true;
     } catch (e) {
       print(e.toString());
@@ -55,6 +58,7 @@ class DatabaseService {
       address: userdata['address'] ?? '',
       url: userdata['url'] ?? '',
       moods: List.castFrom(userdata['moods'] ?? []),
+      dates: List.castFrom(userdata["record_date"] ?? []),
       language: userdata['language'] ?? 0
     );
   }

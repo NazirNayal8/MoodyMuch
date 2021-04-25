@@ -50,6 +50,7 @@ dependencies:
   bloc: ^3.0.0
   audioplayers: 
 
+  intl: ^0.16.1
   intl_phone_field: ^2.0.0
   flutter_rating_bar: ^4.0.0
   fluttertoast: ^8.0.3

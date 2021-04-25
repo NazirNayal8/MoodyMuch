@@ -26,13 +26,25 @@ class MoodTrackScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if(snapshot.hasData) {
               UserModel data = snapshot.data;
+              if(data.moods.length == 0 || data.dates.length == 0) {
+                return  Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      kPrimaryColor,
+                    ),
+                  ),
+                );
+              }
+
+              List<double> revMoods = data.moods.reversed.toList();
+              List<String> revDates = data.dates.reversed.toList();
               return Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   padding: const EdgeInsets.only(top: 20),
-                  itemCount: data.moods.length,
-                  itemBuilder: (context, i) => moodRecord(data.moods[i])
+                  itemCount: revMoods.length,
+                  itemBuilder: (context, i) => moodRecord(revMoods[i], revDates[i])
                 ),
               );
             } else {
@@ -51,7 +63,7 @@ class MoodTrackScreen extends StatelessWidget {
     );
   }
 
-  Widget moodRecord(double mood) {
+  Widget moodRecord(double mood, String date) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       padding: EdgeInsets.all(10.0),
@@ -97,17 +109,18 @@ class MoodTrackScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: colorByPercentage(mood),
                 ),
+                textAlign: TextAlign.left,
               ),
               Text(
-                'Some Date', 
+                date, 
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.left,
               ),
             ],
           ),
-          
         ],
       ),
     );
