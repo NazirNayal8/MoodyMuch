@@ -69,7 +69,12 @@ class BodyState extends State<Body> {
             itemBuilder: (context, i) => musicCard(songs[i])
           ),
         ),
-        SizedBox(height: getProportionateScreenHeight(20)),
+        SizedBox(height: getProportionateScreenHeight(10)),
+        Text(
+          "You can tap on the photo to open the song on Spotify!",
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: getProportionateScreenHeight(10)),
         MusicBar(music: selectedSong)
       ],
     );
@@ -88,7 +93,7 @@ class BodyState extends State<Body> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(item.imagePath, fit: BoxFit.fitHeight),
-        ),
+        ),   
       ),
       title: Text(
         item.title,

@@ -98,7 +98,15 @@ class MusicBarState extends State<MusicBar> {
                     children: [
                       RotatedBox(
                         quarterTurns: 2,
-                        child: Icon(Icons.skip_next, size: 30, color: Colors.black.withOpacity(0.1)),
+                        child: IconButton(icon: Icon(Icons.skip_next), 
+                          iconSize: 30, 
+                          color: Colors.black.withOpacity(0.1), 
+                          onPressed: () {  
+                            if(position.inSeconds > 3){
+                              player.seek(new Duration(seconds: position.inSeconds - 3));
+                            }
+                          },
+                        ),
                       ),
                       SizedBox(width: 25),
                       IconButton(icon: !playing 
@@ -109,7 +117,15 @@ class MusicBarState extends State<MusicBar> {
                         color: kPrimaryColor,
                       ),
                       SizedBox(width: 25),
-                      Icon(Icons.skip_next, size: 30, color: Colors.black.withOpacity(0.1))
+                      IconButton(icon: Icon(Icons.skip_next), 
+                        iconSize: 30, 
+                        color: Colors.black.withOpacity(0.1), 
+                        onPressed: () {  
+                          if(position.inSeconds < duration.inSeconds - 3){
+                            player.seek(new Duration(seconds: position.inSeconds + 3));
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -132,9 +148,12 @@ class MusicBarState extends State<MusicBar> {
                   ),
                 ],
               ),
-              child: CircleAvatar(
-                radius: 35,
-                backgroundImage: NetworkImage(widget.music.imagePath)
+              child: InkWell(
+                onTap: () => print("Pressed"),
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(widget.music.imagePath)
+                )
               )
             ),
           ),
