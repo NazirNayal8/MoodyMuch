@@ -52,6 +52,11 @@ class MusicBarState extends State<MusicBar> {
   
   @override
   Widget build(BuildContext context){
+
+    if(widget.music == null) {
+      return SizedBox(height: 0);
+    }
+    
     return Container(
       height: 110,
       alignment: Alignment.topCenter,

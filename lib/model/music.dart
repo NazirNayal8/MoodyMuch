@@ -14,4 +14,12 @@ class Music {
     this.openUrl,
     this.previewUrl
   );
+
+  Music.fromJson(Map<String,dynamic> json)
+    : title = json["name"],
+      artist = json["artists"][0]["name"],
+      imagePath = json["album"]["images"][0]["url"],
+      duration = Duration(milliseconds:  json["duration_ms"]),
+      openUrl = json["external_urls"]["spotify"],
+      previewUrl = json["preview_url"];
 }

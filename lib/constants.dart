@@ -106,6 +106,18 @@ List<int> movieGenreByMood(double mood) {
   }
 }
 
+String songFileByMood(double mood) {
+  if(mood >= 75.0) {
+    return "veryhigh.json";
+  } else if(mood < 75 && mood >= 50){
+    return "high.json";
+  } else if(mood < 50 && mood >= 25) {
+    return "low.json";
+  } else {
+    return "verylow.json";
+  }
+}
+
 String moodText(double mood)
 {
   if(mood >= 75.0) {
