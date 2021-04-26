@@ -101,6 +101,7 @@ class MoodTrackScreen extends StatelessWidget {
           SizedBox(width: getProportionateScreenWidth(10)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 moodText(mood), 

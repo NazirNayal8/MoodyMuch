@@ -23,7 +23,6 @@ class ExercisePickScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 30),
                 Text("Mood", style: headingStyle),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +55,13 @@ class ExercisePickScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: getProportionateScreenHeight(10)),
+                Text("Exercises", style: headingStyle),
+                Text(
+                  "Pick one to strengthen your mental health",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
