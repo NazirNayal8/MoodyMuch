@@ -9,6 +9,9 @@ import 'package:moodymuch/services/youtubeAPIService.dart';
 class YoutubeVideoListScreen extends StatefulWidget {
 
   final String title;
+  final String pilatesPlayListID = "PLKzpgYNAcbwJ5v3Rt07CPx_yFnNAHJC7z";
+  final String yogaForKidsPlayListID = "PLc0asrzrjtZJWljYTAwKM6mdb4RfoiSxx";
+
   YoutubeVideoListScreen({Key key, this.title}) : super(key: key);
   @override
   _YoutubeVideoListScreenState createState() => _YoutubeVideoListScreenState();
@@ -31,6 +34,8 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
       _channel = channel;
     });
   }
+
+
 
   _buildVideo(Video video) {
     return GestureDetector(
