@@ -6,7 +6,7 @@ class QuoteModel {
 
   QuoteModel.fromJson(Map<String, dynamic> json) {
     text = json['text'];
-    author = json['author'] != "null" ? json["author"] : "Anonymous";
+    author = json['author'] != null ? json["author"] : "Anonymous";
   }
 
   Map<String, dynamic> toJson() {
