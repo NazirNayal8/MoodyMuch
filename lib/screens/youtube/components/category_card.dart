@@ -19,7 +19,7 @@ class CategoryCard extends StatelessWidget {
       child: Container(
         // padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.orange[50],
+          color: Colors.white12,
           borderRadius: BorderRadius.circular(13),
           boxShadow: [
             BoxShadow(
@@ -35,11 +35,11 @@ class CategoryCard extends StatelessWidget {
           child: InkWell(
             onTap: press,
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 children: <Widget>[
-                  Spacer(),
-                  SvgPicture.asset(svgSrc, height: 120),
+                  // Spacer(),
+                  SvgPicture.asset(svgSrc, height: 100),
                   Spacer(),
                   Text(
                     title,

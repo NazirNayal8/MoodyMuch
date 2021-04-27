@@ -1,16 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/screens/youtube/components/category_card.dart';
 import 'package:moodymuch/screens/youtube/components/youtube_video_list_screen.dart';
 import 'package:moodymuch/size_config.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ExercisePickScreen extends StatelessWidget {
-
-  final double mood = 77;
-  // ExercisePickScreen({Key key, this.mood}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,50 +16,17 @@ class ExercisePickScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Mood", style: headingStyle),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularPercentIndicator(
-                      radius: 60.0,
-                      lineWidth: 8.0,
-                      percent: mood / 100,
-                      center: Text(
-                          mood.toInt().toString() + "%",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: colorByPercentage(mood),
-                          ),
-                        ),
-                      circularStrokeCap: CircularStrokeCap.square,
-                      backgroundColor: Colors.black12,                         
-                      maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-                      progressColor: colorByPercentage(mood)
-                    ),
-                    SizedBox(width: getProportionateScreenWidth(10)),
-                    Text(
-                      moodText(mood), 
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: colorByPercentage(mood),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: getProportionateScreenHeight(10)),
+              children: <Widget>[               
                 Text("Exercises", style: headingStyle),
                 Text(
                   "Pick one to strengthen your mental health",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: getProportionateScreenHeight(20)),
+                SizedBox(height: getProportionateScreenHeight(10)),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    childAspectRatio: .85,
+                    childAspectRatio: 1,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
                     children: <Widget>[
@@ -73,28 +34,42 @@ class ExercisePickScreen extends StatelessWidget {
                         title: "Pilates",
                         svgSrc: "assets/icons/pilates.svg",
                         press: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Pilates')));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Pilates', playlistID: "PLIPPel3MuDjD-VKUzAQuABrx71VWMoNAf")));
                         },
                       ),
                       CategoryCard(
-                        title: "Kegel Exercises",
+                        title: "Stretching",
                         svgSrc: "assets/icons/exercises.svg",
                         press: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Kegel Exercise')));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Stretching', playlistID: "PLIGRWGt8y4NR4AJJeWD5sBkIsG-MExtQG")));
                         },
                       ),
                       CategoryCard(
-                        title: "Meditation",
+                        title: "Focused Meditation",
                         svgSrc: "assets/icons/meditation.svg",
                         press: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Meditation')));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Focused Meditation', playlistID: "PLcjgXQkHWH44d-sh-5JWjtWPCVpX5X-Si")));
                         },
                       ),
                       CategoryCard(
-                        title: "Yoga",
+                        title: "Mindfullness Meditation",
+                        svgSrc: "assets/icons/meditation.svg",
+                        press: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Mindfullness Meditation', playlistID: "PLCQACBUblTbXAgZG7cxMYUddUlvTDO6v1")));        
+                        },
+                      ),
+                      CategoryCard(
+                        title: "Hatha Yoga",
                         svgSrc: "assets/icons/yoga.svg",
                         press: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Yoga')));        
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Hatha Yoga', playlistID: "PLEs9dX8UXFZpezpFe_xfN6KCTImjTXf3u")));        
+                        },
+                      ),
+                      CategoryCard(
+                        title: "Yin Yoga",
+                        svgSrc: "assets/icons/yoga.svg",
+                        press: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Yin Yoga', playlistID: "PLW0v0k7UCVrnG4BpUD7bou96XFxnHMwQ3")));        
                         },
                       ),
                     ],
