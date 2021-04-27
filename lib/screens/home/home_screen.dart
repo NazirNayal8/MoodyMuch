@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             UserModel model = snapshot.data;
             return Container(
               color: Colors.white,
-              padding: EdgeInsets.only(left: 30, right: 30),
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,13 +118,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
                   SfCartesianChart(
+                    margin: EdgeInsets.all(0),
                     borderWidth: 0,
                     plotAreaBorderWidth: 0,
-                    title: ChartTitle(text: 'Mood Tracks'),
+                    title: ChartTitle(text: 'Mood Tracks', textStyle: TextStyle(fontWeight: FontWeight.bold)),
                     tooltipBehavior: _tooltipBehavior,
                     series: <ChartSeries>[
                       LineSeries<MoodRecord, dynamic>(
                           name: 'Moods',
+                          color: Colors.green[400],
                           dataSource: recordsFromData(model.moods, model.dates),
                           xValueMapper: (MoodRecord record, _) => record.date,
                           yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
@@ -133,9 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                     primaryXAxis: CategoryAxis(
                       labelPlacement: LabelPlacement.onTicks,
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold)
                     ),
                     primaryYAxis: NumericAxis(
                       labelFormat: '{value}%',
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold)
                     ),
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
