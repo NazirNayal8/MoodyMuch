@@ -17,12 +17,12 @@ class QuoteWidget extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/quote.png",
-            height: 30,
-            width: 30,
+            height: 25,
+            width: 25,
             color: Colors.black,
           ),
           SizedBox(
-            height: getProportionateScreenHeight(30),
+            height: getProportionateScreenHeight(10),
           ),
           Container(
             width: SizeConfig.screenWidth - 60,
@@ -30,13 +30,12 @@ class QuoteWidget extends StatelessWidget {
             child: Text(
               quote,
               style: GoogleFonts.lato(
-                textStyle: TextStyle(color: Colors.black, fontSize: 30),
+                textStyle: TextStyle(color: Colors.black, fontSize: 25),
               ),
-              maxLines: 4,
             ),
           ),
           SizedBox(
-            height: getProportionateScreenHeight(30),
+            height: getProportionateScreenHeight(15),
           ),
           Text(
             author,
