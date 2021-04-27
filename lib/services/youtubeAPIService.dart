@@ -48,10 +48,11 @@ class APIService {
     Map<String, String> parameters = {
       'part': 'snippet',
       'playlistId': playlistId,
-      'maxResults': '8',
-      'pageToken': _nextPageToken,
+      'maxResults': '500',
+      //'pageToken': _nextPageToken,
       'key': API_KEY,
     };
+    print(_nextPageToken);
     Uri uri = Uri.https(
       _baseUrl,
       '/youtube/v3/playlistItems',
