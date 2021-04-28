@@ -172,9 +172,8 @@ class AffWild2ExprDataset(Dataset):
     
     def __getitem__(self, index):
         
-        
         if self.compress:
-            img = mpimg.imread(self.videos[index])
+            img = mpimg.imread(self.videos[index]).copy()
             if self.transform:
                 img = self.transform(img)
             
