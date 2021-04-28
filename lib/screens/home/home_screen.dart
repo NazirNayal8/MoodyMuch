@@ -47,6 +47,48 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  Widget buildChart(List<MoodRecord> records) {
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SfCartesianChart(
+          margin: EdgeInsets.all(0),
+          borderWidth: 0,
+          plotAreaBorderWidth: 0,
+          title: ChartTitle(text: 'Mood Tracks', textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          tooltipBehavior: _tooltipBehavior,
+          series: <ChartSeries>[
+            LineSeries<MoodRecord, dynamic>(
+                name: 'Moods',
+                color: Colors.green[400],
+                dataSource: records,
+                xValueMapper: (MoodRecord record, _) => record.date,
+                yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
+                dataLabelSettings: DataLabelSettings(isVisible: true),
+                enableTooltip: true,
+                animationDuration: 2000,
+                markerSettings: MarkerSettings(
+                    isVisible: true,
+                    shape: DataMarkerType.circle,
+                    color: kPrimaryColor
+                )
+              )
+          ],
+          primaryXAxis: CategoryAxis(
+            labelPlacement: LabelPlacement.onTicks,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold)
+          ),
+          primaryYAxis: NumericAxis(
+            labelFormat: '{value}%',
+            labelStyle: TextStyle(fontWeight: FontWeight.bold)
+          ),
+        ),
+        records.length == 0 ? Text("No Data Available", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)) : SizedBox(height: 0),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -95,10 +137,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ]
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10)),
+                  //SizedBox(height: getProportionateScreenHeight(10)),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       primary: kPrimaryColor,
+                      shadowColor: Colors.black,
                     ),
                     onPressed: () {
                       db.recordMood(rng.nextDouble() * 100).then((value) => {
@@ -116,33 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icon(Icons.videocam, size: 25, color: Colors.white),
                     label: Text("RECORD MOOD", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  SfCartesianChart(
-                    margin: EdgeInsets.all(0),
-                    borderWidth: 0,
-                    plotAreaBorderWidth: 0,
-                    title: ChartTitle(text: 'Mood Tracks', textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                    tooltipBehavior: _tooltipBehavior,
-                    series: <ChartSeries>[
-                      LineSeries<MoodRecord, dynamic>(
-                          name: 'Moods',
-                          color: Colors.green[400],
-                          dataSource: recordsFromData(model.moods, model.dates),
-                          xValueMapper: (MoodRecord record, _) => record.date,
-                          yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
-                          dataLabelSettings: DataLabelSettings(isVisible: true),
-                          enableTooltip: true)
-                    ],
-                    primaryXAxis: CategoryAxis(
-                      labelPlacement: LabelPlacement.onTicks,
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold)
-                    ),
-                    primaryYAxis: NumericAxis(
-                      labelFormat: '{value}%',
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                  SizedBox(height: getProportionateScreenHeight(20)),
+                  SizedBox(height: getProportionateScreenHeight(18)),
+                  buildChart(recordsFromData(model.moods, model.dates)),
+                  SizedBox(height: getProportionateScreenHeight(18)),
                   Expanded(
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
