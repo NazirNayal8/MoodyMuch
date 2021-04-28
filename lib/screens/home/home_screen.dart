@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 dataSource: records,
                 xValueMapper: (MoodRecord record, _) => record.date,
                 yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
-                dataLabelSettings: DataLabelSettings(isVisible: true),
+                dataLabelSettings: DataLabelSettings(isVisible: false),
                 enableTooltip: true,
                 animationDuration: 2000,
                 markerSettings: MarkerSettings(
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ]
                   ),
-                  //SizedBox(height: getProportionateScreenHeight(10)),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       primary: kPrimaryColor,
@@ -159,9 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icon(Icons.videocam, size: 25, color: Colors.white),
                     label: Text("RECORD MOOD", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(18)),
+                  SizedBox(height: getProportionateScreenHeight(20)),
                   buildChart(recordsFromData(model.moods, model.dates)),
-                  SizedBox(height: getProportionateScreenHeight(18)),
+                  SizedBox(height: getProportionateScreenHeight(20)),
                   Expanded(
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,

@@ -11,6 +11,7 @@ class MovieDetail {
   final List<String> genres;
   final String metascore;
   final String rotten;
+  final String poster;
 
   MovieDetail(
     this.id,
@@ -24,7 +25,8 @@ class MovieDetail {
     this.language,
     this.genres,
     this.metascore,
-    this.rotten
+    this.rotten,
+    this.poster
   );
 
   MovieDetail.fromJson(Map<String, dynamic> json)
@@ -39,7 +41,8 @@ class MovieDetail {
         language = json["Language"].toString().split(", ")[0],
         genres = json["Genre"].toString().split(", ").toList(),
         metascore = json["Metascore"],
-        rotten = json["Ratings"].length > 1 ? json["Ratings"][1]["Value"] : "N/A";
+        rotten = json["Ratings"].length > 1 ? json["Ratings"][1]["Value"] : "N/A",
+        poster = json["Poster"];
 
         // ratings: metacritics, rotten tomatoes
 }

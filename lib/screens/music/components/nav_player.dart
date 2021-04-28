@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/model/music.dart';
 import 'package:moodymuch/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MusicBar extends StatefulWidget {
   final Music music;
@@ -46,8 +47,16 @@ class MusicBarState extends State<MusicBar> {
 
   @override
   void dispose() {
-    player.stop();
     super.dispose();
+    player.stop();
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
   
   @override
@@ -154,7 +163,9 @@ class MusicBarState extends State<MusicBar> {
                 ],
               ),
               child: InkWell(
-                onTap: () => print("Pressed"),
+                onTap: () async {
+                  await _launchURL(widget.music.openUrl);
+                },
                 child: CircleAvatar(
                   radius: 40,
                   backgroundImage: NetworkImage(widget.music.imagePath)

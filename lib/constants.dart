@@ -96,7 +96,7 @@ List<int> movieGenreByMood(double mood) {
   } else if(mood > 50 && mood <= 60) {
     return [10402,10749];
   } else if(mood > 60 && mood <= 70) {
-    return [10752,37];
+    return [28];
   } else if(mood > 70 && mood <= 80) {
     return [16,35];
   } else if(mood > 80 && mood <= 90) {

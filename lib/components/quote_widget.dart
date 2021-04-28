@@ -22,7 +22,7 @@ class QuoteWidget extends StatelessWidget {
             color: Colors.black,
           ),
           SizedBox(
-            height: getProportionateScreenHeight(10),
+            height: getProportionateScreenHeight(5),
           ),
           Container(
             width: SizeConfig.screenWidth - 60,
@@ -35,7 +35,7 @@ class QuoteWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: getProportionateScreenHeight(15),
+            height: getProportionateScreenHeight(10),
           ),
           Text(
             author,

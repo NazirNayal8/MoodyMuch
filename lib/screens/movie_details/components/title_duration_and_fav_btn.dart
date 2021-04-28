@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moodymuch/model/movie_detail.dart';
 import '../../../constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TitleDurationAndFabBtn extends StatelessWidget {
   const TitleDurationAndFabBtn({
@@ -10,6 +11,16 @@ class TitleDurationAndFabBtn extends StatelessWidget {
   }) : super(key: key);
 
   final MovieDetail movie;
+  final String baseUrl = 'https://www.imdb.com/title/';
+
+  _launchURL(String id) async {
+    String url =  baseUrl + id;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +63,9 @@ class TitleDurationAndFabBtn extends StatelessWidget {
             width: 64,
             child: IconButton(
               tooltip: "Visit IMDb",
-              onPressed: () {},
+              onPressed: () async {
+                await _launchURL(movie.imdbID);
+              },
               icon: SvgPicture.asset("assets/icons/imdb.svg", cacheColorFilter: false)
             ),
           ),
