@@ -3,6 +3,7 @@ import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/screens/profile/components/mood_tracks.dart';
 import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
+import 'package:moodymuch/size_config.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -13,11 +14,11 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10)),
       child: Column(
         children: [
           ProfilePic(),
-          SizedBox(height: 15),
+          SizedBox(height: getProportionateScreenHeight(10)),
           ProfileMenu(
             text: "Mood Track History",
             icon: "assets/icons/analytics.svg",

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/model/music.dart';
 import 'package:moodymuch/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MusicBar extends StatefulWidget {
   final Music music;
@@ -46,12 +47,25 @@ class MusicBarState extends State<MusicBar> {
 
   @override
   void dispose() {
-    player.stop();
     super.dispose();
+    player.stop();
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
   
   @override
   Widget build(BuildContext context){
+
+    if(widget.music == null) {
+      return SizedBox(height: 0);
+    }
+    
     return Container(
       height: 110,
       alignment: Alignment.topCenter,
@@ -92,15 +106,23 @@ class MusicBarState extends State<MusicBar> {
                   ]
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: getProportionateScreenWidth(50)),
+                  padding: EdgeInsets.only(right: getProportionateScreenWidth(30)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       RotatedBox(
                         quarterTurns: 2,
-                        child: Icon(Icons.skip_next, size: 30, color: Colors.black.withOpacity(0.1)),
+                        child: IconButton(icon: Icon(Icons.skip_next), 
+                          iconSize: 30, 
+                          color: Colors.black.withOpacity(0.1), 
+                          onPressed: () {  
+                            if(position.inSeconds > 3){
+                              player.seek(new Duration(seconds: position.inSeconds - 3));
+                            }
+                          },
+                        ),
                       ),
-                      SizedBox(width: 25),
+                      SizedBox(width: 15),
                       IconButton(icon: !playing 
                                   ? Icon(Icons.play_arrow_rounded) 
                                   : Icon(Icons.pause_circle_outline), 
@@ -108,8 +130,16 @@ class MusicBarState extends State<MusicBar> {
                         iconSize: 30,
                         color: kPrimaryColor,
                       ),
-                      SizedBox(width: 25),
-                      Icon(Icons.skip_next, size: 30, color: Colors.black.withOpacity(0.1))
+                      SizedBox(width: 15),
+                      IconButton(icon: Icon(Icons.skip_next), 
+                        iconSize: 30, 
+                        color: Colors.black.withOpacity(0.1), 
+                        onPressed: () {  
+                          if(position.inSeconds < duration.inSeconds - 3){
+                            player.seek(new Duration(seconds: position.inSeconds + 3));
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -132,9 +162,14 @@ class MusicBarState extends State<MusicBar> {
                   ),
                 ],
               ),
-              child: CircleAvatar(
-                radius: 35,
-                backgroundImage: NetworkImage(widget.music.imagePath)
+              child: InkWell(
+                onTap: () async {
+                  await _launchURL(widget.music.openUrl);
+                },
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(widget.music.imagePath)
+                )
               )
             ),
           ),

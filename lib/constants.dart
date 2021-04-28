@@ -82,6 +82,42 @@ Color colorByPercentage(double percentage) {
   }
 }
 
+List<int> movieGenreByMood(double mood) {
+  if(mood <= 10) {
+    return [18,10751];
+  } else if(mood > 10 && mood <= 20) {
+    return [18];
+  } else if(mood > 20 && mood <= 30) {
+    return [36];
+  } else if(mood > 30 && mood <= 40) {
+    return [18,36];
+  } else if(mood > 40 && mood <= 50) {
+    return [37];
+  } else if(mood > 50 && mood <= 60) {
+    return [10402,10749];
+  } else if(mood > 60 && mood <= 70) {
+    return [28];
+  } else if(mood > 70 && mood <= 80) {
+    return [16,35];
+  } else if(mood > 80 && mood <= 90) {
+    return [80,53];
+  } else {
+    return [12,28];
+  }
+}
+
+String songFileByMood(double mood) {
+  if(mood >= 75.0) {
+    return "veryhigh.json";
+  } else if(mood < 75 && mood >= 50){
+    return "high.json";
+  } else if(mood < 50 && mood >= 25) {
+    return "low.json";
+  } else {
+    return "verylow.json";
+  }
+}
+
 String moodText(double mood)
 {
   if(mood >= 75.0) {

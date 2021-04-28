@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
-import 'package:moodymuch/model/ChannelModel.dart';
 import 'package:moodymuch/model/VideoModel.dart';
 import 'package:moodymuch/screens/youtube/components/youtube_video_screen.dart';
 import 'package:moodymuch/services/youtubeAPIService.dart';
@@ -8,17 +7,16 @@ import 'package:moodymuch/services/youtubeAPIService.dart';
 
 class YoutubeVideoListScreen extends StatefulWidget {
 
-  String title;
-  YoutubeVideoListScreen({Key key, this.title}) : super(key: key);
+  final String title;
+  final String playlistID;
+  YoutubeVideoListScreen({Key key, this.title, this.playlistID}) : super(key: key);
   @override
   YoutubeVideoListScreenState createState() => YoutubeVideoListScreenState(title);
 }
 
-class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
-  Channel channel;
-  List<Video> playlist;
-  bool isLoading = false;
-  String title;
+class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
+  List<Video> _videos;
+  bool _isLoading = false;
 
   YoutubeVideoListScreenState(this.title);
 
@@ -39,10 +37,17 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
     initPlaylist();
   }
 
-  initChannel() async {
-    Channel _channel = await APIService.instance.fetchChannel(channelId: 'UCjzHeG1KWoonmf9d5KBvSiw');
+  @override
+  void dispose() {
+    APIService.instance.setToken('');
+    super.dispose();
+  }
+
+  _initChannel() async {
+    List<Video> videos = await APIService.instance
+        .fetchVideosFromPlaylist(playlistId: widget.playlistID);
     setState(() {
-      channel = _channel;
+      _videos = videos;
     });
   }
 
@@ -119,10 +124,10 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
   _loadMoreVideos() async {
     isLoading = true;
     List<Video> moreVideos = await APIService.instance
-        .fetchVideosFromPlaylist(playlistId: channel.uploadPlaylistId);
-    List<Video> allVideos = channel.videos..addAll(moreVideos);
+        .fetchVideosFromPlaylist(playlistId: widget.playlistID);
+    List<Video> allVideos = _videos..addAll(moreVideos);
     setState(() {
-      channel.videos = allVideos;
+      _videos = allVideos;
     });
     isLoading = false;
   }
@@ -143,19 +148,22 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: playlist != null
+      body: _videos != null && _videos.length > 0
           ? NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollDetails) {
-          if (!isLoading && scrollDetails.metrics.pixels == scrollDetails.metrics.maxScrollExtent) {
-            loadMoreVideos();
+          if (!_isLoading &&
+              _videos.length != APIService.instance.totalVideos &&
+              scrollDetails.metrics.pixels ==
+                  scrollDetails.metrics.maxScrollExtent) {
+            _loadMoreVideos();
           }
           return false;
         },
         child: ListView.builder(
-          itemCount: playlist.length,
+          itemCount: _videos.length,
           itemBuilder: (BuildContext context, int index) {
-            Video video = playlist[index];
-            return buildVideo(video);
+            Video video = _videos[index];
+            return _buildVideo(video);
           },
         ),
       )

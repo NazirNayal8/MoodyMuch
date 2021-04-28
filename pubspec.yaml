@@ -32,6 +32,8 @@ dependencies:
   provider: ^4.3.1 # for State management
   flutter_spinkit: "^4.0.0"
   flutter_markdown: ^0.4.1
+  google_fonts: any
+  random_color: ^1.0.5
 
   firebase_core: ^0.5.1
   firebase_auth: ^0.18.1
@@ -39,6 +41,7 @@ dependencies:
   firebase_storage: ^5.2.0
   http: ^0.12.0+2
   youtube_player_flutter: ^6.0.3+2
+  
 
   image_picker: ^0.6.3
   settings_ui: ^0.6.0
@@ -46,13 +49,16 @@ dependencies:
   percent_indicator: ^3.0.1
   animations: ^2.0.0
   dio: ^3.0.9
+  url_launcher: ^6.0.3
   rxdart: ^0.23.1
   bloc: ^3.0.0
   audioplayers: 
 
+  intl: ^0.16.1
   intl_phone_field: ^2.0.0
   flutter_rating_bar: ^4.0.0
   fluttertoast: ^8.0.3
+  syncfusion_flutter_charts: ^18.4.49
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +78,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/policies/
+    - assets/songs/
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

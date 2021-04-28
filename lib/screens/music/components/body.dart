@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
+import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/music.dart';
+import 'package:moodymuch/model/user.dart';
 import 'package:moodymuch/screens/music/components/nav_player.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -12,66 +17,102 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
 
-  double mood = 77;
-  Music selectedSong = songs[0];
+  Music selectedSong;
+  String filePath = "assets/songs/";
+  List<Music> songs;
+  AppUser user;
+  bool didSongsLoaded = false;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text("Mood", style: headingStyle),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularPercentIndicator(
-              radius: 60.0,
-              lineWidth: 8.0,
-              percent: mood / 100,
-              center: Text(
-                  mood.toInt().toString() + "%",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: colorByPercentage(mood),
+
+    user = Provider.of<AppUser>(context);
+
+    return Container(
+      child: StreamBuilder<UserModel>(
+        stream: DatabaseService(uid: user?.uid ?? "0").userData,
+        builder: (context, snapshot) {
+          if(!snapshot.hasError && snapshot.hasData) {
+            double mood = snapshot.data.moods[snapshot.data.moods.length - 1];
+            if(!didSongsLoaded) {
+              getJson(filePath + songFileByMood(mood)).then((value) => {
+                didSongsLoaded = true
+              });
+              return Center(child: SizedBox(height: 0));
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text("Mood", style: headingStyle),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularPercentIndicator(
+                      radius: 60.0,
+                      lineWidth: 8.0,
+                      percent: mood / 100,
+                      center: Text(
+                          mood.toInt().toString() + "%",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: colorByPercentage(mood),
+                          ),
+                        ),
+                      circularStrokeCap: CircularStrokeCap.square,
+                      backgroundColor: Colors.black12,                         
+                      maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
+                      progressColor: colorByPercentage(mood)
+                    ),
+                    SizedBox(width: getProportionateScreenWidth(10)),
+                    Text(
+                      moodText(mood), 
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: colorByPercentage(mood),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(5)),
+                Text("Songs", style: headingStyle),
+                Text(
+                  "Enjoy with our picks for you",
+                  textAlign: TextAlign.center,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    padding: const EdgeInsets.only(top: 20),
+                    itemCount: songs.length,
+                    itemBuilder: (context, i) => musicCard(songs[i])
                   ),
                 ),
-              circularStrokeCap: CircularStrokeCap.square,
-              backgroundColor: Colors.black12,                         
-              maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-              progressColor: colorByPercentage(mood)
-            ),
-            SizedBox(width: getProportionateScreenWidth(10)),
-            Text(
-              moodText(mood), 
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: colorByPercentage(mood),
+                SizedBox(height: getProportionateScreenHeight(10)),
+                selectedSong != null ? Text(
+                  "You can tap on the photo to open the song on Spotify!",
+                  textAlign: TextAlign.center,
+                ) : SizedBox(height: 0),
+                SizedBox(height: getProportionateScreenHeight(10)),
+                MusicBar(music: selectedSong)
+              ],
+            );
+          } else if(snapshot.hasError) {
+            return Center(child: Text("An error occurred" + snapshot.error.toString()));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  kPrimaryColor,
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: getProportionateScreenHeight(5)),
-        Text("Songs", style: headingStyle),
-        Text(
-          "Enjoy with our picks for you",
-          textAlign: TextAlign.center,
-        ),
-        // MovieCarousel(genreIDs: genreIDs, bannedIDs: bannedIDs),
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.only(top: 20),
-            itemCount: songs.length,
-            itemBuilder: (context, i) => musicCard(songs[i])
-          ),
-        ),
-        SizedBox(height: getProportionateScreenHeight(20)),
-        MusicBar(music: selectedSong)
-      ],
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -88,7 +129,7 @@ class BodyState extends State<Body> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(item.imagePath, fit: BoxFit.fitHeight),
-        ),
+        ),   
       ),
       title: Text(
         item.title,
@@ -102,21 +143,17 @@ class BodyState extends State<Body> {
       ),
     );
   }
+
+  Future<void> getJson(String file) async {
+    final snapshot = await DefaultAssetBundle.of(context).loadString(file);
+    final data = json.decode(snapshot.toString()).cast<String, dynamic>();
+    List<Music> fullSongs = (data["tracks"] as List).map((e) => new Music.fromJson(e)).toList();
+    fullSongs.shuffle();
+    setState(() {
+      songs = fullSongs.sublist(0, 15);
+    });
+  }
 }
 
-List<Music> songs = [
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Cut to the Feeling", "Carlee Lee Japsen", "https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86"),
-  Music("Call Me Maybe", "Carlee Lee Japsen", "https://i.scdn.co/image/2fb20bf4c1fb29b503bfc21516ff4b1a334b6372", Duration(minutes: 3, seconds: 32), "", "https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=774b29d4f13844c495f206cafdad9c86"),
-];
   
   
