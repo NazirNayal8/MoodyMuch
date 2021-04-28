@@ -192,6 +192,10 @@ class MusicBarState extends State<MusicBar> {
   }
 
   void getAudio() async {
+    if(widget.music.previewUrl == null){
+      return;
+    }
+    
     if(playing){
       int res = await player.pause();
       if(res == 1){

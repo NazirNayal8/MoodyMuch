@@ -159,9 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icon(Icons.videocam, size: 25, color: Colors.white),
                     label: Text("RECORD MOOD", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(20)),
+                  SizedBox(height: getProportionateScreenHeight(19)),
                   buildChart(recordsFromData(model.moods, model.dates)),
-                  SizedBox(height: getProportionateScreenHeight(20)),
+                  SizedBox(height: getProportionateScreenHeight(19)),
                   Expanded(
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,

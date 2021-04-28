@@ -25,8 +25,8 @@ class APIService {
     Map<String, String> parameters = {
       'part': 'snippet',
       'playlistId': playlistId,
-      'maxResults': '100',
-      //'pageToken': _nextPageToken,
+      'maxResults': '8',
+      'pageToken': _nextPageToken,
       'key': API_KEY,
     };
     Uri uri = Uri.https(
@@ -47,6 +47,7 @@ class APIService {
       totalVideos = data["pageInfo"]["totalResults"] ?? 0;
       List<dynamic> videosJson = data['items'];
 
+      // Fetch first eight videos from uploads playlist
       List<Video> videos = [];
       videosJson.forEach(
             (json) => videos.add(

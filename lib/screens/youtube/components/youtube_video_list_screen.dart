@@ -11,30 +11,17 @@ class YoutubeVideoListScreen extends StatefulWidget {
   final String playlistID;
   YoutubeVideoListScreen({Key key, this.title, this.playlistID}) : super(key: key);
   @override
-  YoutubeVideoListScreenState createState() => YoutubeVideoListScreenState(title);
+  _YoutubeVideoListScreenState createState() => _YoutubeVideoListScreenState();
 }
 
 class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
   List<Video> _videos;
   bool _isLoading = false;
 
-  YoutubeVideoListScreenState(this.title);
-
-  String pilatesPlayListID = "PLKzpgYNAcbwJ5v3Rt07CPx_yFnNAHJC7z";
-  String yogaForKidsPlayListID = "PLc0asrzrjtZJWljYTAwKM6mdb4RfoiSxx";
-  String yogaForAdultsPlaylistID = "PLP7Ou7uUiYzCmZNNTKKjPZ8h01krmY8Fr";
-  String mindfulnessPlaylistID = 'PLCQACBUblTbXAgZG7cxMYUddUlvTDO6v1';
-  String spiritualPlaylistID = 'PLM_5z7EKcBv9hI7ABzjC37wPH0VAcQ0qU';
-  String focusedPlaylistID = 'PLIw7E3llngHATo7IpCsS24_7dPJjzfd3t';
-  String mantraPlaylistID = 'PLsuCfYXzi5DLisEHBoBKtVwkQ6WQub_Dh';
-  String lovingKindnessPlaylistID = 'PL_jEEejSTzLz1jahZZLZsek1GMDpdG0cs';
-  String exercisePlaylistID = "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
-  String selectedPlaylistID;
-
   @override
   void initState() {
     super.initState();
-    initPlaylist();
+    _initPlaylist();
   }
 
   @override
@@ -43,7 +30,7 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
     super.dispose();
   }
 
-  _initChannel() async {
+  _initPlaylist() async {
     List<Video> videos = await APIService.instance
         .fetchVideosFromPlaylist(playlistId: widget.playlistID);
     setState(() {
@@ -51,31 +38,8 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
     });
   }
 
-  initPlaylist() async {
-    switch(title) {
-      case "Pilates":
-        selectedPlaylistID = pilatesPlayListID;
-        break;
-      case "Meditation":
-        selectedPlaylistID = spiritualPlaylistID;
-        break;
-      case "Yoga":
-        selectedPlaylistID = yogaForAdultsPlaylistID;
-        break;
-      case "Exercise":
-        selectedPlaylistID = exercisePlaylistID;
-        break;
-    }
 
-    print(selectedPlaylistID);
-    List<Video> _playlist = await APIService.instance.fetchVideosFromPlaylist(playlistId: selectedPlaylistID);
-    setState(() {
-      playlist = _playlist;
-    });
-  }
-
-
-  buildVideo(Video video) {
+  _buildVideo(Video video) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -122,24 +86,14 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
   }
 
   _loadMoreVideos() async {
-    isLoading = true;
+    _isLoading = true;
     List<Video> moreVideos = await APIService.instance
         .fetchVideosFromPlaylist(playlistId: widget.playlistID);
     List<Video> allVideos = _videos..addAll(moreVideos);
     setState(() {
       _videos = allVideos;
     });
-    isLoading = false;
-  }
-
-  loadMoreVideos() async {
-    isLoading = true;
-    List<Video> allVideos = await APIService.instance
-        .fetchVideosFromPlaylist(playlistId: selectedPlaylistID);
-    setState(() {
-      playlist = allVideos;
-    });
-    isLoading = false;
+    _isLoading = false;
   }
 
   @override
