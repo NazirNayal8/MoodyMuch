@@ -8,31 +8,69 @@ import 'package:moodymuch/services/youtubeAPIService.dart';
 
 class YoutubeVideoListScreen extends StatefulWidget {
 
-  final String title;
+  String title;
   YoutubeVideoListScreen({Key key, this.title}) : super(key: key);
   @override
-  _YoutubeVideoListScreenState createState() => _YoutubeVideoListScreenState();
+  YoutubeVideoListScreenState createState() => YoutubeVideoListScreenState(title);
 }
 
-class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
-  Channel _channel;
-  bool _isLoading = false;
+class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
+  Channel channel;
+  List<Video> playlist;
+  bool isLoading = false;
+  String title;
+
+  YoutubeVideoListScreenState(this.title);
+
+  String pilatesPlayListID = "PLKzpgYNAcbwJ5v3Rt07CPx_yFnNAHJC7z";
+  String yogaForKidsPlayListID = "PLc0asrzrjtZJWljYTAwKM6mdb4RfoiSxx";
+  String yogaForAdultsPlaylistID = "PLP7Ou7uUiYzCmZNNTKKjPZ8h01krmY8Fr";
+  String mindfulnessPlaylistID = 'PLCQACBUblTbXAgZG7cxMYUddUlvTDO6v1';
+  String spiritualPlaylistID = 'PLM_5z7EKcBv9hI7ABzjC37wPH0VAcQ0qU';
+  String focusedPlaylistID = 'PLIw7E3llngHATo7IpCsS24_7dPJjzfd3t';
+  String mantraPlaylistID = 'PLsuCfYXzi5DLisEHBoBKtVwkQ6WQub_Dh';
+  String lovingKindnessPlaylistID = 'PL_jEEejSTzLz1jahZZLZsek1GMDpdG0cs';
+  String exercisePlaylistID = "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
+  String selectedPlaylistID;
 
   @override
   void initState() {
     super.initState();
-    _initChannel();
+    initPlaylist();
   }
 
-  _initChannel() async {
-    Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UCjzHeG1KWoonmf9d5KBvSiw');
+  initChannel() async {
+    Channel _channel = await APIService.instance.fetchChannel(channelId: 'UCjzHeG1KWoonmf9d5KBvSiw');
     setState(() {
-      _channel = channel;
+      channel = _channel;
     });
   }
 
-  _buildVideo(Video video) {
+  initPlaylist() async {
+    switch(title) {
+      case "Pilates":
+        selectedPlaylistID = pilatesPlayListID;
+        break;
+      case "Meditation":
+        selectedPlaylistID = spiritualPlaylistID;
+        break;
+      case "Yoga":
+        selectedPlaylistID = yogaForAdultsPlaylistID;
+        break;
+      case "Exercise":
+        selectedPlaylistID = exercisePlaylistID;
+        break;
+    }
+
+    print(selectedPlaylistID);
+    List<Video> _playlist = await APIService.instance.fetchVideosFromPlaylist(playlistId: selectedPlaylistID);
+    setState(() {
+      playlist = _playlist;
+    });
+  }
+
+
+  buildVideo(Video video) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -79,14 +117,24 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
   }
 
   _loadMoreVideos() async {
-    _isLoading = true;
+    isLoading = true;
     List<Video> moreVideos = await APIService.instance
-        .fetchVideosFromPlaylist(playlistId: _channel.uploadPlaylistId);
-    List<Video> allVideos = _channel.videos..addAll(moreVideos);
+        .fetchVideosFromPlaylist(playlistId: channel.uploadPlaylistId);
+    List<Video> allVideos = channel.videos..addAll(moreVideos);
     setState(() {
-      _channel.videos = allVideos;
+      channel.videos = allVideos;
     });
-    _isLoading = false;
+    isLoading = false;
+  }
+
+  loadMoreVideos() async {
+    isLoading = true;
+    List<Video> allVideos = await APIService.instance
+        .fetchVideosFromPlaylist(playlistId: selectedPlaylistID);
+    setState(() {
+      playlist = allVideos;
+    });
+    isLoading = false;
   }
 
   @override
@@ -95,22 +143,19 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _channel != null
+      body: playlist != null
           ? NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollDetails) {
-          if (!_isLoading &&
-              _channel.videos.length != int.parse(_channel.videoCount) &&
-              scrollDetails.metrics.pixels ==
-                  scrollDetails.metrics.maxScrollExtent) {
-            _loadMoreVideos();
+          if (!isLoading && scrollDetails.metrics.pixels == scrollDetails.metrics.maxScrollExtent) {
+            loadMoreVideos();
           }
           return false;
         },
         child: ListView.builder(
-          itemCount: _channel.videos.length,
+          itemCount: playlist.length,
           itemBuilder: (BuildContext context, int index) {
-            Video video = _channel.videos[index];
-            return _buildVideo(video);
+            Video video = playlist[index];
+            return buildVideo(video);
           },
         ),
       )

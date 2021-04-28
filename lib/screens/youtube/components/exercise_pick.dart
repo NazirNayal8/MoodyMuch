@@ -72,10 +72,10 @@ class ExercisePickScreen extends StatelessWidget {
                         },
                       ),
                       CategoryCard(
-                        title: "Kegel Exercises",
+                        title: "Exercise",
                         svgSrc: "assets/icons/exercises.svg",
                         press: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Kegel Exercise')));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => YoutubeVideoListScreen(title: 'Exercise')));
                         },
                       ),
                       CategoryCard(
