@@ -24,13 +24,14 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
 
   String pilatesPlayListID = "PLKzpgYNAcbwJ5v3Rt07CPx_yFnNAHJC7z";
   String yogaForKidsPlayListID = "PLc0asrzrjtZJWljYTAwKM6mdb4RfoiSxx";
+  String yogaForAdultsPlaylistID = "PLP7Ou7uUiYzCmZNNTKKjPZ8h01krmY8Fr";
   String mindfulnessPlaylistID = 'PLCQACBUblTbXAgZG7cxMYUddUlvTDO6v1';
   String spiritualPlaylistID = 'PLM_5z7EKcBv9hI7ABzjC37wPH0VAcQ0qU';
   String focusedPlaylistID = 'PLIw7E3llngHATo7IpCsS24_7dPJjzfd3t';
   String mantraPlaylistID = 'PLsuCfYXzi5DLisEHBoBKtVwkQ6WQub_Dh';
   String lovingKindnessPlaylistID = 'PL_jEEejSTzLz1jahZZLZsek1GMDpdG0cs';
+  String exercisePlaylistID = "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
   String selectedPlaylistID;
-
 
   @override
   void initState() {
@@ -39,8 +40,7 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
   }
 
   initChannel() async {
-    Channel _channel = await APIService.instance
-        .fetchChannel(channelId: 'UCjzHeG1KWoonmf9d5KBvSiw');
+    Channel _channel = await APIService.instance.fetchChannel(channelId: 'UCjzHeG1KWoonmf9d5KBvSiw');
     setState(() {
       channel = _channel;
     });
@@ -55,13 +55,10 @@ class YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
         selectedPlaylistID = spiritualPlaylistID;
         break;
       case "Yoga":
-        selectedPlaylistID = yogaForKidsPlayListID;
+        selectedPlaylistID = yogaForAdultsPlaylistID;
         break;
-      case "Kegel Exercise":
-        selectedPlaylistID = mantraPlaylistID;
-        break;
-      default:
-        selectedPlaylistID = mantraPlaylistID;
+      case "Exercise":
+        selectedPlaylistID = exercisePlaylistID;
         break;
     }
 
