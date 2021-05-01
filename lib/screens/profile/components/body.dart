@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
+import 'package:moodymuch/screens/profile/components/invite_friend.dart';
 import 'package:moodymuch/screens/profile/components/mood_tracks.dart';
 import 'package:moodymuch/screens/settings/settings.dart';
 import 'package:moodymuch/screens/sign_in/sign_in_screen.dart';
@@ -37,6 +38,7 @@ class Body extends StatelessWidget {
             text: "Invite a Friend",
             icon: "assets/icons/user.svg",
             press: () => {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => InviteFriendScreen()))
             },
           ),
           ProfileMenu(
