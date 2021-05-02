@@ -48,6 +48,16 @@ class DatabaseService {
     }
   }
 
+  Future<bool> recordRating(int rating, String comment) async {
+    try {
+      await userCollection.doc(uid).update({'ratings': FieldValue.arrayUnion([rating]), "comments": FieldValue.arrayUnion([comment])});
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final userdata = snapshot.data();
     return UserModel(
