@@ -6,9 +6,10 @@ import 'package:moodymuch/model/user.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 
-
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final FacebookLogin facebookLogin = FacebookLogin();
 
   AppUser _userFromFirebaseUser(User user) {
     return user != null ? AppUser(uid: user.uid, email: user.email) : null;
@@ -21,15 +22,16 @@ class AuthenticationService {
   Future signOut() async {
     try {
       return await _auth.signOut();
-    } on FirebaseAuthException catch(e) { 
+    } on FirebaseAuthException catch (e) {
       print(e.message);
       return null;
-    } 
+    }
   }
 
   Future signIn({String email, String password}) async {
     try {
-      UserCredential res = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential res = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User user = res.user;
       return user;
     } catch (e) {
@@ -40,7 +42,8 @@ class AuthenticationService {
 
   Future signUp({String email, String password}) async {
     try {
-      UserCredential res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential res = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User user = res.user;
       DatabaseService(uid: user.uid).updateUserData("John", "Doe", "", "", "");
       return _userFromFirebaseUser(user);
@@ -50,14 +53,14 @@ class AuthenticationService {
     }
   }
 
-   Future<bool> validatePassword(String password) async {
+  Future<bool> validatePassword(String password) async {
     var firebaseUser = _auth.currentUser;
 
     var authCredentials = EmailAuthProvider.credential(
         email: firebaseUser.email, password: password);
     try {
-      var authResult = await firebaseUser
-          .reauthenticateWithCredential(authCredentials);
+      var authResult =
+          await firebaseUser.reauthenticateWithCredential(authCredentials);
       return authResult.user != null;
     } catch (e) {
       print(e);
@@ -83,16 +86,17 @@ class AuthenticationService {
     }
   }
 
-  Future signInWithFacebook() async {
+  Future  signUpWithFacebook() async {
     try {
-      FacebookLogin facebookLogin = FacebookLogin();
       final result = await facebookLogin.logIn(['email']);
       final token = result.accessToken.token;
-      //final response = await http.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=${token}');
-      if(result.status == FacebookLoginStatus.loggedIn) {
+      final response = await http.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=${token}');
+      if (result.status == FacebookLoginStatus.loggedIn) {
         final credential = FacebookAuthProvider.credential(token);
-        _auth.signInWithCredential(credential);
-        return credential;
+        User user = (await _auth.signInWithCredential(credential)).user;
+        Map<String, dynamic> json = jsonDecode(response.body);
+        DatabaseService(uid: user.uid).updateUserData(json["first_name"], json["last_name"], "", "",  "");
+        return user;
       }
     } catch (e) {
       print(e.message);
@@ -100,4 +104,18 @@ class AuthenticationService {
     }
   }
 
+  Future signInWithFacebook() async {
+    try {
+      final result = await facebookLogin.logIn(['email']);
+      final token = result.accessToken.token;
+      if (result.status == FacebookLoginStatus.loggedIn) {
+        final credential = FacebookAuthProvider.credential(token);
+        User user = (await _auth.signInWithCredential(credential)).user;
+        return user;
+      }
+    } catch (e) {
+      print(e.message);
+      return null;
+    }
+  }
 }

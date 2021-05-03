@@ -11,7 +11,8 @@ import 'package:moodymuch/helper/authentication_service.dart';
 import 'package:moodymuch/model/user.dart';
 
 class Body extends StatelessWidget {
-  AppUser user;
+
+  final AuthenticationService auth = AuthenticationService();
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,12 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
                       press: () async {
+
                       },
                     ),
                     SocialCard(
                       icon: "assets/icons/facebook-2.svg",
                       press: () async {
-                        final AuthenticationService auth = AuthenticationService();
                         auth.signInWithFacebook().then((value) => {
                           if(value == null){
                             print("Invalid facebook credentials"),
