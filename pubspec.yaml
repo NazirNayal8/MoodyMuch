@@ -33,7 +33,6 @@ dependencies:
   flutter_spinkit: "^4.0.0"
   flutter_markdown: ^0.4.1
   google_fonts: any
-  random_color: ^1.0.5
 
   firebase_core: ^0.5.1
   firebase_auth: ^0.18.1
@@ -59,7 +58,8 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   fluttertoast: ^8.0.3
   syncfusion_flutter_charts: ^18.4.49
-
+  mailer: ^3.0.4
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

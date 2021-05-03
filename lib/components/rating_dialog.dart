@@ -1,7 +1,6 @@
-library rating_dialog;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:moodymuch/size_config.dart';
 
 class RatingDialog extends StatelessWidget {
   /// The dialog's title
@@ -31,6 +30,8 @@ class RatingDialog extends StatelessWidget {
   /// Returns a RatingDialogResponse with user's rating and comment values
   final Function(RatingDialogResponse) onSubmitted;
 
+  /// called when user cancels/closes the dialog
+  final Function onCancelled;
 
   const RatingDialog({
     @required this.title,
@@ -39,6 +40,7 @@ class RatingDialog extends StatelessWidget {
     @required this.submitButton,
     @required this.onSubmitted,
     this.ratingColor = Colors.amber,
+    this.onCancelled,
     this.force = false,
     this.initialRating = 1,
     this.commentHint = 'Tell us your comments',
@@ -46,6 +48,7 @@ class RatingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _commentController = TextEditingController();
     final _response = RatingDialogResponse();
 
     final _content = Stack(
@@ -95,7 +98,17 @@ class RatingDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-
+                SizedBox(height: getProportionateScreenHeight(10)),
+                TextField(
+                  controller: _commentController,
+                  textAlign: TextAlign.center,
+                  textInputAction: TextInputAction.newline,
+                  minLines: 1,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: commentHint,
+                  ),
+                ),
                 TextButton(
                   child: Text(
                     submitButton,
@@ -105,7 +118,8 @@ class RatingDialog extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
+                    if (!force) Navigator.pop(context);
+                    _response.comment = _commentController.text;
                     onSubmitted.call(_response);
                   },
                 ),
@@ -118,6 +132,7 @@ class RatingDialog extends StatelessWidget {
             icon: const Icon(Icons.close, size: 18),
             onPressed: () {
               Navigator.pop(context);
+              // onCancelled.call();
             },
           )
         ]
@@ -136,5 +151,9 @@ class RatingDialog extends StatelessWidget {
 }
 
 class RatingDialogResponse {
+  /// The user's comment response
+  String comment = '';
+
+  /// The user's rating response
   int rating = 1;
 }
