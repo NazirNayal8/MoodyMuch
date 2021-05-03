@@ -81,6 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           primaryYAxis: NumericAxis(
             labelFormat: '{value}%',
+            visibleMaximum: 100,
+            maximum: 100,
             labelStyle: TextStyle(fontWeight: FontWeight.bold)
           ),
         ),
@@ -159,9 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icon(Icons.videocam, size: 25, color: Colors.white),
                     label: Text("RECORD MOOD", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(19)),
+                  SizedBox(height: getProportionateScreenHeight(15)),
                   buildChart(recordsFromData(model.moods, model.dates)),
-                  SizedBox(height: getProportionateScreenHeight(19)),
+                  SizedBox(height: getProportionateScreenHeight(15)),
                   Expanded(
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,

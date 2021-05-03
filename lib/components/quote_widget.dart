@@ -17,25 +17,26 @@ class QuoteWidget extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/quote.png",
-            height: 25,
-            width: 25,
+            height: 23,
+            width: 23,
             color: Colors.black,
           ),
           SizedBox(
             height: getProportionateScreenHeight(5),
           ),
           Container(
-            width: SizeConfig.screenWidth - 60,
+            width: SizeConfig.screenWidth,
             alignment: Alignment.center,
             child: Text(
               quote,
+              maxLines: 5,
               style: GoogleFonts.lato(
-                textStyle: TextStyle(color: Colors.black, fontSize: 25),
+                textStyle: TextStyle(color: Colors.black, fontSize: 24),
               ),
             ),
           ),
           SizedBox(
-            height: getProportionateScreenHeight(10),
+            height: getProportionateScreenHeight(5),
           ),
           Text(
             author,
@@ -46,6 +47,5 @@ class QuoteWidget extends StatelessWidget {
           ),
         ],
       );
-    
   }
 }
