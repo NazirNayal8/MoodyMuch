@@ -1,14 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moodymuch/components/no_account_text.dart';
 import 'package:moodymuch/components/social_card.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
-import 'package:moodymuch/screens/profile/profile_screen.dart';
-import 'package:provider/provider.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
-import 'package:moodymuch/model/user.dart';
 
 class Body extends StatelessWidget {
 
@@ -64,7 +60,15 @@ class Body extends StatelessWidget {
                     ),
                     SocialCard(
                       icon: "assets/icons/twitter.svg",
-                      press: ()  {},
+                      press: ()  async {
+                        auth.signInWithTwitter().then((value) => {
+                          if(value == null){
+                            print("Invalid twitter credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),

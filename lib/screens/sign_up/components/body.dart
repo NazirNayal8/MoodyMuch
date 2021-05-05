@@ -36,7 +36,9 @@ class Body extends StatelessWidget {
                   children: [
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
-                      press: () {},
+                      press: () async {
+
+                      },
                     ),
                     SocialCard(
                       icon: "assets/icons/facebook-2.svg",
@@ -52,7 +54,15 @@ class Body extends StatelessWidget {
                     ),
                     SocialCard(
                       icon: "assets/icons/twitter.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signUpWithTwitter().then((value) => {
+                          if(value == null){
+                            print("Invalid facebook credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),
