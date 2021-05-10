@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/components/form_error.dart';
 import 'package:moodymuch/components/no_account_text.dart';
 import 'package:moodymuch/components/social_card.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
@@ -43,7 +44,14 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
                       press: () async {
-
+                        auth.signInWithGoogle().then((value) => {
+                          if(value == null){
+                            FormError(errors: ["Invalid google credentials"],),
+                            print("Invalid google credentials while logging in"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
                       },
                     ),
                     SocialCard(
@@ -51,7 +59,7 @@ class Body extends StatelessWidget {
                       press: () async {
                         auth.signInWithFacebook().then((value) => {
                           if(value == null){
-                            print("Invalid facebook credentials"),
+                            print("Invalid facebook credentials while logging in"),
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }
@@ -63,7 +71,7 @@ class Body extends StatelessWidget {
                       press: ()  async {
                         auth.signInWithTwitter().then((value) => {
                           if(value == null){
-                            print("Invalid twitter credentials"),
+                            print("Invalid twitter credentials while logging in"),
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }

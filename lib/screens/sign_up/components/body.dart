@@ -37,7 +37,13 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
                       press: () async {
-
+                        auth.signUpWithGoogle().then((value) => {
+                          if(value == null){
+                            print("Invalid google credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
                       },
                     ),
                     SocialCard(
