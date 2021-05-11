@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Welcome back\n${model.firstname}", style: headingStyle),
+                      Text("Welcome back\n", style: headingStyle),
                       Spacer(),
                       CircleAvatar(
                         backgroundImage: model.url != null && model.url != "" ? NetworkImage(model.url): AssetImage("assets/images/user.png"),
