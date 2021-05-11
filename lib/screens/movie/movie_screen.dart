@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/components/coustom_bottom_nav_bar.dart';
+import 'package:moodymuch/components/custom_bottom_nav_bar.dart';
 import 'package:moodymuch/enums.dart';
 import 'package:moodymuch/screens/movie/components/body.dart';
 
@@ -12,7 +12,7 @@ class MovieScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Movies"), 
       ),
-      body: Body(genreIDs: [18], bannedIDs: [35]),
+      body: Body(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.movie),
     );
   }

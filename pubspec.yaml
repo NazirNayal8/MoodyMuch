@@ -31,6 +31,8 @@ dependencies:
   flutter_svg: ^0.19.1 # help us to use SVG in our app
   provider: ^4.3.1 # for State management
   flutter_spinkit: "^4.0.0"
+  flutter_markdown: ^0.4.1
+  google_fonts: any
 
   firebase_core: ^0.5.1
   firebase_auth: ^0.18.1
@@ -39,18 +41,37 @@ dependencies:
   http: ^0.12.0+2
   youtube_player_flutter: ^6.0.3+2
 
+  flutter_facebook_login: ^3.0.0
+  flutter_twitter_login: ^1.1.0
+  google_sign_in: ^4.5.9
+
   image_picker: ^0.6.3
   settings_ui: ^0.6.0
   csc_picker: ^0.1.0
   percent_indicator: ^3.0.1
   animations: ^2.0.0
   dio: ^3.0.9
+  url_launcher: ^6.0.3
   rxdart: ^0.23.1
   bloc: ^3.0.0
+  audioplayers: 
 
+  intl: ^0.16.1
   intl_phone_field: ^2.0.0
   flutter_rating_bar: ^4.0.0
   fluttertoast: ^8.0.3
+  syncfusion_flutter_charts: ^18.4.49
+  
+  tflite_flutter: ^0.5.0 # ^0.8.0
+  logger: ^1.0.0
+
+  tuple: ^1.0.3
+
+  pytorch_mobile: ^0.1.0
+  image: ^2.1.10 # ^2.1.19
+  toast: ^0.1.5
+  tflite: ^1.1.2
+  mailer: ^3.0.4
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +90,14 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/policies/
+    - assets/songs/
+    - assets/models/
+    - assets/labels/labels.txt
+    - assets/models/mobilenetv2.pt
+    - assets/models/resnet.pt
+    - assets/labels/labels.csv
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -40,7 +40,7 @@ class BackdropAndRatingState extends State<BackdropAndRating> {
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40)),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage("https://image.tmdb.org/t/p/original" + backdrop),
+                image: backdrop == null ? NetworkImage(movie.poster) : NetworkImage("https://image.tmdb.org/t/p/original" + backdrop),
               ),
             ),
           ),

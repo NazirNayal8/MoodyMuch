@@ -10,17 +10,15 @@ import 'dart:math' as math;
 
 class MovieCarousel extends StatefulWidget {
   final List<int> genreIDs;
-  final List<int> bannedIDs;
-  MovieCarousel({Key key, @required this.genreIDs, @required this.bannedIDs}) : super(key: key);
+  MovieCarousel({Key key, @required this.genreIDs,}) : super(key: key);
   @override
-  _MovieCarouselState createState() => _MovieCarouselState(genreIDs, bannedIDs);
+  _MovieCarouselState createState() => _MovieCarouselState(genreIDs);
 }
 
 class _MovieCarouselState extends State<MovieCarousel> {
 
   final List<int> genreIDs;
-  final List<int> bannedIDs;
-  _MovieCarouselState(this.genreIDs, this.bannedIDs);
+  _MovieCarouselState(this.genreIDs);
 
   PageController _pageController;
   int initialPage = 0;
@@ -32,7 +30,7 @@ class _MovieCarouselState extends State<MovieCarousel> {
       viewportFraction: 0.8,
       initialPage: initialPage,
     );
-    moviesByGenreBloc..getMoviesByGenre(genreIDs, bannedIDs);
+    moviesByGenreBloc..getMoviesByGenre(genreIDs);
   }
 
   @override

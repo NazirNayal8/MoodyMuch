@@ -12,6 +12,9 @@ class UserModel {
   final String phone;
   final String address;
   final String url;
+  final List<double> moods;
+  final List<String> dates;
+  final int language;
 
-  UserModel({this.uid, this.firstname, this.lastname, this.phone, this.address, this.url });
+  UserModel({this.uid, this.firstname, this.lastname, this.phone, this.address, this.url, this.moods, this.dates, this.language});
 }
