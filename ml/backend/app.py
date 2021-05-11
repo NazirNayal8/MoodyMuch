@@ -2,8 +2,10 @@ import io
 import torchvision.transforms as transforms
 import os
 import sys
+import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
+import numpy as np
 from PIL import Image
 from flask import Flask, jsonify, request
 from torchvision.models import resnet18
@@ -36,6 +38,7 @@ def transform_image(image_bytes):
         transforms.Normalize([0.4722, 0.3625, 0.3350], [0.2181, 0.1921, 0.1855])
     ])
     image = Image.open(io.BytesIO(image_bytes))
+    print(np.asarray(image).shape)
     return my_transforms(image).unsqueeze(0)
 
 def get_prediction(image_bytes):

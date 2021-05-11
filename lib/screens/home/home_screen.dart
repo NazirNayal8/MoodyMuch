@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    response.stream.transform(utf8.decoder).listen((value) {
+    await response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
       print(jsonValue["prob"].runtimeType);
       prob = jsonValue["prob"];
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     var _image = File(image.path);
 
-    classifyImage(_image);
+    await classifyImage(_image);
   }
 
   @override
@@ -192,6 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         onPressed: () async {
                           await pickImage();
+                          print("Finished Picking image");
+                          print(prob);
                           db.recordMood(prob * 100).then((value) => {
                                 Fluttertoast.showToast(
                                   msg: "Submitted Successfully",
@@ -210,9 +212,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 16)),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(19)),
+                      SizedBox(height: getProportionateScreenHeight(15)),
                       buildChart(recordsFromData(model.moods, model.dates)),
-                      SizedBox(height: getProportionateScreenHeight(19)),
+                      SizedBox(height: getProportionateScreenHeight(15)),
                       Expanded(
                           child: PageView.builder(
                               scrollDirection: Axis.horizontal,
