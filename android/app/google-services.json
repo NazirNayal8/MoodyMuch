@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "698483882778-65mq2g6i0qqhq2u579epq1v46td0p4do.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moody_much",
+            "certificate_hash": "4449503fe13cee7b9c0ba48b5df7acab4e8acb81"
+          }
+        },
+        {
           "client_id": "698483882778-skusjk24ul96480di9ds0b33khi289ma.apps.googleusercontent.com",
           "client_type": 3
         }

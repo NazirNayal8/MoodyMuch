@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/components/social_card.dart';
 import 'package:moodymuch/constants.dart';
+import 'package:moodymuch/screens/home/home_screen.dart';
 import 'package:moodymuch/size_config.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 
 import 'sign_up_form.dart';
 
 class Body extends StatelessWidget {
+
+  final AuthenticationService auth = AuthenticationService();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,15 +36,39 @@ class Body extends StatelessWidget {
                   children: [
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signUpWithGoogle().then((value) => {
+                          if(value == null){
+                            print("Invalid google credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                     SocialCard(
                       icon: "assets/icons/facebook-2.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signUpWithFacebook().then((value) => {
+                          if(value == null){
+                            print("Invalid facebook credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                     SocialCard(
                       icon: "assets/icons/twitter.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signUpWithTwitter().then((value) => {
+                          if(value == null){
+                            print("Invalid twitter credentials"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),

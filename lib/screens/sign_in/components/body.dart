@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/components/form_error.dart';
 import 'package:moodymuch/components/no_account_text.dart';
 import 'package:moodymuch/components/social_card.dart';
+import 'package:moodymuch/screens/home/home_screen.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
+import 'package:moodymuch/helper/authentication_service.dart';
 
 class Body extends StatelessWidget {
+
+  final AuthenticationService auth = AuthenticationService();
+  String socialError = "";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -37,18 +44,44 @@ class Body extends StatelessWidget {
                   children: [
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signInWithGoogle().then((value) => {
+                          if(value == null){
+                            print("Invalid google credentials while logging in"),
+                            socialError = "You need to register with your google account!",
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                     SocialCard(
                       icon: "assets/icons/facebook-2.svg",
-                      press: () {},
+                      press: () async {
+                        auth.signInWithFacebook().then((value) => {
+                          if(value == null){
+                            print("Invalid facebook credentials while logging in"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                     SocialCard(
                       icon: "assets/icons/twitter.svg",
-                      press: () {},
+                      press: ()  async {
+                        auth.signInWithTwitter().then((value) => {
+                          if(value == null){
+                            print("Invalid twitter credentials while logging in"),
+                          } else {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),
+                Text(socialError),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
               ],

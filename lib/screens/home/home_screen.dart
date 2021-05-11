@@ -88,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
               labelStyle: TextStyle(fontWeight: FontWeight.bold)),
           primaryYAxis: NumericAxis(
               labelFormat: '{value}%',
+              visibleMaximum: 100,
+              maximum: 100,
               labelStyle: TextStyle(fontWeight: FontWeight.bold)),
         ),
         records.length == 0

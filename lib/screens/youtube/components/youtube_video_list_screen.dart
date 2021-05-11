@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodymuch/constants.dart';
-import 'package:moodymuch/model/VideoModel.dart';
+import 'package:moodymuch/model/video_model.dart';
 import 'package:moodymuch/screens/youtube/components/youtube_video_screen.dart';
 import 'package:moodymuch/services/youtubeAPIService.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:moodymuch/model/VideoModel.dart';
+import 'package:moodymuch/model/video_model.dart';
 import 'package:moodymuch/utilities/keys.dart';
 
 class APIService {

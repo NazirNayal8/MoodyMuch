@@ -1,4 +1,4 @@
-import 'package:moodymuch/model/VideoModel.dart';
+import 'package:moodymuch/model/video_model.dart';
 
 class Channel {
 
