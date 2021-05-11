@@ -2,7 +2,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'database.dart';
 import 'social_login.dart';
-import 'package:moodymuch/model/user.dart';
 
 class Google implements SocialLogin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,14 +19,23 @@ class Google implements SocialLogin {
         final credential = GoogleAuthProvider.credential(
             idToken: idToken, accessToken: accessToken);
         User user = (await _auth.signInWithCredential(credential)).user;
-        String firstName = user.displayName;
-        String profilePictureUrl = user.photoURL;
 
-        DatabaseService db = DatabaseService(uid: user.uid);
-        db.updateUserData(firstName, "", "", "", profilePictureUrl);
-        return user;
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (!value) {
+          print("User does not exist");
+          String firstName = user.displayName;
+          String profilePictureUrl = user.photoURL;
+          DatabaseService db = DatabaseService(uid: user.uid);
+          db.updateUserData(firstName, "", "", "", profilePictureUrl);
+          return user;
+        }
+        logout();
+        print("User exists");
+        return null;
       }
     } catch (e) {
+      logout();
       print(e.message);
       return null;
     }
@@ -44,15 +52,20 @@ class Google implements SocialLogin {
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
         User user = (await _auth.signInWithCredential(credential)).user;
-       /* DatabaseService db = DatabaseService(uid: user.uid);
-        UserModel userModel = await db.userData.first;
-        if(userModel.firstname != "") {
+
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (value) {
+          print("User exists");
           return user;
-        } */
-        return user;
+        }
+        print("User does not exist");
+        logout();
+        return null;
       }
     } catch (e) {
       print(e.message);
+      logout();
       return null;
     }
   }
@@ -62,5 +75,11 @@ class Google implements SocialLogin {
     googleSignIn.disconnect();
     googleSignIn.signOut();
     return _auth.signOut();
+  }
+
+  @override
+  Future<bool> isUserExist(String uid) async {
+    DatabaseService db = DatabaseService(uid: uid);
+    return db.isExist();
   }
 }

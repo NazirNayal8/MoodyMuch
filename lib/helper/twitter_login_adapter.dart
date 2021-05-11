@@ -20,14 +20,20 @@ class Twitter implements SocialLogin {
         final credential =
             TwitterAuthProvider.credential(accessToken: token, secret: secret);
         User user = (await _auth.signInWithCredential(credential)).user;
-        user.linkWithCredential(credential);
 
-        String firstName = user.displayName;
-        String profilePictureUrl = user.photoURL;
-        DatabaseService(uid: user.uid)
-            .updateUserData(firstName, "", "", "", profilePictureUrl);
-
-        return user;
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (!value) {
+          print("User does not exist");
+          String firstName = user.displayName;
+          String profilePictureUrl = user.photoURL;
+          DatabaseService db = DatabaseService(uid: user.uid);
+          db.updateUserData(firstName, "", "", "", profilePictureUrl);
+          return user;
+        }
+        logout();
+        print("User exists");
+        return null;
       }
     } catch (e) {
       print(e.message);
@@ -45,7 +51,16 @@ class Twitter implements SocialLogin {
         final credential =
             TwitterAuthProvider.credential(accessToken: token, secret: secret);
         User user = (await _auth.signInWithCredential(credential)).user;
-        return user;
+
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (value) {
+          print("User exists");
+          return user;
+        }
+        print("User does not exist");
+        logout();
+        return null;
       }
     } catch (e) {
       print(e.message);
@@ -59,4 +74,9 @@ class Twitter implements SocialLogin {
     return _auth.signOut();
   }
 
+  @override
+  Future<bool> isUserExist(String uid) async {
+    DatabaseService db = DatabaseService(uid: uid);
+    return db.isExist();
+  }
 }

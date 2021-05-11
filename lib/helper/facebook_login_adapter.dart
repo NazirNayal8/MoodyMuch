@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'social_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -20,15 +18,23 @@ class Facebook implements SocialLogin {
         final credential = FacebookAuthProvider.credential(token);
         User user = (await _auth.signInWithCredential(credential)).user;
 
-        final response = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=${token}');
-        Map<String, dynamic> json = jsonDecode(response.body);
-        String firstName = json["first_name"];
-        String lastName = json["last_name"];
-        String profilePictureUrl = json["picture"]["data"]["url"];
-        DatabaseService(uid: user.uid)
-            .updateUserData(firstName, lastName, "", "", profilePictureUrl);
-        return user;
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (!value) {
+          print("User does not exist");
+          final response = await http.get(
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=${token}');
+          Map<String, dynamic> json = jsonDecode(response.body);
+          String firstName = json["first_name"];
+          String lastName = json["last_name"];
+          String profilePictureUrl = json["picture"]["data"]["url"];
+          DatabaseService db = DatabaseService(uid: user.uid);
+          db.updateUserData(firstName, lastName, "", "", profilePictureUrl);
+          return user;
+        }
+        logout();
+        print("User exists");
+        return null;
       }
     } catch (e) {
       print(e.message);
@@ -44,7 +50,16 @@ class Facebook implements SocialLogin {
         final token = result.accessToken.token;
         final credential = FacebookAuthProvider.credential(token);
         User user = (await _auth.signInWithCredential(credential)).user;
-        return user;
+
+        //database check
+        bool value = await isUserExist(user.uid);
+        if (value) {
+          print("User exists");
+          return user;
+        }
+        print("User does not exist");
+        logout();
+        return null;
       }
     } catch (e) {
       print(e.message);
@@ -58,4 +73,9 @@ class Facebook implements SocialLogin {
     return _auth.signOut();
   }
 
+  @override
+  Future<bool> isUserExist(String uid) async {
+    DatabaseService db = DatabaseService(uid: uid);
+    return db.isExist();
+  }
 }

@@ -63,7 +63,7 @@ class Body extends StatelessWidget {
                       press: () async {
                         auth.signUpWithTwitter().then((value) => {
                           if(value == null){
-                            print("Invalid facebook credentials"),
+                            print("Invalid twitter credentials"),
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }

@@ -10,6 +10,7 @@ import 'package:moodymuch/helper/authentication_service.dart';
 class Body extends StatelessWidget {
 
   final AuthenticationService auth = AuthenticationService();
+  String socialError = "";
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +47,8 @@ class Body extends StatelessWidget {
                       press: () async {
                         auth.signInWithGoogle().then((value) => {
                           if(value == null){
-                            FormError(errors: ["Invalid google credentials"],),
                             print("Invalid google credentials while logging in"),
+                            socialError = "You need to register with your google account!",
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }
@@ -80,6 +81,7 @@ class Body extends StatelessWidget {
                     ),
                   ],
                 ),
+                Text(socialError),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
               ],
