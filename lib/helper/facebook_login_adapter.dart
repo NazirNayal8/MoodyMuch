@@ -21,9 +21,9 @@ class Facebook implements SocialLogin {
         //database check
         bool value = await isUserExist(user.uid);
         if (!value) {
-          print("User does not exist");
+          // print("User does not exist");
           final response = await http.get(
-              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=${token}');
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(480).height(480)&access_token=$token');
           Map<String, dynamic> json = jsonDecode(response.body);
           String firstName = json["first_name"];
           String lastName = json["last_name"];
@@ -33,7 +33,7 @@ class Facebook implements SocialLogin {
           return user;
         }
         logout();
-        print("User exists");
+        // print("User exists");
         return null;
       }
     } catch (e) {
@@ -54,10 +54,10 @@ class Facebook implements SocialLogin {
         //database check
         bool value = await isUserExist(user.uid);
         if (value) {
-          print("User exists");
+          // print("User exists");
           return user;
         }
-        print("User does not exist");
+        // print("User does not exist");
         logout();
         return null;
       }

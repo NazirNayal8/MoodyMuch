@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Welcome back\n",
+                            Text("Welcome back",
                                 style: headingStyle),
                             Spacer(),
                             CircleAvatar(
@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               radius: 50,
                             ),
                           ]),
-                      SizedBox(height: getProportionateScreenHeight(10)),
+                      // SizedBox(height: getProportionateScreenHeight(10)),
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           primary: kPrimaryColor,
@@ -194,8 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         onPressed: () async {
                           await pickImage();
-                          print("Finished Picking image");
-                          print(prob);
+                          // print("Finished Picking image");
+                          // print(prob);
                           db.recordMood(prob * 100).then((value) => {
                                 Fluttertoast.showToast(
                                   msg: "Submitted Successfully",
