@@ -62,15 +62,15 @@ dependencies:
   fluttertoast: ^8.0.3
   syncfusion_flutter_charts: ^18.4.49
   
-  tflite_flutter: ^0.5.0 # ^0.8.0
+  # tflite_flutter: ^0.5.0 # ^0.8.0
   logger: ^1.0.0
 
   tuple: ^1.0.3
 
-  pytorch_mobile: ^0.1.0
+  # pytorch_mobile: ^0.1.0
   image: ^2.1.10 # ^2.1.19
   toast: ^0.1.5
-  tflite: ^1.1.2
+  # tflite: ^1.1.2
   mailer: ^3.0.4
 
 dev_dependencies:
@@ -93,10 +93,6 @@ flutter:
     - assets/policies/
     - assets/songs/
     - assets/models/
-    - assets/labels/labels.txt
-    - assets/models/mobilenetv2.pt
-    - assets/models/resnet.pt
-    - assets/labels/labels.csv
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

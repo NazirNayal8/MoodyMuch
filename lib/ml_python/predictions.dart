@@ -68,7 +68,7 @@ class _MLModel extends State<MLModel> {
 
   pickImage() async {
     //this function to grab the image from camera
-    var image = await picker.getImage(source: ImageSource.camera);
+    var image = await picker.getImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
     if (image == null) return null;
 
     setState(() {
