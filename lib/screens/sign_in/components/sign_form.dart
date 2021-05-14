@@ -46,6 +46,12 @@ class _SignFormState extends State<SignForm> {
   }
 
   @override
+  void dispose() {
+    errors.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -111,13 +117,17 @@ class _SignFormState extends State<SignForm> {
       obscureText: obscure,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        removeError(error: kWrongEmailorPass);
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        return null;
+        // removeError(error: kWrongEmailorPass);
+        // if (value.isNotEmpty) {
+        //   removeError(error: kPassNullError);
+        // } else if (value.length >= 8) {
+        //   removeError(error: kShortPassError);
+        // }
+        // return null;
+        setState(() {
+          errors.clear();
+          password = value;
+        });
       },
       validator: (value) {
         if (value.isEmpty) {
@@ -148,13 +158,17 @@ class _SignFormState extends State<SignForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        removeError(error: kWrongEmailorPass);
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
+        // removeError(error: kWrongEmailorPass);
+        // if (value.isNotEmpty) {
+        //   removeError(error: kEmailNullError);
+        // } else if (emailValidatorRegExp.hasMatch(value)) {
+        //   removeError(error: kInvalidEmailError);
+        // }
+        // return null;
+        setState(() {
+          errors.clear();
+          email = value;
+        });
       },
       validator: (value) {
         if (value.isEmpty) {
