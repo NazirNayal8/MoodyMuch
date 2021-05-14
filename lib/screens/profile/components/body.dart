@@ -20,16 +20,12 @@ class Body extends StatelessWidget {
 
   void _showRatingDialog(BuildContext context, String uid) {
     final _dialog = RatingDialog(
-      // your app's name?
       title: 'Rate Us',
-      // encourage your user to leave a high rating?
       message:
-          'Tap a star to rate us. Add more feedback here if you want.',
-      // your app's logo?
+          'Tap a star to rate us. Add more feedback if you want.',
       image: const FlutterLogo(size: 70),
       submitButton: 'Submit',
       onSubmitted: (response) async {
-        print('rating: ${response.rating}, comment: ${response.comment}');
         bool success = await DatabaseService(uid: uid).recordRating(response.rating, response.comment);
 
         String text = success ? "Thanks for Your Feedback!" : "Failed to Submit Rating";

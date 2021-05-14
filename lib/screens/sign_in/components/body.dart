@@ -36,9 +36,9 @@ class Body extends StatelessWidget {
                   "Sign in with your email and password  \nor continue with social media",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(60)),
                 SignForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(40)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
