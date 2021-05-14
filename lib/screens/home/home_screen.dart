@@ -102,33 +102,33 @@ class _HomeScreenState extends State<HomeScreen> {
 
   classifyImage(File image) async {
     //this function runs the model on the image
+    // List<int> imageBytes = image.readAsBytesSync();
 
-    List<int> imageBytes = image.readAsBytesSync();
-
+    // ignore: deprecated_member_use
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
-    print(length);
+    // print(length);
     var uri = Uri.parse("http://10.0.2.2:5000/predict");
-    print("connection established");
+    // print("connection established");
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(image.path));
-    //contentType: new MediaType(‘image’, ‘png’));
-    print("Sending Request ...");
+    // contentType: new MediaType(‘image’, ‘png’));
+    // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    await response.stream.transform(utf8.decoder).listen((value) {
+    response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
-      print(jsonValue["prob"].runtimeType);
+      // print(jsonValue["prob"].runtimeType);
       prob = jsonValue["prob"];
-      print(prob);
-      print(value);
+      // print(prob);
+      // print(value);
     });
   }
 
   pickImage() async {
     //this function to grab the image from camera
-    var image = await picker.getImage(source: ImageSource.camera);
+    var image = await picker.getImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
     if (image == null) return null;
 
     var _image = File(image.path);
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Welcome back\n${model.firstname}",
+                            Text("Welcome back\n",
                                 style: headingStyle),
                             Spacer(),
                             CircleAvatar(
