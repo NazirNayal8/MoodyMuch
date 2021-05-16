@@ -20,6 +20,7 @@ class DatabaseService {
         'url': url,
         'moods': [],
         'record_date': [],
+        'mood_comment': [],
         'language': 0,
       });
       return "Done";
@@ -43,9 +44,11 @@ class DatabaseService {
     try {
       String date = DateTime.now().toString();
       date = date.substring(0, date.length - 7);
+      String mood_comment = '';
       await userCollection.doc(uid).update({
         'moods': FieldValue.arrayUnion([mood]),
-        "record_date": FieldValue.arrayUnion([date])
+        "record_date": FieldValue.arrayUnion([date]),
+        "mood_comments": FieldValue.arrayUnion([mood_comment])
       });
       return true;
     } catch (e) {
@@ -75,6 +78,7 @@ class DatabaseService {
         url: userdata['url'] ?? '',
         moods: List.castFrom(userdata['moods'] ?? []),
         dates: List.castFrom(userdata["record_date"] ?? []),
+        mood_comments: List.castFrom(userdata["mood_comments"] ?? []),
         language: userdata['language'] ?? 0);
   }
 
