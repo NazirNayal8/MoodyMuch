@@ -247,6 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<MoodRecord> recordsFromData(List<double> moods, List<String> dates, List<String> mood_comments) {
     List<MoodRecord> records = [];
+    if (mood_comments.length<1){
+      mood_comments = moods.map((e) => '').toList();
+      DatabaseService(uid: user.uid).recordMoodComments(mood_comments);
+    }
     for (int i = 0; i < moods.length; i++) {
       records.add(new MoodRecord(mood: moods[i], date: (i + 1).toString(), mood_comment: mood_comments[i]));
     }
