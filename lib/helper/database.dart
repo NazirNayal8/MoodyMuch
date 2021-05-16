@@ -67,6 +67,16 @@ class DatabaseService {
     }
   }
 
+  Future<bool> recordMoodComments(List<String> comments) async {
+    try {
+      await userCollection.doc(uid).update({"mood_comments": comments});
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   UserModel _userDataFromSnapshot(DocumentSnapshot snapshot) {
     final userdata = snapshot.data();
     return UserModel(
