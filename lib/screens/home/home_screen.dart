@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
     // print(length);
-    var uri = Uri.parse("http://10.0.2.2:5000/predict");
+    var uri = Uri.parse("http://127.0.0.1:5000/predict");
     // print("connection established");
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Welcome back\n",
+                            Text("Welcome back\n"+model.firstname,
                                 style: headingStyle),
                             Spacer(),
                             CircleAvatar(
