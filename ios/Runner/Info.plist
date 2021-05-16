@@ -5,11 +5,30 @@
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
+        <key>CFBundleURLSchemes</key>
+        <array>
         <string>fb1252553268497188</string>
-      </array>
+        </array>
       </dict>
+
+      <dict>
+      	<key>CFBundleTypeRole</key>
+      	<string>Editor</string>
+     	<key>CFBundleURLSchemes</key>
+      	<array>
+      	<string>com.googleusercontent.apps.698483882778-u842hejfopqmmo9k5tjv1i6kcm9upavl</string>
+      	</array>
+      </dict>
+
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>twitterkit-Y90fsPI8VRYuTAscOzCayqQPK</string>
+        </array>
+      </dict>
+
     </array>
     <key>FacebookAppID</key>
     <string>1252553268497188</string>
