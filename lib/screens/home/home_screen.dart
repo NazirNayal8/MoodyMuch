@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 xValueMapper: (MoodRecord record, _) => record.date,
                 yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
                 dataLabelSettings: DataLabelSettings(isVisible: false),
+                dataLabelMapper: (MoodRecord record, _) => record.mood_comment,
                 enableTooltip: true,
                 animationDuration: 2000,
                 markerSettings: MarkerSettings(
@@ -215,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 TextStyle(color: Colors.white, fontSize: 16)),
                       ),
                       SizedBox(height: getProportionateScreenHeight(15)),
-                      buildChart(recordsFromData(model.moods, model.dates)),
+                      buildChart(recordsFromData(model.moods, model.dates, model.mood_comments)),
                       SizedBox(height: getProportionateScreenHeight(15)),
                       Expanded(
                           child: PageView.builder(
@@ -244,10 +245,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<MoodRecord> recordsFromData(List<double> moods, List<String> dates) {
+  List<MoodRecord> recordsFromData(List<double> moods, List<String> dates, List<String> mood_comments) {
     List<MoodRecord> records = [];
     for (int i = 0; i < moods.length; i++) {
-      records.add(new MoodRecord(mood: moods[i], date: (i + 1).toString()));
+      records.add(new MoodRecord(mood: moods[i], date: (i + 1).toString(), mood_comment: mood_comments[i]));
     }
     return records;
   }
@@ -256,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
 class MoodRecord {
   final double mood;
   final String date;
+  final String mood_comment;
 
-  MoodRecord({this.mood, this.date});
+  MoodRecord({this.mood, this.date, this.mood_comment});
 }
