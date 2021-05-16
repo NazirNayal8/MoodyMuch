@@ -1,69 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/mood_comment_dialog.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/user.dart';
-import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class MoodTrackScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     AppUser user = Provider.of<AppUser>(context);
     DatabaseService db = DatabaseService(uid: user?.uid ?? "0");
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Mood Track History"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [StreamBuilder<UserModel>(
-          stream: db.userData,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              UserModel data = snapshot.data;
-              if(data.moods.length == 0 || data.dates.length == 0) {
-                return  Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      kPrimaryColor,
-                    ),
-                  ),
-                );
-              }
 
-              List<double> revMoods = data.moods.reversed.toList();
-              List<String> revDates = data.dates.reversed.toList();
-              List<String> revComments = data.mood_comments.reversed.toList();
-              return Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  padding: const EdgeInsets.only(top: 20),
-                  itemCount: revMoods.length,
-                  itemBuilder: (context, i) => moodRecord(revMoods[i], revDates[i], revComments[i])
-                ),
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    kPrimaryColor,
-                  ),
-                ),
-              );
-            }
-          }
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Mood Track History"),
         ),
-        ]
-      )
-    );
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StreamBuilder<UserModel>(
+                  stream: db.userData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel data = snapshot.data;
+                      if (data.moods.length == 0 || data.dates.length == 0) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              kPrimaryColor,
+                            ),
+                          ),
+                        );
+                      }
+
+                      List<double> revMoods = data.moods.reversed.toList();
+                      List<String> revDates = data.dates.reversed.toList();
+                      List<String> revComments =
+                          data.mood_comments.reversed.toList();
+                      return Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          padding: const EdgeInsets.only(top: 20),
+                          itemCount: revMoods.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                                onTap: () => _showCommentDialog(
+                                    context, user.uid, index, revComments),
+                                child: moodRecord(revMoods[index],
+                                    revDates[index], revComments[index]));
+                          },
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            kPrimaryColor,
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+            ]));
   }
 
   Widget moodRecord(double mood, String date, String comment) {
@@ -85,12 +87,12 @@ class MoodTrackScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: getProportionateScreenWidth(10)),
+          SizedBox(width: 10),
           CircularPercentIndicator(
-            radius: 70.0,
-            lineWidth: 8.0,
-            percent: mood / 100,
-            center: Text(
+              radius: 70.0,
+              lineWidth: 8.0,
+              percent: mood / 100,
+              center: Text(
                 mood.toInt().toString() + "%",
                 style: TextStyle(
                   fontSize: 15,
@@ -98,18 +100,17 @@ class MoodTrackScreen extends StatelessWidget {
                   color: colorByPercentage(mood),
                 ),
               ),
-            circularStrokeCap: CircularStrokeCap.square,
-            backgroundColor: Colors.black12,                         
-            maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-            progressColor: colorByPercentage(mood)
-          ),
-          SizedBox(width: getProportionateScreenWidth(10)),
+              circularStrokeCap: CircularStrokeCap.square,
+              backgroundColor: Colors.black12,
+              maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
+              progressColor: colorByPercentage(mood)),
+          SizedBox(width: 10),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                moodText(mood), 
+                moodText(mood),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -118,7 +119,7 @@ class MoodTrackScreen extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
               Text(
-                date, 
+                date,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -135,23 +136,27 @@ class MoodTrackScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(width: getProportionateScreenWidth(10)),
+          SizedBox(width: 10),
         ],
       ),
     );
   }
 }
 
-void _showCommentDialog(BuildContext context, String uid) {
+Dialog _showCommentDialog(
+    BuildContext context, String uid, int index, List<String> revComments) {
   final _dialog = MoodCommentDialog(
     title: 'Mood Record Comments',
-    message:
-    'Tap a star to rate us. Add more feedback if you want.',
+    message: 'Tap a star to rate us. Add more feedback if you want.',
     submitButton: 'Submit',
-    onSubmitted: (response) async {
-      bool success = await DatabaseService(uid: uid).recordRating(response.rating, response.comment);
 
-      String text = success ? "Mood Comments Saved!" : "Failed to Save Comments";
+    onSubmitted: (response) async {
+      revComments[index] = response.comment;
+      revComments = revComments.reversed.toList();
+      bool success =
+          await DatabaseService(uid: uid).recordMoodComments(revComments);
+
+      String text = success ? "Mood Comment Saved!" : "Failed to Save Comment";
       Color bgColor = success ? kPrimaryColor : Colors.red;
       Fluttertoast.showToast(
         msg: text,
