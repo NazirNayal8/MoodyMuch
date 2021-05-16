@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/size_config.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class MoodCommentDialog extends StatelessWidget {
   /// The dialog's title
@@ -14,11 +16,16 @@ class MoodCommentDialog extends StatelessWidget {
   /// Disables the cancel button and forces the user to leave a rating
   final bool force;
 
+  final double mood;
+  final String date;
+
   /// The initial rating of the rating bar
   final int initialRating;
 
   /// The comment's TextField hint text
   final String commentHint;
+
+  final String prev;
 
   /// The submit button's label/text
   final String submitButton;
@@ -31,19 +38,25 @@ class MoodCommentDialog extends StatelessWidget {
 
   const MoodCommentDialog({
     @required this.title,
+    @required this.mood,
+    @required this.date,
     @required this.message,
     @required this.submitButton,
     @required this.onSubmitted,
+
+    @required this.prev,
     this.ratingColor = Colors.amber,
     this.onCancelled,
     this.force = false,
     this.initialRating = 1,
-    this.commentHint = 'What were you doing when you recorded this mood? Anything specific that happened?',
+
+    this.commentHint =
+        'What were you doing when you recorded this mood? Anything specific that happened?',
   });
 
   @override
   Widget build(BuildContext context) {
-    final _commentController = TextEditingController();
+    final _commentController = TextEditingController.fromValue(TextEditingValue(text: prev));
     final _response = RatingDialogResponse();
 
     final _content = Stack(
@@ -66,6 +79,32 @@ class MoodCommentDialog extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
+                CircularPercentIndicator(
+                    radius: 70.0,
+                    lineWidth: 8.0,
+                    percent: mood / 100,
+                    center: Text(
+                      mood.toInt().toString() + "%",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: colorByPercentage(mood),
+                      ),
+                    ),
+                    circularStrokeCap: CircularStrokeCap.square,
+                    backgroundColor: Colors.black12,
+                    maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
+                    progressColor: colorByPercentage(mood)),
+                const SizedBox(height: 5),
+                Text(
+                  date,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 15),
                 Text(
                   message,
                   textAlign: TextAlign.center,
@@ -80,7 +119,7 @@ class MoodCommentDialog extends StatelessWidget {
                   minLines: 1,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: commentHint,
+                    hintText: commentHint
                   ),
                 ),
                 TextButton(
