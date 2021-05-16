@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moodymuch/components/social_card.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
+import 'package:moodymuch/screens/signup_success/signup_success.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
 
@@ -41,7 +42,7 @@ class Body extends StatelessWidget {
                           if(value == null){
                             print("Invalid google credentials"),
                           } else {
-                            Navigator.pushNamed(context, HomeScreen.routeName),
+                            Navigator.pushNamed(context, SignUpSuccessScreen.routeName),
                           }
                         });
                       },
@@ -53,7 +54,7 @@ class Body extends StatelessWidget {
                           if(value == null){
                             print("Invalid facebook credentials"),
                           } else {
-                            Navigator.pushNamed(context, HomeScreen.routeName),
+                            Navigator.pushNamed(context, SignUpSuccessScreen.routeName),
                           }
                         });
                       },
@@ -65,7 +66,7 @@ class Body extends StatelessWidget {
                           if(value == null){
                             print("Invalid twitter credentials"),
                           } else {
-                            Navigator.pushNamed(context, HomeScreen.routeName),
+                            Navigator.pushNamed(context, SignUpSuccessScreen.routeName),
                           }
                         });
                       },
