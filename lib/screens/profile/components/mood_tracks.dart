@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moodymuch/components/mood_comment_dialog.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/user.dart';
 import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MoodTrackScreen extends StatelessWidget {
 
@@ -38,13 +40,14 @@ class MoodTrackScreen extends StatelessWidget {
 
               List<double> revMoods = data.moods.reversed.toList();
               List<String> revDates = data.dates.reversed.toList();
+              List<String> revComments = data.mood_comments.reversed.toList();
               return Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   padding: const EdgeInsets.only(top: 20),
                   itemCount: revMoods.length,
-                  itemBuilder: (context, i) => moodRecord(revMoods[i], revDates[i])
+                  itemBuilder: (context, i) => moodRecord(revMoods[i], revDates[i], revComments[i])
                 ),
               );
             } else {
@@ -63,7 +66,7 @@ class MoodTrackScreen extends StatelessWidget {
     );
   }
 
-  Widget moodRecord(double mood, String date) {
+  Widget moodRecord(double mood, String date, String comment) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       padding: EdgeInsets.all(10.0),
@@ -80,7 +83,9 @@ class MoodTrackScreen extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(width: getProportionateScreenWidth(10)),
           CircularPercentIndicator(
             radius: 70.0,
             lineWidth: 8.0,
@@ -106,7 +111,7 @@ class MoodTrackScreen extends StatelessWidget {
               Text(
                 moodText(mood), 
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: colorByPercentage(mood),
                 ),
@@ -115,15 +120,55 @@ class MoodTrackScreen extends StatelessWidget {
               Text(
                 date, 
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              Text(
+                comment,
+                style: TextStyle(
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.left,
               ),
             ],
           ),
+          SizedBox(width: getProportionateScreenWidth(10)),
         ],
       ),
     );
   }
+}
+
+void _showCommentDialog(BuildContext context, String uid) {
+  final _dialog = MoodCommentDialog(
+    title: 'Mood Record Comments',
+    message:
+    'Tap a star to rate us. Add more feedback if you want.',
+    submitButton: 'Submit',
+    onSubmitted: (response) async {
+      bool success = await DatabaseService(uid: uid).recordRating(response.rating, response.comment);
+
+      String text = success ? "Mood Comments Saved!" : "Failed to Save Comments";
+      Color bgColor = success ? kPrimaryColor : Colors.red;
+      Fluttertoast.showToast(
+        msg: text,
+        timeInSecForIosWeb: 2,
+        backgroundColor: bgColor,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_SHORT,
+        fontSize: 16,
+      );
+    },
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) => _dialog,
+  );
 }
