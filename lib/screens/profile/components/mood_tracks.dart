@@ -4,6 +4,7 @@ import 'package:moodymuch/components/mood_comment_dialog.dart';
 import 'package:moodymuch/constants.dart';
 import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/user.dart';
+import 'package:moodymuch/size_config.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +50,12 @@ class MoodTrackScreen extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                                 onTap: () => _showCommentDialog(
-                                    context, user.uid, index, revComments),
+                                    context,
+                                    user.uid,
+                                    index,
+                                    revMoods,
+                                    revDates,
+                                    revComments),
                                 child: moodRecord(revMoods[index],
                                     revDates[index], revComments[index]));
                           },
@@ -70,86 +76,94 @@ class MoodTrackScreen extends StatelessWidget {
 
   Widget moodRecord(double mood, String date, String comment) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-      padding: EdgeInsets.all(10.0),
-      height: 100.0,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, 3),
-            blurRadius: 10.0,
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: 10),
-          CircularPercentIndicator(
-              radius: 70.0,
-              lineWidth: 8.0,
-              percent: mood / 100,
-              center: Text(
-                mood.toInt().toString() + "%",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: colorByPercentage(mood),
-                ),
-              ),
-              circularStrokeCap: CircularStrokeCap.square,
-              backgroundColor: Colors.black12,
-              maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
-              progressColor: colorByPercentage(mood)),
-          SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+        padding: EdgeInsets.all(10.0),
+        height: 100.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 3),
+              blurRadius: 10.0,
+            ),
+          ],
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                moodText(mood),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: colorByPercentage(mood),
-                ),
-                textAlign: TextAlign.left,
+              SizedBox(width: getProportionateScreenWidth(10)),
+              CircularPercentIndicator(
+                  radius: 70.0,
+                  lineWidth: 8.0,
+                  percent: mood / 100,
+                  center: Text(
+                    mood.toInt().toString() + "%",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: colorByPercentage(mood),
+                    ),
+                  ),
+                  circularStrokeCap: CircularStrokeCap.square,
+                  backgroundColor: Colors.black12,
+                  maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
+                  progressColor: colorByPercentage(mood)),
+              SizedBox(width: getProportionateScreenWidth(10)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    moodText(mood),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: colorByPercentage(mood),
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  Text(
+                    date,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  Text(
+                    comment,
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
-              Text(
-                date,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                comment,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.left,
-              ),
+              SizedBox(width: getProportionateScreenWidth(10))
             ],
           ),
-          SizedBox(width: 10),
-        ],
-      ),
-    );
+        ));
   }
 }
 
-Dialog _showCommentDialog(
-    BuildContext context, String uid, int index, List<String> revComments) {
+Dialog _showCommentDialog(BuildContext context, String uid, int index,
+    List<double> revMoods, List<String> revDates, List<String> revComments) {
   final _dialog = MoodCommentDialog(
-    title: 'Mood Record Comments',
-    message: 'Tap a star to rate us. Add more feedback if you want.',
-    submitButton: 'Submit',
-
+    prev: revComments[index],
+    mood: revMoods[index],
+    date: revDates[index],
+    title: 'Comment for record:',
+    message: 'Add comments to this mood record.',
+    submitButton: 'Save',
     onSubmitted: (response) async {
       revComments[index] = response.comment;
       revComments = revComments.reversed.toList();
