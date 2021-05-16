@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 dataSource: records,
                 xValueMapper: (MoodRecord record, _) => record.date,
                 yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
-                dataLabelSettings: DataLabelSettings(isVisible: true),
+                dataLabelSettings: DataLabelSettings(isVisible: false),
                 dataLabelMapper: (MoodRecord record, _) => record.mood_comment,
                 enableTooltip: true,
                 animationDuration: 2000,
