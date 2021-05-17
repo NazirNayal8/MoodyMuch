@@ -20,7 +20,7 @@ class DatabaseService {
         'url': url,
         'moods': [],
         'record_date': [],
-        'mood_comment': [],
+        'mood_comments': [],
         'language': 0,
       });
       return "Done";
@@ -40,16 +40,14 @@ class DatabaseService {
     }
   }
 
-  Future<bool> recordMood(double mood) async {
+  Future<bool> recordMood(List<double> mood, List<String> date, List<String> mood_comments) async {
     try {
-      String date = DateTime.now().toString();
-      date = date.substring(0, date.length - 7);
-      String mood_comment = ' ';
+
       await userCollection.doc(uid).update({
-        'moods': FieldValue.arrayUnion([mood]),
-        "record_date": FieldValue.arrayUnion([date]),
-        "mood_comments": FieldValue.arrayUnion([mood_comment])
-      });
+        'moods': mood,
+        "mood_comments": mood_comments,
+        "record_date":date}
+      );
       return true;
     } catch (e) {
       print(e.toString());

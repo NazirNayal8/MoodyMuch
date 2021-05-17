@@ -104,16 +104,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  classifyImage(File image) async {
+  Future<bool> classifyImage(File image) async {
     //this function runs the model on the image
     // List<int> imageBytes = image.readAsBytesSync();
 
     // ignore: deprecated_member_use
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
-    print(length);
+    //print(length);
     var uri = Uri.parse("https://moody-much-ml.herokuapp.com/predict");
-    print("connection established");
+    //print("connection established");
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(image.path));
@@ -121,24 +121,30 @@ class _HomeScreenState extends State<HomeScreen> {
     // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
+    if (response.statusCode != 200){
+      return false;
+    }
     await response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
-      // print(jsonValue["prob"].runtimeType);
-      prob = jsonValue["prob"];
-      // print(prob);
-      // print(value);
+      setState(() {
+        prob = jsonValue["prob"];
+      });
     });
+    return true;
   }
 
-  pickImage() async {
+  Future<bool> pickImage() async {
     //this function to grab the image from camera
     var image = await picker.getImage(
-        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
-    if (image == null) return null;
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front, maxHeight: 480,
+        maxWidth: 480,
+        imageQuality: 25);
+    if (image == null) return false;
 
     var _image = File(image.path);
 
-    await classifyImage(_image);
+    bool res = await classifyImage(_image);
+    return res;
   }
 
   @override
@@ -202,20 +208,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shadowColor: Colors.black,
                               ),
                               onPressed: () async {
-                                await pickImage();
-                                print("Finished Picking image");
-                                print(prob);
-                                db.recordMood(prob * 100).then((value) => {
-                                      Fluttertoast.showToast(
-                                        msg: "Submitted Successfully",
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: kPrimaryColor,
-                                        textColor: Colors.white,
-                                        gravity: ToastGravity.BOTTOM,
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        fontSize: 16,
-                                      ),
-                                    });
+                                bool success = await pickImage();
+                                if (success){
+                                  model.moods.add(prob*100);
+                                  String date = DateTime.now().toString();
+                                  date = date.substring(0, date.length - 7);
+                                  model.dates.add(date);
+                                  model.mood_comments.add('');
+
+                                  db.recordMood(model.moods, model.dates, model.mood_comments).then((value) => {
+                                    Fluttertoast.showToast(
+                                      msg: "Submitted Successfully",
+                                      timeInSecForIosWeb: 2,
+                                      backgroundColor: kPrimaryColor,
+                                      textColor: Colors.white,
+                                      gravity: ToastGravity.BOTTOM,
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      fontSize: 16,
+                                    ),
+                                  });
+                                }else{
+                                  Fluttertoast.showToast(
+                                    msg: "Something went wrong",
+                                    timeInSecForIosWeb: 2,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    fontSize: 16,
+                                  );
+                                }
                               },
                               icon: Icon(Icons.videocam,
                                   size: 25, color: Colors.white),
@@ -279,10 +301,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<MoodRecord> recordsFromData(
       List<double> moods, List<String> dates, List<String> mood_comments) {
     List<MoodRecord> records = [];
-    if (mood_comments.length < 1) {
-      mood_comments = moods.map((e) => '').toList();
-      DatabaseService(uid: user.uid).recordMoodComments(mood_comments);
-    }
     for (int i = 0; i < moods.length; i++) {
       records.add(new MoodRecord(
           mood: moods[i],

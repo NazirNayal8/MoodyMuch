@@ -26,7 +26,7 @@ class Body extends StatelessWidget {
             child: DefaultButton(
               text: "Generate Mood Record",
               press: () async {
-                await db.recordMood(rng.nextDouble() * 100);
+                //await db.recordMood(rng.nextDouble() * 100);
               },
             )
           )
