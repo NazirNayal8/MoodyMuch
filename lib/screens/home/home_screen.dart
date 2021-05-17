@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:moodymuch/components/custom_bottom_nav_bar.dart';
 import 'package:moodymuch/components/quote_widget.dart';
 import 'package:moodymuch/constants.dart';
@@ -11,16 +15,15 @@ import 'package:moodymuch/enums.dart';
 import 'package:moodymuch/helper/database.dart';
 import 'package:moodymuch/model/quote_model.dart';
 import 'package:moodymuch/model/user.dart';
+import 'package:moodymuch/screens/profile/components/mood_tracks.dart';
 import 'package:moodymuch/size_config.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -76,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 xValueMapper: (MoodRecord record, _) => record.date,
                 yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
                 dataLabelSettings: DataLabelSettings(isVisible: false),
+                dataLabelMapper: (MoodRecord record, _) => record.mood_comment,
                 enableTooltip: true,
                 animationDuration: 2000,
                 markerSettings: MarkerSettings(
@@ -102,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   classifyImage(File image) async {
     //this function runs the model on the image
+    // List<int> imageBytes = image.readAsBytesSync();
 
-    List<int> imageBytes = image.readAsBytesSync();
-
+    // ignore: deprecated_member_use
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
     print(length);
@@ -113,23 +117,23 @@ class _HomeScreenState extends State<HomeScreen> {
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(image.path));
-    //contentType: new MediaType(‘image’, ‘png’));
-    print("Sending Request ...");
+    // contentType: new MediaType(‘image’, ‘png’));
+    // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    print(response);
-    await response.stream.transform(utf8.decoder).listen((value) {
+    response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
-      print(jsonValue["prob"].runtimeType);
+      // print(jsonValue["prob"].runtimeType);
       prob = jsonValue["prob"];
-      print(prob);
-      print(value);
+      // print(prob);
+      // print(value);
     });
   }
 
   pickImage() async {
     //this function to grab the image from camera
-    var image = await picker.getImage(source: ImageSource.camera);
+    var image = await picker.getImage(
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front);
     if (image == null) return null;
 
     var _image = File(image.path);
@@ -175,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Welcome back\n${model.firstname}",
+                            Text("Welcome back\n" + model.firstname,
                                 style: headingStyle),
                             Spacer(),
                             CircleAvatar(
@@ -188,35 +192,59 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ]),
                       SizedBox(height: getProportionateScreenHeight(10)),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          primary: kPrimaryColor,
-                          shadowColor: Colors.black,
-                        ),
-                        onPressed: () async {
-                          await pickImage();
-                          print("Finished Picking image");
-                          print(prob);
-                          db.recordMood(prob * 100).then((value) => {
-                                Fluttertoast.showToast(
-                                  msg: "Submitted Successfully",
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: kPrimaryColor,
-                                  textColor: Colors.white,
-                                  gravity: ToastGravity.BOTTOM,
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  fontSize: 16,
-                                ),
-                              });
-                        },
-                        icon:
-                            Icon(Icons.videocam, size: 25, color: Colors.white),
-                        label: Text("RECORD MOOD",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
-                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: kPrimaryColor,
+                                shadowColor: Colors.black,
+                              ),
+                              onPressed: () async {
+                                await pickImage();
+                                print("Finished Picking image");
+                                print(prob);
+                                db.recordMood(prob * 100).then((value) => {
+                                      Fluttertoast.showToast(
+                                        msg: "Submitted Successfully",
+                                        timeInSecForIosWeb: 2,
+                                        backgroundColor: kPrimaryColor,
+                                        textColor: Colors.white,
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        fontSize: 16,
+                                      ),
+                                    });
+                              },
+                              icon: Icon(Icons.videocam,
+                                  size: 25, color: Colors.white),
+                              label: Text("RECORD MOOD",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14)),
+                            ),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: kPrimaryColor,
+                                shadowColor: Colors.black,
+                              ),
+                              onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MoodTrackScreen()))
+                              },
+                              icon: Icon(Icons.analytics,
+                                  size: 25, color: Colors.white),
+                              label: Text("MOOD HISTORY",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14)),
+                            )
+                          ]),
                       SizedBox(height: getProportionateScreenHeight(15)),
-                      buildChart(recordsFromData(model.moods, model.dates)),
+                      buildChart(recordsFromData(
+                          model.moods, model.dates, model.mood_comments)),
                       SizedBox(height: getProportionateScreenHeight(15)),
                       Expanded(
                           child: PageView.builder(
@@ -245,10 +273,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<MoodRecord> recordsFromData(List<double> moods, List<String> dates) {
+  List<MoodRecord> recordsFromData(
+      List<double> moods, List<String> dates, List<String> mood_comments) {
     List<MoodRecord> records = [];
+    if (mood_comments.length < 1) {
+      mood_comments = moods.map((e) => '').toList();
+      DatabaseService(uid: user.uid).recordMoodComments(mood_comments);
+    }
     for (int i = 0; i < moods.length; i++) {
-      records.add(new MoodRecord(mood: moods[i], date: (i + 1).toString()));
+      records.add(new MoodRecord(
+          mood: moods[i],
+          date: (i + 1).toString(),
+          mood_comment: mood_comments[i]));
     }
     return records;
   }
@@ -257,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
 class MoodRecord {
   final double mood;
   final String date;
+  final String mood_comment;
 
-  MoodRecord({this.mood, this.date});
+  MoodRecord({this.mood, this.date, this.mood_comment});
 }

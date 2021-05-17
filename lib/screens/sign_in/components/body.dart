@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodymuch/components/form_error.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moodymuch/components/no_account_text.dart';
 import 'package:moodymuch/components/social_card.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
@@ -7,10 +7,15 @@ import '../../../size_config.dart';
 import 'sign_form.dart';
 import 'package:moodymuch/helper/authentication_service.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
 
   final AuthenticationService auth = AuthenticationService();
-  String socialError = "";
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +41,9 @@ class Body extends StatelessWidget {
                   "Sign in with your email and password  \nor continue with social media",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(60)),
                 SignForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(40)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -47,8 +52,15 @@ class Body extends StatelessWidget {
                       press: () async {
                         auth.signInWithGoogle().then((value) => {
                           if(value == null){
-                            print("Invalid google credentials while logging in"),
-                            socialError = "You need to register with your google account!",
+                            Fluttertoast.showToast(
+                              msg: "Failed to Sign in with Google",
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              gravity: ToastGravity.BOTTOM,
+                              toastLength: Toast.LENGTH_SHORT,
+                              fontSize: 16,
+                            )
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }
@@ -60,7 +72,15 @@ class Body extends StatelessWidget {
                       press: () async {
                         auth.signInWithFacebook().then((value) => {
                           if(value == null){
-                            print("Invalid facebook credentials while logging in"),
+                            Fluttertoast.showToast(
+                              msg: "Failed to Sign in with Facebook",
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              gravity: ToastGravity.BOTTOM,
+                              toastLength: Toast.LENGTH_SHORT,
+                              fontSize: 16,
+                            ),
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }
@@ -72,7 +92,15 @@ class Body extends StatelessWidget {
                       press: ()  async {
                         auth.signInWithTwitter().then((value) => {
                           if(value == null){
-                            print("Invalid twitter credentials while logging in"),
+                            Fluttertoast.showToast(
+                              msg: "Failed to Sign in with Twitter",
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              gravity: ToastGravity.BOTTOM,
+                              toastLength: Toast.LENGTH_SHORT,
+                              fontSize: 16,
+                            )
                           } else {
                             Navigator.pushNamed(context, HomeScreen.routeName),
                           }
@@ -81,7 +109,6 @@ class Body extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(socialError),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 NoAccountText(),
               ],

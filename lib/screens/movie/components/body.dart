@@ -20,6 +20,21 @@ class Body extends StatelessWidget {
         stream: db.userData,
         builder: (context, snapshot) {
           if(!snapshot.hasError && snapshot.hasData) {
+
+            if(snapshot.data.moods == null || snapshot.data.moods.length == 0) {
+              return Center(
+                child: Text(
+                  "Sorry, you do not have any mood record yet.\nPlease, first record your mood to enjoy our picks for you!",
+                  style: TextStyle(
+                    color: kPrimaryColor.withOpacity(0.5),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+
             double mood = snapshot.data.moods[snapshot.data.moods.length - 1];
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
