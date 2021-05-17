@@ -155,7 +155,7 @@ class MoodTrackScreen extends StatelessWidget {
   }
 }
 
-Dialog _showCommentDialog(BuildContext context, String uid, int index,
+void _showCommentDialog(BuildContext context, String uid, int index,
     List<double> revMoods, List<String> revDates, List<String> revComments) {
   final _dialog = MoodCommentDialog(
     prev: revComments[index],
