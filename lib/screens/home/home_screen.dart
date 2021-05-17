@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
     print(length);
-    var uri = Uri.parse("http://10.0.2.2:5000/predict");
+    var uri = Uri.parse("https://moody-much-ml.herokuapp.com/predict");
     print("connection established");
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
+    print(response);
     await response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
       print(jsonValue["prob"].runtimeType);
