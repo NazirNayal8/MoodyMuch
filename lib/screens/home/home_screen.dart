@@ -111,9 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // ignore: deprecated_member_use
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
-    // print(length);
-    var uri = Uri.parse("http://127.0.0.1:5000/predict");
-    // print("connection established");
+    print(length);
+    var uri = Uri.parse("https://moody-much-ml.herokuapp.com/predict");
+    print("connection established");
     var request = new http.MultipartRequest("POST", uri);
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(image.path));
@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    response.stream.transform(utf8.decoder).listen((value) {
+    await response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
       // print(jsonValue["prob"].runtimeType);
       prob = jsonValue["prob"];
@@ -195,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
-
                           children: [
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(

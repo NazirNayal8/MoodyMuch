@@ -44,7 +44,7 @@ class DatabaseService {
     try {
       String date = DateTime.now().toString();
       date = date.substring(0, date.length - 7);
-      String mood_comment = '';
+      String mood_comment = ' ';
       await userCollection.doc(uid).update({
         'moods': FieldValue.arrayUnion([mood]),
         "record_date": FieldValue.arrayUnion([date]),
