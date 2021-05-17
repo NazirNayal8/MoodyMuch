@@ -223,6 +223,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 14)),
                             ),
+                            SizedBox(
+                              width: getProportionateScreenWidth(10),
+                            ),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
                                 primary: kPrimaryColor,
