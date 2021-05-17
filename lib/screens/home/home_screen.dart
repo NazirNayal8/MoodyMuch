@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    response.stream.transform(utf8.decoder).listen((value) {
+    await response.stream.transform(utf8.decoder).listen((value) {
       var jsonValue = jsonDecode(value);
       // print(jsonValue["prob"].runtimeType);
       prob = jsonValue["prob"];
