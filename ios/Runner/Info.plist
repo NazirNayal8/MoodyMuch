@@ -2,6 +2,58 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>fb1252553268497188</string>
+        </array>
+      </dict>
+
+      <dict>
+      	<key>CFBundleTypeRole</key>
+      	<string>Editor</string>
+     	<key>CFBundleURLSchemes</key>
+      	<array>
+      	<string>com.googleusercontent.apps.698483882778-u842hejfopqmmo9k5tjv1i6kcm9upavl</string>
+      	</array>
+      </dict>
+
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>twitterkit-Y90fsPI8VRYuTAscOzCayqQPK</string>
+        </array>
+      </dict>
+
+    </array>
+    <key>FacebookAppID</key>
+    <string>1252553268497188</string>
+    <key>FacebookDisplayName</key>
+    <string>MoodyMuch</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fbapi20130214</string>
+      <string>fbapi20130410</string>
+      <string>fbapi20130702</string>
+      <string>fbapi20131010</string>
+      <string>fbapi20131219</string>
+      <string>fbapi20140410</string>
+      <string>fbapi20140116</string>
+      <string>fbapi20150313</string>
+      <string>fbapi20150629</string>
+      <string>fbapi20160328</string>
+      <string>fbauth</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
