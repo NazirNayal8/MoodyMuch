@@ -27,11 +27,13 @@ class MovieCard extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Container(
+            height: 10,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               boxShadow: [kDefaultShadow],
               image: DecorationImage(
                 fit: BoxFit.cover,
+
                 image: NetworkImage("https://image.tmdb.org/t/p/original" + movie.poster),
               ),
             ),

@@ -66,7 +66,7 @@ class _MovieCarouselState extends State<MovieCarousel> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
       child: AspectRatio(
-        aspectRatio: 0.85,
+        aspectRatio: 0.9,
         child: PageView.builder(
           onPageChanged: (value) {
             initialPage = value;

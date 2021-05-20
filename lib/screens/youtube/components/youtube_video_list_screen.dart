@@ -53,6 +53,7 @@ class _YoutubeVideoListScreenState extends State<YoutubeVideoListScreen> {
         height: 140.0,
         decoration: BoxDecoration(
           color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
