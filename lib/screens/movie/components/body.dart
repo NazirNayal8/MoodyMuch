@@ -72,7 +72,7 @@ class Body extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: getProportionateScreenHeight(5)),
+                //SizedBox(height: getProportionateScreenHeight(5)),
                 Text("Movies", style: headingStyle),
                 Text(
                   "Enjoy with our picks for you",

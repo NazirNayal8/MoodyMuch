@@ -60,48 +60,51 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildChart(List<MoodRecord> records) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SfCartesianChart(
-          margin: EdgeInsets.all(0),
-          borderWidth: 0,
-          plotAreaBorderWidth: 0,
-          title: ChartTitle(
-              text: 'Mood Tracks',
-              textStyle: TextStyle(fontWeight: FontWeight.bold)),
-          tooltipBehavior: _tooltipBehavior,
-          series: <ChartSeries>[
-            LineSeries<MoodRecord, dynamic>(
-                name: 'Moods',
-                color: Colors.green[400],
-                dataSource: records,
-                xValueMapper: (MoodRecord record, _) => record.date,
-                yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
-                dataLabelSettings: DataLabelSettings(isVisible: false),
-                dataLabelMapper: (MoodRecord record, _) => record.mood_comment,
-                enableTooltip: true,
-                animationDuration: 2000,
-                markerSettings: MarkerSettings(
-                    isVisible: true,
-                    shape: DataMarkerType.circle,
-                    color: kPrimaryColor))
+    return Container(
+        height: getProportionateScreenHeight(240),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SfCartesianChart(
+              margin: EdgeInsets.all(0),
+              borderWidth: 0,
+              plotAreaBorderWidth: 0,
+              title: ChartTitle(
+                  text: 'Mood Tracks',
+                  textStyle: TextStyle(fontWeight: FontWeight.bold)),
+              tooltipBehavior: _tooltipBehavior,
+              series: <ChartSeries>[
+                LineSeries<MoodRecord, dynamic>(
+                    name: 'Moods',
+                    color: Colors.green[400],
+                    dataSource: records,
+                    xValueMapper: (MoodRecord record, _) => record.date,
+                    yValueMapper: (MoodRecord record, _) => record.mood.toInt(),
+                    dataLabelSettings: DataLabelSettings(isVisible: false),
+                    dataLabelMapper: (MoodRecord record, _) =>
+                        record.mood_comment,
+                    enableTooltip: true,
+                    animationDuration: 2000,
+                    markerSettings: MarkerSettings(
+                        isVisible: true,
+                        shape: DataMarkerType.circle,
+                        color: kPrimaryColor))
+              ],
+              primaryXAxis: CategoryAxis(
+                  labelPlacement: LabelPlacement.onTicks,
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+              primaryYAxis: NumericAxis(
+                  labelFormat: '{value}%',
+                  visibleMaximum: 100,
+                  maximum: 100,
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            records.length == 0
+                ? Text("No Data Available",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))
+                : SizedBox(height: 0),
           ],
-          primaryXAxis: CategoryAxis(
-              labelPlacement: LabelPlacement.onTicks,
-              labelStyle: TextStyle(fontWeight: FontWeight.bold)),
-          primaryYAxis: NumericAxis(
-              labelFormat: '{value}%',
-              visibleMaximum: 100,
-              maximum: 100,
-              labelStyle: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        records.length == 0
-            ? Text("No Data Available",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))
-            : SizedBox(height: 0),
-      ],
-    );
+        ));
   }
 
   Future<bool> classifyImage(File image) async {
@@ -121,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // print("Sending Request ...");
     request.files.add(multipartFile);
     var response = await request.send();
-    if (response.statusCode != 200){
+    if (response.statusCode != 200) {
       return false;
     }
     await response.stream.transform(utf8.decoder).listen((value) {
@@ -136,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<bool> pickImage() async {
     //this function to grab the image from camera
     var image = await picker.getImage(
-        source: ImageSource.camera, preferredCameraDevice: CameraDevice.front, maxHeight: 480,
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.front,
+        maxHeight: 480,
         maxWidth: 480,
         imageQuality: 25);
     if (image == null) return false;
@@ -176,14 +181,14 @@ class _HomeScreenState extends State<HomeScreen> {
             UserModel model = snapshot.data;
             return Container(
                 color: Colors.white,
-                padding: EdgeInsets.only(left: 25, right: 25),
+                padding: EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Welcome back\n" + model.firstname,
                                 style: headingStyle),
@@ -209,25 +214,28 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               onPressed: () async {
                                 bool success = await pickImage();
-                                if (success){
-                                  model.moods.add(prob*100);
+                                if (success) {
+                                  model.moods.add(prob * 100);
                                   String date = DateTime.now().toString();
                                   date = date.substring(0, date.length - 7);
                                   model.dates.add(date);
                                   model.mood_comments.add('');
 
-                                  db.recordMood(model.moods, model.dates, model.mood_comments).then((value) => {
-                                    Fluttertoast.showToast(
-                                      msg: "Submitted Successfully",
-                                      timeInSecForIosWeb: 2,
-                                      backgroundColor: kPrimaryColor,
-                                      textColor: Colors.white,
-                                      gravity: ToastGravity.BOTTOM,
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      fontSize: 16,
-                                    ),
-                                  });
-                                }else{
+                                  db
+                                      .recordMood(model.moods, model.dates,
+                                          model.mood_comments)
+                                      .then((value) => {
+                                            Fluttertoast.showToast(
+                                              msg: "Submitted Successfully",
+                                              timeInSecForIosWeb: 2,
+                                              backgroundColor: kPrimaryColor,
+                                              textColor: Colors.white,
+                                              gravity: ToastGravity.BOTTOM,
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              fontSize: 16,
+                                            ),
+                                          });
+                                } else {
                                   Fluttertoast.showToast(
                                     msg: "Something went wrong",
                                     timeInSecForIosWeb: 2,
@@ -246,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white, fontSize: 14)),
                             ),
                             SizedBox(
-                              width: getProportionateScreenWidth(10),
+                              width: getProportionateScreenWidth(5),
                             ),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(

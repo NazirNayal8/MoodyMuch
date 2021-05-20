@@ -17,7 +17,7 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
       // ignore: deprecated_member_use
       child: FlatButton(
         padding: EdgeInsets.all(20),

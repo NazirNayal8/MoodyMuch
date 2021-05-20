@@ -17,8 +17,8 @@ class QuoteWidget extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/quote.png",
-            height: 23,
-            width: 23,
+            height: 20,
+            width: 20,
             color: Colors.black,
           ),
           SizedBox(
@@ -31,7 +31,7 @@ class QuoteWidget extends StatelessWidget {
               quote,
               maxLines: 5,
               style: GoogleFonts.lato(
-                textStyle: TextStyle(color: Colors.black, fontSize: 24),
+                textStyle: TextStyle(color: Colors.black, fontSize: 22),
               ),
             ),
           ),

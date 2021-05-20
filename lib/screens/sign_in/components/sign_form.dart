@@ -100,7 +100,11 @@ class _SignFormState extends State<SignForm> {
                     }
                     else {
                       KeyboardUtil.hideKeyboard(context),
-                      Navigator.pushNamed(context, HomeScreen.routeName),
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(pageBuilder: (context, __, ___) => HomeScreen(),
+                            transitionDuration: Duration(seconds: 0)),
+                      )
                     }
                   }
                 );
