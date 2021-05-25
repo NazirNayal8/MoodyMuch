@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:moodymuch/components/form_error.dart';
 import 'package:moodymuch/components/no_account_text.dart';
 import 'package:moodymuch/components/social_card.dart';
+import 'package:moodymuch/helper/facebook_login_adapter.dart';
+import 'package:moodymuch/helper/google_login_adapter.dart';
+import 'package:moodymuch/helper/twitter_login_adapter.dart';
 import 'package:moodymuch/screens/home/home_screen.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
@@ -45,7 +48,7 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/google-icon.svg",
                       press: () async {
-                        auth.signInWithGoogle().then((value) => {
+                        auth.signInSocial(Google()).then((value) => {
                           if(value == null){
                             print("Invalid google credentials while logging in"),
                             socialError = "You need to register with your google account!",
@@ -58,7 +61,7 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/facebook-2.svg",
                       press: () async {
-                        auth.signInWithFacebook().then((value) => {
+                        auth.signInSocial(Facebook()).then((value) => {
                           if(value == null){
                             print("Invalid facebook credentials while logging in"),
                           } else {
@@ -70,7 +73,7 @@ class Body extends StatelessWidget {
                     SocialCard(
                       icon: "assets/icons/twitter.svg",
                       press: ()  async {
-                        auth.signInWithTwitter().then((value) => {
+                        auth.signInSocial(Twitter()).then((value) => {
                           if(value == null){
                             print("Invalid twitter credentials while logging in"),
                           } else {

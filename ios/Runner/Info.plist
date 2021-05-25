@@ -53,6 +53,10 @@
       <string>fbauth2</string>
       <string>fbshareextension</string>
     </array>
+    <array>
+        <string>twitter</string>
+        <string>twitterauth</string>
+    </array>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

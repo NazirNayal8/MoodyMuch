@@ -8,7 +8,7 @@ import 'google_login_adapter.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  static SocialLogin socialLogin;
+  static SocialLogin _socialLogin;
 
   AppUser _userFromFirebaseUser(User user) {
     return user != null ? AppUser(uid: user.uid, email: user.email) : null;
@@ -20,9 +20,9 @@ class AuthenticationService {
 
   Future signOut() async {
     try {
-      if (socialLogin != null) {
+      if (_socialLogin != null) {
         print("Social logout");
-        return socialLogin.logout();
+        return _socialLogin.logout();
       }
       print("AppUser logout");
       return await _auth.signOut();
@@ -91,7 +91,17 @@ class AuthenticationService {
     }
   }
 
-  Future signUpWithFacebook() async {
+  Future signUpSocial(SocialLogin socialLogin) async {
+    _socialLogin = socialLogin;
+    return _socialLogin.signUp();
+  }
+
+  Future signInSocial(SocialLogin socialLogin) async {
+    _socialLogin = socialLogin;
+    return _socialLogin.signIn();
+  }
+
+  /*Future signUpWithFacebook() async {
     socialLogin = Facebook();
     return socialLogin.signUp();
   }
@@ -119,5 +129,5 @@ class AuthenticationService {
   Future signInWithGoogle() async {
     socialLogin = Google();
     return socialLogin.signIn();
-  }
+  }*/
 }
